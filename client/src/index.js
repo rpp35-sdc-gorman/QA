@@ -1,6 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
+import Overview from './components/overview/Overview';
+
 const container = document.getElementById('root');
 const root = createRoot(container);
 
@@ -13,7 +15,7 @@ class App extends React.Component {
   render() {
     return(
       <div>
-        <h1>dsfjkahsdl</h1>
+        <Overview />
       </div>
     )
   }
