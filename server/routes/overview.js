@@ -4,7 +4,7 @@ const router = express.Router();
 const sendRequest = require('../lib/sendRequest');
 
 router.get('/', (req, res, next) => {
-  const path = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp35/products'
+  const path = 'products'
   sendRequest(path)
   .then(data => {
     console.log(data)

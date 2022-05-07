@@ -5,10 +5,10 @@ const {token} = require('../../config');
 
 // Url String
 // data - json parsable object
-const sendRequest = (url, method = 'GET', data = {}) => {
+const sendRequest = (endpoint, method = 'GET', data = {}) => {
   // default behavior is a get request
   return axios({
-    url:url,
+    url:`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/${endpoint}`,
     method: method,
     headers: {
       'Authorization': token,
