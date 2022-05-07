@@ -11,6 +11,14 @@ router.get('/questions/:product_id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.get('/answers/:question_id', (req, res, next) => {
+  sendRequest(`qa/questions/${req.params.question_id}/answers`)
+    .then(answers => {
+      res.status(200).json(answers.data)
+    })
+    .catch(err => next(err));
+});
+
 
 
 module.exports  = {qAndARouter: router}
