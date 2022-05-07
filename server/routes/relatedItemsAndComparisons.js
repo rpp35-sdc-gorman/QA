@@ -1,19 +1,33 @@
 const express = require('express');
 const router = express.Router();
 
-const getRICProducts = require('../API/RIC.js');
+const getRICRequests = require('../API/RIC.js');
 
-router.get('/', (req, res, next) => {
+router.get('/related_products', (req, res, next) => {
   // will need to refactor based on if we are using query or parameters
-  const productId = req.query.product_id;
-  const endpoint = `products/${productId}/related`;
-  getRICProducts(endpoint)
-    .then(response => {
-      res.json(response.data);
+  const currentProductId = req.query.product_id;
+  const endpoint = `products/${currentProductId}/related`;
+  getRICRequests(endpoint)
+    .then(relatedProductIds => {
+      return relatedProductIds.data
     })
-    .catch(err => {
-      next(err);
+    .then(productIds => {
+      // there's definitely a way to shorten this, but can't figure it out right now
+      return products = productIds.map(id => {
+        return (
+          getRICRequests(`products/${id}`)
+            .then(product => {
+              return product.data
+          }))
+      });
     })
+    .then(products => {
+      Promise.all(products)
+        .then(productsObj => {
+          res.json(productsObj);
+        })
+    })
+    .catch(err => { next(err); })
 });
 
 module.exports  = {relatedRouter: router}
