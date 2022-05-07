@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const api = require('../API/QuestionAnswerAPI');
+const sendRequest = require('../lib/sendRequest');
 
 
 router.get('/questions/:product_id', (req, res, next) => {
-  api.getQuestions(req.params.product_id)
-    .then(results => res.json(results))
+  sendRequest(`qa/questions?product_id=${req.params.product_id}&count=100`)
+    .then(results => {
+      res.status(200).json(results.data)
+    })
     .catch(err => next(err));
 });
 
