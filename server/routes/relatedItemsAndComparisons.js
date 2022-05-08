@@ -3,9 +3,9 @@ const router = express.Router();
 
 const getRICRequests = require('../API/RIC.js');
 
-router.get('/related_products', (req, res, next) => {
+router.get('/ric/:product_id', (req, res, next) => {
   // will need to refactor based on if we are using query or parameters
-  const currentProductId = req.query.product_id;
+  const currentProductId = req.params.product_id;
   const endpoint = `products/${currentProductId}/related`;
   getRICRequests(endpoint)
     .then(relatedProductIds => {
