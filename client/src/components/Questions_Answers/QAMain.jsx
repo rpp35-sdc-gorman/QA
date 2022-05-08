@@ -26,9 +26,10 @@ class QAMain extends React.Component {
     // create component to render QAs in accordion
     return(
       <div>
-        {this.state.questions.map(question =>
+        {(this.state.questions.length) ? this.state.questions.map(question =>
           <SingleQA key={question.question_id} question={question}/>
-        )}
+        ) : <></>}
+        <button>Submit Question</button>
       </div>
     )
   }
