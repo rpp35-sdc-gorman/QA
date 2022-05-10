@@ -16,11 +16,24 @@ class RIC extends React.Component {
   componentDidMount() {
     axios.get('/related_items/ric/64620')
       .then(response => {
-        console.log(response);
         this.setState({
           relatedProducts: response.data
-        })
+        }, () => {
+          this.state.relatedProducts.forEach(product => {
+            axios.get(`/related_items/ric/ratings/${product.id}`)
+              .then(response => {
+                product.star_rating = response.data.rating;
+              })
+              .then(() => {
+                this.setState({
+                  relatedProducts: this.state.relatedProducts
+                })
+              })
+              .catch(err => { throw err; })
+          })
+        });
       })
+      .catch( err => { throw err; })
   }
 
   render() {

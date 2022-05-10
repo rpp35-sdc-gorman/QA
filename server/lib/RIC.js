@@ -1,7 +1,7 @@
 const config = require('../../config.js');
 const axios = require('axios');
 
-const getRICRequests = (endpoint) => {
+const getRIC = (endpoint) => {
   return axios.get(`${config.HOST + endpoint}`, {
     headers: {
       'Authorization': config.TOKEN,
@@ -10,4 +10,4 @@ const getRICRequests = (endpoint) => {
   })
 };
 
-module.exports = getRICRequests;
+module.exports = getRIC;

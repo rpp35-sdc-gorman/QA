@@ -6,6 +6,7 @@ var RelatedProductCards = (props) => (
     {props.name}<br/>
     {props.default_price}<br/>
     {props.category}<br/>
+    {props.star_rating}<br/>
   </div>
 )
 
