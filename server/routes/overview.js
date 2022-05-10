@@ -36,7 +36,7 @@ router.get('/products/:id/styles', (req, res, next) => {
   const path = `products/${id}/styles`
   sendRequest(path)
   .then(data => {
-    console.log(data)
+    // console.log(data)
     res.json(data.data)
   })
   .catch(err => {

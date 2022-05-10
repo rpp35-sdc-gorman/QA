@@ -1,0 +1,12 @@
+/* Overview rooty styles */
+.Overview{
+  font-family: 'Open Sans', sans-serif;
+  font-size: 400;
+}
+
+.flexRow{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: space-around;
+}
