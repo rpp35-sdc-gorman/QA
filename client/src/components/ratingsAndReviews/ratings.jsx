@@ -1,18 +1,21 @@
-import react from 'react';
+import React from 'react';
 
-StarBreakdown = () => {
+var StarBreakdown = () => {
   return <></>;
 };
-Size = () => {
+var Size = () => {
   return <></>;
 };
-Comfort = () => {
+var Comfort = () => {
   return <></>;
 };
 
 class Ratings extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      AverageRating: 1.25
+    }
   }
 
   render() {
