@@ -17,7 +17,7 @@ class SingleQA extends React.Component {
 
   componentDidMount() {
     // get answers to question
-    axios({url:`/question_answer/answers/${this.props.question.question_id}`, method: 'GET'})
+    axios.get(`/question_answer/answers/${this.props.question.question_id}`)
       .then(answers => {
         this.setState({
           allAnswers: answers.data.results.sort((a, b) => b.helpfulness - a.helpfulness),

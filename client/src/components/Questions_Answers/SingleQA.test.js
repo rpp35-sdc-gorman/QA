@@ -46,7 +46,7 @@ const answers = {'data': {'results': [
 
 jest.mock('axios');
 // Make sure to resolve with a promise
-axios.mockResolvedValue(answers);
+axios.get.mockResolvedValue(answers);
 
 let container = null;
 beforeEach(() => {
@@ -101,7 +101,7 @@ it("should render one QA item to screen", async () => {
   await act(async () => {
     createRoot(container).render(<SingleQA question={question}/>);
   });
-  expect(axios).toBeCalledTimes(1);
+  expect(axios.get).toBeCalledTimes(1);
   expect(container.querySelector('button').textContent).toBe('Q: ' + question.question_body);
 
   // remove the mock to ensure tests are completely isolated
