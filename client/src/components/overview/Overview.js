@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-// styles
-import style from './styles/overview.module.css';
 
 import ProductInfo from './ProductInfo';
 import Gallery from './Gallery';
@@ -12,8 +10,8 @@ import ProductDescription from './ProductDescription';
 import sendRequest from '../../../../server/lib/sendRequest';
 
 // sample data - remove this later
-const {testProducts} = require('../../../../config');
-import {testProductStyles} from '../../../../config'
+import {testProducts} from '../../../../config';
+import {testProductStyles} from '../../../../config';
 
 class Overview extends React.Component{
   constructor(props){
