@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const getRIC = require('../lib/RIC.js');
+const getRIC = require('../lib/sendRequest.js');
 
 router.get('/ric/:product_id', (req, res, next) => {
   // will need to refactor based on if we are using query or parameters
   const currentProductId = req.params.product_id;
   const endpoint = `products/${currentProductId}/related`;
-  getRIC(endpoint)
+  sendRequest(endpoint)
     .then(relatedProducts => {
       return relatedProducts.data
     })
@@ -15,7 +15,7 @@ router.get('/ric/:product_id', (req, res, next) => {
       // there's definitely a way to shorten this, but can't figure it out right now
       return relatedProductIds.map(id => {
         return (
-          getRIC(`products/${id}`)
+          sendRequest(`products/${id}`)
         )
       });
     })
@@ -36,7 +36,7 @@ router.get('/ric/ratings/:product_id', (req, res, next) => {
   // will need to refactor based on if we are using query or parameters
   const productIds = req.params.product_id;
   const endpoint = `reviews/meta/?product_id=${productIds}`;
-  getRIC(endpoint)
+  sendRequest(endpoint)
     .then(relatedProducts => {
       let ratings = relatedProducts.data.ratings;
       let [ totalResponses, score] = [0, 0];
