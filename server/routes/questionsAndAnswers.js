@@ -1,11 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const sendRequest = require('../lib/sendRequest');
 
 
-router.get('/', (req, res, next) => {
+router.get('/questions/:product_id', (req, res, next) => {
+  sendRequest(`qa/questions?product_id=${req.params.product_id}&count=100`)
+    .then(results => {
+      res.status(200).json(results.data)
+    })
+    .catch(err => next(err));
+});
 
-
-
+router.get('/answers/:question_id', (req, res, next) => {
+  sendRequest(`qa/questions/${req.params.question_id}/answers`)
+    .then(answers => {
+      res.status(200).json(answers.data)
+    })
+    .catch(err => next(err));
 });
 
 
