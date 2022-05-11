@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import QAMain from './components/Questions_Answers/QAMain.jsx';
+import RIC from './components/RIC_Component/RIC.jsx';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -15,6 +16,8 @@ class App extends React.Component {
     return(
       <div>
         <QAMain />
+        <h1>dsfjkahsdl</h1>
+        <RIC />
       </div>
     )
   }
