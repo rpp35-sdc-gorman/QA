@@ -18,14 +18,16 @@ class Ratings extends React.Component {
 
   render() {
     return (
-      <>
-        <h1>{this.state.AverageRating.toFixed(1)}</h1>
-        <Stars size={45} filled={this.state.AverageRating}></Stars>
+      <div className="ratingsContainer">
+        <h1>
+          {this.state.AverageRating.toFixed(1)}{' '}
+          <Stars size={45} filled={this.state.AverageRating}></Stars>
+        </h1>
         <p>100% of reviews recommended this product</p>
         <StarBreakdown></StarBreakdown>
         <Size></Size>
         <Comfort></Comfort>
-      </>
+      </div>
     );
   }
 }
