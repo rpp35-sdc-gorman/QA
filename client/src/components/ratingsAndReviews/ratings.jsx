@@ -1,24 +1,26 @@
-import react from 'react';
-
-StarBreakdown = () => {
+import React from 'react';
+import Stars from '../common/5star.jsx';
+var StarBreakdown = (props) => {
   return <></>;
 };
-Size = () => {
+var Size = (props) => {
   return <></>;
 };
-Comfort = () => {
+var Comfort = (props) => {
   return <></>;
 };
 
 class Ratings extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { AverageRating: 1.33 };
   }
 
   render() {
     return (
       <>
         <h1>{this.state.AverageRating.toFixed(1)}</h1>
+        <Stars size={45} filled={this.state.AverageRating}></Stars>
         <p>100% of reviews recommended this product</p>
         <StarBreakdown></StarBreakdown>
         <Size></Size>
