@@ -12,3 +12,5 @@ ReviewTile = (props) => {
     </div>
   );
 };
+
+export default ReviewTile;

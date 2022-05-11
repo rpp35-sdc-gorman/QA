@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const getRIC = require('../lib/sendRequest.js');
+const sendRequest = require('../lib/sendRequest.js');
 
 router.get('/ric/:product_id', (req, res, next) => {
   // will need to refactor based on if we are using query or parameters
