@@ -6,16 +6,7 @@ import axios from 'axios';
 
 import SingleQA from './SingleQA.jsx';
 
-const callApi = (endpoint, method, data = {}) => {
-
-  return axios({
-    url: endpoint,
-    method,
-    data
-  })
-  .then(response => console.log(response))
-  .catch((error) => console.log(error))
-};
+global.IS_REACT_ACT_ENVIRONMENT = true
 
 const answers = {'data': {'results': [
   {
@@ -41,18 +32,48 @@ const answers = {'data': {'results': [
         "url": "urlplaceholder/answer_5_photo_number_2.jpg"
       }
     ]
+  },
+  {
+    "answer_id": 11,
+    "body": "Random answer",
+    "date": "2018-01-04T00:00:00.000Z",
+    "answerer_name": "Jon",
+    "helpfulness": 8,
+    "photos": [],
   }
 ]}}
+
+const question = {
+  "question_id": 37,
+  "question_body": "Why is this product cheaper here than other sites?",
+  "question_date": "2018-10-18T00:00:00.000Z",
+  "asker_name": "williamsmith",
+  "question_helpfulness": 4,
+  "reported": false,
+  "answers": {
+    68: {
+      "id": 68,
+      "body": "We are selling it here without any markup from the middleman!",
+      "date": "2018-08-18T00:00:00.000Z",
+      "answerer_name": "Seller",
+      "helpfulness": 4,
+      "photos": []
+    }
+  }
+}
 
 jest.mock('axios');
 // Make sure to resolve with a promise
 axios.get.mockResolvedValue(answers);
 
 let container = null;
-beforeEach(() => {
+beforeEach(async () => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  await act(async () => {
+    createRoot(container).render(<SingleQA question={question}/>);
+  });
 });
 
 afterEach(() => {
@@ -62,48 +83,44 @@ afterEach(() => {
   container = null;
 });
 
-// describe('callApi()', () => {
-//   it('calls `axios()` with `endpoint`, `method` and `body`', () => {
-//     const endpoint = '/endpoint';
-//     const method = 'post';
-//     const data = { foo: 'bar' };
-
-//     // call function
-//     callApi(endpoint, method, data);
-
-//     // assert axios()
-//     expect(axios).toBeCalledWith({ url: endpoint, method, data});
-//   });
-// });
-
-it("should render one QA item to screen", async () => {
-  const question = {
-    "question_id": 37,
-    "question_body": "Why is this product cheaper here than other sites?",
-    "question_date": "2018-10-18T00:00:00.000Z",
-    "asker_name": "williamsmith",
-    "question_helpfulness": 4,
-    "reported": false,
-    "answers": {
-      68: {
-        "id": 68,
-        "body": "We are selling it here without any markup from the middleman!",
-        "date": "2018-08-18T00:00:00.000Z",
-        "answerer_name": "Seller",
-        "helpfulness": 4,
-        "photos": []
-      }
-    }
-  }
-
-
-
-  await act(async () => {
-    createRoot(container).render(<SingleQA question={question}/>);
-  });
+it("should render one QA item to screen displaying question body", async () => {
   expect(axios.get).toBeCalledTimes(1);
   expect(container.querySelector('button').textContent).toBe('Q: ' + question.question_body);
+});
 
-  // remove the mock to ensure tests are completely isolated
-  axios.mockRestore();
+it("should have all questions loaded by default, but none displayed", async () => {
+  expect(container.querySelectorAll('div.panel').length).toBe(2);
+  expect(container.querySelectorAll('div.panel.active').length).toBe(0);
+  expect(container.querySelector('a.panel').textContent).toBe('See more answers');
+});
+
+it('should toggle on question click to display/hide first 2 answers to question', async () => {
+  // dispatch a click even on question button
+  await act(() => {
+    container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+
+  expect(container.querySelectorAll('div.panel.active').length).toBe(2);
+  expect(container.querySelector('a.panel.active').textContent).toBe('See more answers');
+
+  await act(() => {
+    container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+  expect(container.querySelectorAll('div.panel.active').length).toBe(0);
+  expect(container.querySelector('a.panel').textContent).toBe('See more answers');
+});
+
+it('should display answers in intervals of 2 until no more questions, then deactivate See more answers', async () => {
+  // dispatch a click even on question button
+  await act(() => {
+    container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+
+  await act(() => {
+    container.querySelector('a').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+
+  expect(container.querySelectorAll('div.panel.active').length).toBe(3);
+  expect(container.querySelector('a.panel').textContent).toBe('See more answers');
+  expect(container.querySelector('a.panel.active')).toBe(null);
 });

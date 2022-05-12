@@ -59,7 +59,9 @@ class SingleQA extends React.Component {
             </div>
           )
         })}
-        <div className={(this.state.showAnswers && this.state.allAnswers.length > 2) ? "panel active": "panel"} id="load" onClick={this.loadMoreAnswers.bind(this)}>LOAD MORE ANSWERS</div>
+        <a className={(this.state.showAnswers && this.state.allAnswers.length > 2
+        && this.state.dispAnswers.length !== this.state.allAnswers.length) ? "panel active": "panel"}
+        id="load" onClick={this.loadMoreAnswers.bind(this)}>See more answers</a>
       </div>
     )
   }
