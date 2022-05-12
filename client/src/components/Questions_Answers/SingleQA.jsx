@@ -2,13 +2,73 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
+import Answers from './Answers.jsx';
+
 class SingleQA extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      allAnswers: [],
-      dispAnswers: [],
+      allAnswers: [
+        {
+          "answer_id": 8,
+          "body": "What a great question!",
+          "date": "2018-01-04T00:00:00.000Z",
+          "answerer_name": "metslover",
+          "helpfulness": 8,
+          "photos": [],
+        },
+        {
+          "answer_id": 5,
+          "body": "Something pretty durable but I can't be sure",
+          "date": "2018-01-04T00:00:00.000Z",
+          "answerer_name": "metslover",
+          "helpfulness": 5,
+          "photos": [{
+              "id": 1,
+              "url": "urlplaceholder/answer_5_photo_number_1.jpg"
+            },
+            {
+              "id": 2,
+              "url": "urlplaceholder/answer_5_photo_number_2.jpg"
+            }
+          ]
+        },
+        {
+          "answer_id": 11,
+          "body": "Random answer",
+          "date": "2018-01-04T00:00:00.000Z",
+          "answerer_name": "Jon",
+          "helpfulness": 8,
+          "photos": [],
+        }
+      ],
+      dispAnswers: [
+        {
+          "answer_id": 8,
+          "body": "What a great question!",
+          "date": "2018-01-04T00:00:00.000Z",
+          "answerer_name": "metslover",
+          "helpfulness": 8,
+          "photos": [],
+        },
+        {
+          "answer_id": 5,
+          "body": "Something pretty durable but I can't be sure",
+          "date": "2018-01-04T00:00:00.000Z",
+          "answerer_name": "metslover",
+          "helpfulness": 5,
+          "photos": [{
+              "id": 1,
+              "url": "urlplaceholder/answer_5_photo_number_1.jpg"
+            },
+            {
+              "id": 2,
+              "url": "urlplaceholder/answer_5_photo_number_2.jpg"
+            }
+          ]
+        }
+      ],
       showAnswers: false
     }
 
@@ -17,13 +77,13 @@ class SingleQA extends React.Component {
 
   componentDidMount() {
     // get answers to question
-    axios.get(`/question_answer/answers/${this.props.question.question_id}`)
-      .then(answers => {
-        this.setState({
-          allAnswers: answers.data.results.sort((a, b) => b.helpfulness - a.helpfulness),
-          dispAnswers: answers.data.results.slice(0, 2)
-        })
-      })
+    // axios.get(`/question_answer/answers/${this.props.question.question_id}`)
+    //   .then(answers => {
+    //     this.setState({
+    //       allAnswers: answers.data.results.sort((a, b) => b.helpfulness - a.helpfulness),
+    //       dispAnswers: answers.data.results.slice(0, 2)
+    //     })
+    //   })
   }
 
   toggleAccordion(e) {
@@ -33,35 +93,35 @@ class SingleQA extends React.Component {
     })
   }
 
-  loadMoreAnswers() {
-    let curLen = this.state.dispAnswers.length;
-    let newLen = Math.min(curLen + 2, this.state.allAnswers.length);
-    console.log(curLen, newLen);
-    this.setState((state, props) => {
-      return {
-        dispAnswers: state.allAnswers.slice(0, newLen),
-        showAnswers: true
-      }
-    })
+  loadMoreAnswers(isExpanded) {
+    console.log('in parent', isExpanded)
+    if (!isExpanded) { // if not expanded, expand
+      this.setState((state, props) => {
+        return {
+          dispAnswers: state.allAnswers,
+          showAnswers: true
+        }
+      })
+    } else {
+      this.setState((state, props) => {
+        return {
+          dispAnswers: state.allAnswers.slice(0, 2),
+          showAnswers: true
+        }
+      })
+    }
   }
 
   render() {
     return (
       <div>
         <button className="accordion" onClick={(e) => this.toggleAccordion(e)}>Q: {this.props.question.question_body}</button>
-        {this.state.dispAnswers.map(answer => {
-          return (
-            <div key={answer.answer_id} className={this.state.showAnswers ? "panel active": "panel"}>
-              <p>A: {answer.body}</p>
-              <p>{answer.answerer_name} {answer.helpfulness}</p>
-              {/* convert to component for showing answer/answerer details and reporting */}
-              {/* include component for images */}
-            </div>
-          )
-        })}
-        <a className={(this.state.showAnswers && this.state.allAnswers.length > 2
-        && this.state.dispAnswers.length !== this.state.allAnswers.length) ? "panel active": "panel"}
-        id="load" onClick={this.loadMoreAnswers.bind(this)}>See more answers</a>
+        <Answers
+          allAnswers={this.state.allAnswers}
+          dispAnswers={this.state.dispAnswers}
+          showAnswers={this.state.showAnswers}
+          loadMoreAnswers={this.loadMoreAnswers.bind(this)}
+        />
       </div>
     )
   }

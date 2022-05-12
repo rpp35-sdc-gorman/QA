@@ -107,20 +107,19 @@ it('should toggle on question click to display/hide first 2 answers to question'
     container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
   expect(container.querySelectorAll('div.panel.active').length).toBe(0);
-  expect(container.querySelector('a.panel').textContent).toBe('See more answers');
+  expect(container.querySelector('div#load.panel').textContent).toBe('See more answers');
 });
 
-it('should display answers in intervals of 2 until no more questions, then deactivate See more answers', async () => {
+it('should display all answers once clicked and switch button text to "Collapse answers"', async () => {
   // dispatch a click even on question button
   await act(() => {
     container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
 
   await act(() => {
-    container.querySelector('a').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    container.querySelector('div#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
 
   expect(container.querySelectorAll('div.panel.active').length).toBe(3);
-  expect(container.querySelector('a.panel').textContent).toBe('See more answers');
-  expect(container.querySelector('a.panel.active')).toBe(null);
+  expect(container.querySelector('div#load.panel').textContent).toBe('Collapse answers');
 });
