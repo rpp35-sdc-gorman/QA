@@ -1,3 +1,30 @@
+/* CAROUSEL */
+.carousel {
+  overflow: hidden;
+}
+
+.carousel_inner {
+  white-space: nowrap;
+  transition: transform 0.3s;
+}
+
+.carousel_item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: white;
+}
+
+.indicators {
+  display: flex;
+  justify-content: center;
+}
+
+.indicators > button {
+  margin: 5px;
+}
+
 /* CARD GRID */
 .card {
   display: grid;

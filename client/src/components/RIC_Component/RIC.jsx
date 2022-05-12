@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import RelatedProductsList from './RelatedProductsList.jsx';
+import Carousel from './Carousel';
 
 // currently, implementing without react hooks, but will refactor using react hooks later
 class RIC extends React.Component {
@@ -52,7 +53,9 @@ class RIC extends React.Component {
   render() {
     return(
       <div>
-        <RelatedProductsList relatedProducts={this.state.relatedProducts} />
+        <Carousel>
+          <RelatedProductsList relatedProducts={this.state.relatedProducts} />
+        </Carousel>
       </div>
     )
   }
