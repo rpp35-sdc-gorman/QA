@@ -34,8 +34,8 @@ router.get('/ric/:product_id', (req, res, next) => {
 
 router.get('/ric/ratings/:product_id', (req, res, next) => {
   // will need to refactor based on if we are using query or parameters
-  const productIds = req.params.product_id;
-  const endpoint = `reviews/meta/?product_id=${productIds}`;
+  const productId = req.params.product_id;
+  const endpoint = `reviews/meta/?product_id=${productId}`;
   sendRequest(endpoint)
     .then(relatedProducts => {
       let ratings = relatedProducts.data.ratings;
@@ -49,5 +49,17 @@ router.get('/ric/ratings/:product_id', (req, res, next) => {
     })
     .catch(err => { next(err); })
 });
+
+router.get('/ric/styles/:product_id', (req, res, next) => {
+  // will need to refactor based on if we are using query or parameters
+  const productId = req.params.product_id;
+  const endpoint = `products/${productId}/styles`;
+  sendRequest(endpoint)
+    .then(productStyles => {
+      res.send({ styles: productStyles.results })
+    })
+    .catch(err => { next(err); });
+});
+
 
 module.exports  = {relatedRouter: router}

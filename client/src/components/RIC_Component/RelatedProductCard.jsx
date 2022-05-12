@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 var RelatedProductCards = (props) => (
-  <div id="card">
-    <div id="card-category">{props.category}</div>
-    <div id="card-name">{props.name}</div>
-    <div id="card-price">{props.default_price}</div>
-    <div id="card-star">{props.star_rating}</div><br/>
+  <div className="card">
+    <div className="card_visual" src={props.visual}></div>
+    <div className="card_category">{props.category}</div>
+    <div className="card_name">{props.name}</div>
+    <div className="card_price">{props.default_price}</div>
+    <div className="card_rating">{props.star_rating}</div><br/>
   </div>
 )
 

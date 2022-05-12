@@ -1,0 +1,39 @@
+/* CARD GRID */
+.card {
+  display: grid;
+  grid-template-columns: 100px;
+  grid-template-rows: 6fr 1fr 1fr 1fr 1fr;
+  justify-self: start;
+}
+
+.card_visual {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  justify-self: center;
+}
+
+.card_category {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  text-transform: uppercase;
+  font-size: small;
+}
+
+.card_name {
+  grid-row-start: 3;
+  grid-row-end: 4;
+  font-weight: bold;
+  font-size: medium;
+}
+
+.card_price {
+  grid-row-start: 4;
+  grid-row-end: 5;
+  font-weight: lighter;
+  font-size: smaller;
+}
+
+.card_rating {
+  grid-row-start: 5;
+  grid-row-end: 6;
+}

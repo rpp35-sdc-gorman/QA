@@ -16,24 +16,37 @@ class RIC extends React.Component {
   componentDidMount() {
     axios.get('/related_items/ric/64620')
       .then(response => {
-        this.setState({
-          relatedProducts: response.data
-        }, () => {
-          this.state.relatedProducts.forEach(product => {
-            axios.get(`/related_items/ric/ratings/${product.id}`)
-              .then(response => {
-                product.star_rating = response.data.rating;
-              })
-              .then(() => {
-                this.setState({
-                  relatedProducts: this.state.relatedProducts
-                })
-              })
-              .catch(err => { throw err; })
-          })
-        });
+        return response.data
       })
-      .catch( err => { throw err; })
+      .then(relatedProducts => {
+        relatedProducts.forEach(product => {
+          axios.get(`/related_items/ric/ratings/${product.id}`)
+            .then(response => {
+              product.star_rating = response.data.rating;
+            })
+            .catch(err => { throw err; });
+          axios.get(`/ric/styles/${product.id}`)
+            .then(response => {
+              product.styles = response.data.styles
+            })
+            .catch(err => { throw err; });
+        });
+        return relatedProducts;
+      })
+      .then(relatedProducts => {
+        relatedProducts.forEach(product => {
+          axios.get(`/ric/styles/${product.id}`)
+            .then(response => {
+              product.styles = response.data.styles
+            })
+            .catch(err => { throw err; });
+        })
+        return relatedProducts;
+      })
+      .then(relatedProducts => {
+        this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
+      })
+      .catch(err => { throw err; });
   }
 
   render() {
