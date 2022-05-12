@@ -53,9 +53,7 @@ class RIC extends React.Component {
   render() {
     return(
       <div>
-        <Carousel>
-          <RelatedProductsList relatedProducts={this.state.relatedProducts} />
-        </Carousel>
+        <Carousel children={<RelatedProductsList relatedProducts={this.state.relatedProducts} />} />
       </div>
     )
   }
