@@ -12,7 +12,6 @@ class Reviews extends React.Component {
 
   componentDidMount() {
     axios.get('/rating_review/' + this.props.id).then((response) => {
-      console.log(response);
       this.setState({ reviews: response.data.results });
     });
   }
@@ -25,6 +24,7 @@ class Reviews extends React.Component {
         {this.state.reviews.map((review) => {
           <ReviewTile review={review}></ReviewTile>;
         })}
+        <button>Add A Review</button>
       </>
     );
   }

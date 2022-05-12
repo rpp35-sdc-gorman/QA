@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
+import QAMain from './components/Questions_Answers/QAMain.jsx';
 import RatingsAndReviews from './components/ratingsAndReviews/ratingsAndReviews.jsx';
 import RIC from './components/RIC_Component/RIC.jsx';
 
@@ -16,7 +17,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>dsfjkahsdl</h1>
+        <QAMain />
         <RatingsAndReviews></RatingsAndReviews>
         <RIC />
       </div>
