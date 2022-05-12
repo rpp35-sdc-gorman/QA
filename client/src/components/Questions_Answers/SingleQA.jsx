@@ -71,8 +71,6 @@ class SingleQA extends React.Component {
       ],
       showAnswers: false
     }
-
-    this.loadMoreAnswers.bind(this);
   }
 
   componentDidMount() {
@@ -93,34 +91,13 @@ class SingleQA extends React.Component {
     })
   }
 
-  loadMoreAnswers(isExpanded) {
-    console.log('in parent', isExpanded)
-    if (!isExpanded) { // if not expanded, expand
-      this.setState((state, props) => {
-        return {
-          dispAnswers: state.allAnswers,
-          showAnswers: true
-        }
-      })
-    } else {
-      this.setState((state, props) => {
-        return {
-          dispAnswers: state.allAnswers.slice(0, 2),
-          showAnswers: true
-        }
-      })
-    }
-  }
-
   render() {
     return (
       <div>
         <button className="accordion" onClick={(e) => this.toggleAccordion(e)}>Q: {this.props.question.question_body}</button>
         <Answers
           allAnswers={this.state.allAnswers}
-          dispAnswers={this.state.dispAnswers}
           showAnswers={this.state.showAnswers}
-          loadMoreAnswers={this.loadMoreAnswers.bind(this)}
         />
       </div>
     )
