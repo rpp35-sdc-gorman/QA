@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 var Answers = (props) => {
   const [expanded, setExpanded] = useState(false);
 
-  function expand() {
+  function toggleExpand() {
     setExpanded(!expanded);
   }
 
   let toggle;
   if (!expanded && props.allAnswers.length > 0) {
-    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={expand}>See more answers</div>
+    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>See more answers</div>
   } else {
-    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={expand}>Collapse answers</div>
+    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>Collapse answers</div>
   }
 
   return (
