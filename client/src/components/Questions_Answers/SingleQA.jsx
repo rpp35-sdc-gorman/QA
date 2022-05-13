@@ -2,16 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import Answers from './Answers.jsx';
-
 class SingleQA extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       allAnswers: [],
+      dispAnswers: [],
       showAnswers: false
     }
+
+    this.loadMoreAnswers.bind(this);
   }
 
   componentDidMount() {
@@ -32,14 +33,33 @@ class SingleQA extends React.Component {
     })
   }
 
+  loadMoreAnswers() {
+    let curLen = this.state.dispAnswers.length;
+    let newLen = Math.min(curLen + 2, this.state.allAnswers.length);
+    console.log(curLen, newLen);
+    this.setState((state, props) => {
+      return {
+        dispAnswers: state.allAnswers.slice(0, newLen),
+        showAnswers: true
+      }
+    })
+  }
+
   render() {
     return (
       <div>
         <button className="accordion" onClick={(e) => this.toggleAccordion(e)}>Q: {this.props.question.question_body}</button>
-        <Answers
-          allAnswers={this.state.allAnswers}
-          showAnswers={this.state.showAnswers}
-        />
+        {this.state.dispAnswers.map(answer => {
+          return (
+            <div key={answer.answer_id} className={this.state.showAnswers ? "panel active": "panel"}>
+              <p>A: {answer.body}</p>
+              <p>{answer.answerer_name} {answer.helpfulness}</p>
+              {/* convert to component for showing answer/answerer details and reporting */}
+              {/* include component for images */}
+            </div>
+          )
+        })}
+        <div className={(this.state.showAnswers && this.state.allAnswers.length > 2) ? "panel active": "panel"} id="load" onClick={this.loadMoreAnswers.bind(this)}>LOAD MORE ANSWERS</div>
       </div>
     )
   }
