@@ -23,7 +23,10 @@ var Answers = (props) => {
         if (expanded) {
           return (
             <div key={answer.answer_id} className={props.showAnswers ? "panel active": "panel"}>
-              <p>A: {answer.body}</p>
+              <div id="answer">
+                <p id="answer_label">A: </p>
+                <p id="answer_body">{answer.body}</p>
+              </div>
               <AnswerVotingReporting
                 answer_id={answer.answer_id}
                 answerer_name={answer.answerer_name}
@@ -36,7 +39,10 @@ var Answers = (props) => {
         } else {
           return (
             <div key={answer.answer_id} className={(props.showAnswers && i < 2) ? "panel active": "panel"}>
-              <p>A: {answer.body}</p>
+              <div id="answer">
+                <p id="answer_label">A: </p>
+                <p id="answer_body">{answer.body}</p>
+              </div>
               <AnswerVotingReporting
                 answer_id={answer.answer_id}
                 answerer_name={answer.answerer_name}
