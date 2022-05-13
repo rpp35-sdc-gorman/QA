@@ -56,7 +56,7 @@ router.get('/ric/styles/:product_id', (req, res, next) => {
   const endpoint = `products/${productId}/styles`;
   sendRequest(endpoint)
     .then(productStyles => {
-      res.send({ styles: productStyles.results })
+      res.send({ styles: productStyles.data.results })
     })
     .catch(err => { next(err); });
 });
