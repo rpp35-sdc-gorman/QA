@@ -8,9 +8,11 @@ var Answers = (props) => {
   }
 
   let toggle;
-  if (!expanded && props.allAnswers.length > 0) {
+  if (props.allAnswers.length === 0) {
+    toggle = <div></div>
+  } else if (!expanded && props.allAnswers.length > 2) {
     toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>See more answers</div>
-  } else {
+  } else if (expanded && props.allAnswers.length > 2) {
     toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>Collapse answers</div>
   }
 
