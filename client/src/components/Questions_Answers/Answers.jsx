@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
+import AnswerVotingReporting from './AnswerVotingReporting.jsx';
 
 var Answers = (props) => {
   const [expanded, setExpanded] = useState(false);
 
-  function expand() {
+  function toggleExpand() {
     setExpanded(!expanded);
   }
 
   let toggle;
-  if (!expanded && props.allAnswers.length > 0) {
-    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={expand}>See more answers</div>
-  } else {
-    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={expand}>Collapse answers</div>
+  if (props.allAnswers.length === 0) {
+    toggle = <div></div>
+  } else if (!expanded && props.allAnswers.length > 2) {
+    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>See more answers</div>
+  } else if (expanded && props.allAnswers.length > 2) {
+    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>Collapse answers</div>
   }
 
   return (
@@ -21,8 +24,12 @@ var Answers = (props) => {
           return (
             <div key={answer.answer_id} className={props.showAnswers ? "panel active": "panel"}>
               <p>A: {answer.body}</p>
-              <p>{answer.answerer_name} {answer.helpfulness}</p>
-              {/* convert to component for showing answer/answerer details and reporting */}
+              <AnswerVotingReporting
+                answer_id={answer.answer_id}
+                answerer_name={answer.answerer_name}
+                helpfulness={answer.helpfulness}
+                date={answer.date}
+              />
               {/* include component for images */}
             </div>
           )
@@ -30,8 +37,12 @@ var Answers = (props) => {
           return (
             <div key={answer.answer_id} className={(props.showAnswers && i < 2) ? "panel active": "panel"}>
               <p>A: {answer.body}</p>
-              <p>{answer.answerer_name} {answer.helpfulness}</p>
-              {/* convert to component for showing answer/answerer details and reporting */}
+              <AnswerVotingReporting
+                answer_id={answer.answer_id}
+                answerer_name={answer.answerer_name}
+                helpfulness={answer.helpfulness}
+                date={answer.date}
+              />
               {/* include component for images */}
             </div>
           )
