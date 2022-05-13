@@ -2,8 +2,6 @@
 
 import React from 'react'
 
-// styles
-import style from './styles/productInfo.module.css';
 
 import StyleSelector from './StyleSelector';
 
@@ -25,10 +23,10 @@ class ProductInfo extends React.Component{
 
   render(){
     return(
-      <article className={style.ProductInfo}>
+      <article className='ProductInfo'>
         { this.props.currentProduct ?
           <section>
-            <div className={style.flexRow}>
+            <div className='flexRow'>
               <h5>[Stars] *****</h5>
               <sub><a>Read All Reviews</a></sub>
             </div>

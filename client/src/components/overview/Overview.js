@@ -48,8 +48,8 @@ class Overview extends React.Component{
 
   render(){
     return(
-      <section className={style.Overview}>
-        <div className={style.flexRow}>
+      <section className='Overview'>
+        <div className='flexRow'>
           <ProductInfo
             products={this.state.products}
             currentProduct={this.state.currentProduct}
