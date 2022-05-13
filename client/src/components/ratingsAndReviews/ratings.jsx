@@ -1,32 +1,33 @@
 import React from 'react';
-
-var StarBreakdown = () => {
+import Stars from '../common/5star.jsx';
+var StarBreakdown = (props) => {
   return <></>;
 };
-var Size = () => {
+var Size = (props) => {
   return <></>;
 };
-var Comfort = () => {
+var Comfort = (props) => {
   return <></>;
 };
 
 class Ratings extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      AverageRating: 1.25
-    }
+    this.state = { AverageRating: 1.33 };
   }
 
   render() {
     return (
-      <>
-        <h1>{this.state.AverageRating.toFixed(1)}</h1>
+      <div className="ratingsContainer">
+        <h1>
+          {this.state.AverageRating.toFixed(1)}{' '}
+          <Stars size={45} filled={this.state.AverageRating}></Stars>
+        </h1>
         <p>100% of reviews recommended this product</p>
         <StarBreakdown></StarBreakdown>
         <Size></Size>
         <Comfort></Comfort>
-      </>
+      </div>
     );
   }
 }
