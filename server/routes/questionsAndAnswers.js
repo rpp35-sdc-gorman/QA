@@ -20,5 +20,20 @@ router.get('/answers/:question_id', (req, res, next) => {
 });
 
 
+router.put('/helpful/:answer_id', (req, res, next) => {
+  sendRequest(`qa/answers/${req.params.answer_id}/helpful`, 'PUT')
+    .then(result => {
+      res.sendStatus(204)
+    })
+    .catch(err => next(err));
+});
+
+router.put('/reported/:answer_id', (req, res, next) => {
+  sendRequest(`qa/answers/${req.params.answer_id}/report`, 'PUT')
+    .then(answers => {
+      res.sendStatus(204)
+    })
+    .catch(err => next(err));
+});
 
 module.exports  = {qAndARouter: router}
