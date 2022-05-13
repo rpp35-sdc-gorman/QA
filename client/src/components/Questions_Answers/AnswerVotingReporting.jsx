@@ -16,7 +16,7 @@ let AnswerVotingReporting = (props) => {
     }
   }
 
-  function report() {
+  function report() { // random
     if (!reported) {
       setReported(true);
       // request to report
