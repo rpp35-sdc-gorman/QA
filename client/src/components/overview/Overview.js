@@ -4,58 +4,75 @@ import React from 'react';
 
 
 import ProductInfo from './ProductInfo';
-import Gallery from './Gallery';
 import ProductDescription from './ProductDescription';
 
 import sendRequest from '../../../../server/lib/sendRequest';
 
 // sample data - remove this later
-import {testProducts} from '../../../../config';
-import {testProductStyles} from '../../../../config';
+// import {testProducts} from '../../../../config';
+// import {testProductStyles} from '../../../../config';
+import {testId} from '../../../../config';
 
-class Overview extends React.Component{
+class Overview extends React.Component {
   constructor(props){
     super()
     this.state={
-      products: null,
-      currentProduct: null,
+      styles: null,
+      currentStyle: null,
       didError: false,
       error: null,
     }
   }
 
+  // fetch one Id statically for now
   componentDidMount(){
-    // sendRequest('products')
-    //   .then(res => {
-    //     console.log(res)
-    //     this.setState({products: res.data})
-    //   })
-    //   .catch(err => {
-    //     this.setState({
-    //       didError: true,
-    //       error: err
-    //     })
-    //   })
-    this.setState({products: testProducts})
+    sendRequest(`products/${testId}/styles`)
+      .then(res => {
+        console.log(res)
+        this.setState({styles: res.data.results})
+      })
+      .catch(err => {
+        this.setState({
+          didError: true,
+          error: err
+        })
+      })
+    // this.setState({products: testProducts})
   }
 
+  // There will need to be another request made to get the product category, slogen, description, ect...
+  //  GET /products/:product_id
+
   componentDidUpdate(prevProps, PrevState){
-    if(PrevState.products !== this.state.products){
+    if(PrevState.styles !== this.state.styles){
       // set current Prodct to be the first product in the list
-      this.setState({currentProduct: this.state.products[0]})
+      this.setState({currentProduct: this.getDefault()})
     }
+  }
+
+  getDefault(){
+    const key = 'default?'
+    Array.from(this.state.styles).forEach(item => {
+      if(item[key]){
+        this.setState({currentStyle: item})
+      }
+    })
+  }
+
+  handleStyleChange(id){
+    // use this style id to set the current style to one that matches that id
+    // should be in the current set of styles
+    console.log(id)
   }
 
   render(){
     return(
-      <section className={style.Overview}>
-        <div className={style.flexRow}>
+      <section className='Overview'>
           <ProductInfo
-            products={this.state.products}
-            currentProduct={this.state.currentProduct}
+            styles={this.state.styles}
+            currentStyle={this.state.currentStyle}
+            handleStyleChange={this.handleStyleChange}
           />
-          <Gallery image={testProductStyles.results[0].photos[0].thumbnail_url}/>
-        </div>
         <ProductDescription />
       </section>
     )

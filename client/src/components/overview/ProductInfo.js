@@ -2,14 +2,13 @@
 
 import React from 'react'
 
-// styles
-import style from './styles/productInfo.module.css';
-
 import StyleSelector from './StyleSelector';
 
 
 // test Data -  remove later
 import {testProductStyles} from '../../../../config'
+
+// recieving list of styles and selected style from props
 
 class ProductInfo extends React.Component{
   constructor(props){
@@ -20,26 +19,26 @@ class ProductInfo extends React.Component{
   }
 
   // query the api for the specific styles and pass that to style selector
-
-
-
   render(){
     return(
-      <article className={style.ProductInfo}>
-        { this.props.currentProduct ?
+      <article className='ProductInfo'>
+        { this.props.currentStyle ?
           <section>
-            <div className={style.flexRow}>
-              <h5>[Stars] *****</h5>
-              <sub><a>Read All Reviews</a></sub>
-            </div>
-            <div>
-              <h4>{this.props.currentProduct.category}</h4>
-              <h2>{this.props.currentProduct.name}</h2>
-              <h4>${this.props.currentProduct.default_price}</h4>
-            </div>
+            <article className="info">
+              <div className='flexRow'>
+                <h5>[Stars * * * * *]</h5>
+                <sub><a>Read All Reviews</a></sub>
+              </div>
+              <div>
+                <h4>Category</h4>
+                <h2>{this.props.currentStyle.name}</h2>
+                <h4>${this.props.currentStyle.sale_price || this.props.currentStyle.original_price }</h4>
+              </div>
+            </article>
             <StyleSelector
-              currentProduct={this.props.currentProduct}
-              styles={testProductStyles}
+              currentStyle={this.props.currentStyle}
+              styles={this.props.styles}
+              handleStyleChange={this.props.handleStyleChange}
             />
           </section>
           :

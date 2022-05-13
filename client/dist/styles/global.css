@@ -1,0 +1,35 @@
+/* Shared Styles */
+
+/*NOTE: this file contains dependancies for other files and should be linked first in the HTML */
+
+
+
+#root{
+  font-family: 'Open Sans', sans-serif;
+  font-size: 400;
+}
+
+
+/* Layout Classes */
+.flexRow{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+.flexRowReverse{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+.flexColumn{
+  display: flex;
+  flex-direction: column;
+}
+.gridRows{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap:.25em;
+  grid-auto-flow: row;
+}

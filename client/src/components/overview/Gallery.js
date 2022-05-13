@@ -1,30 +1,52 @@
 // this is the image Gallery Component
 
 import React from 'react'
+import {useState} from 'react'
 
-import style from './styles/gallery.module.css'
+const Gallery = (props) => {
 
-class Gallery extends React.Component{
-  constructor(props){
-    super()
-    this.state = {
+    const [currentImage, setCurrentImage] = useState(0);
 
+    const handlePhotoChange = (operator) => {
+      // wrap to beginngin
+      if(currentImage === props.images.length - 1){
+        setCurrentImage(0)
+      } else if (currentImage === 0){
+        setCurrentImage(props.images.length - 1)
+      } else {
+        switch(operator){
+          case '-':
+            setCurrentImage(currentImage - 1);
+            break;
+          default:
+            setCurrentImage(currentImage + 1);
+        }
+      }
     }
-  }
 
 
-  render(){
     return(
-      <article className={style.Gallery}>
-        <div className={style.flexColumn}>
+      <article className='Gallery'>
+        <div className='flexColumn'>
           <span>[list of imgs]</span>
           <span>[list of imgs]</span>
           <span>[list of imgs]</span>
         </div>
-        <img className={style.Gallery_image} src={this.props.image}/>
+        <div className="flexRow GalleryMain">
+          <button className="GalleryArrow"
+            onClick={() => handlePhotoChange('+')}
+          >
+              arrow +
+          </button>
+          <img className='Gallery_image' src={props.images[currentImage].url}/>
+          <button className="GalleryArrow"
+            onClick={() => handlePhotoChange('-')}
+            >
+              arrow -
+          </button>
+        </div>
       </article>
     )
-  }
 }
 
 
