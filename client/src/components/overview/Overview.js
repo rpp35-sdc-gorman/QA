@@ -8,10 +8,6 @@ import ProductDescription from './ProductDescription';
 
 import sendRequest from '../../../../server/lib/sendRequest';
 
-// sample data - remove this later
-// import {testProducts} from '../../../../config';
-// import {testProductStyles} from '../../../../config';
-import {testId} from '../../../../config';
 
 class Overview extends React.Component {
   constructor(props){
@@ -22,11 +18,14 @@ class Overview extends React.Component {
       didError: false,
       error: null,
     }
+    // remote this later
+    this.testId = '71697'
   }
+
 
   // fetch one Id statically for now
   componentDidMount(){
-    sendRequest(`products/${testId}/styles`)
+    sendRequest(`products/${this.testId}/styles`)
       .then(res => {
         console.log(res)
         this.setState({styles: res.data.results})

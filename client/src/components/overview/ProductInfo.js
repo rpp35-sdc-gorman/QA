@@ -3,7 +3,7 @@
 import React from 'react'
 
 import StyleSelector from './StyleSelector';
-
+import Stars from '../common/5star.jsx';
 
 // test Data -  remove later
 import {testProductStyles} from '../../../../config'
@@ -26,7 +26,7 @@ class ProductInfo extends React.Component{
           <section>
             <article className="info">
               <div className='flexRow'>
-                <h5>[Stars * * * * *]</h5>
+                <Stars />
                 <sub><a>Read All Reviews</a></sub>
               </div>
               <div>
