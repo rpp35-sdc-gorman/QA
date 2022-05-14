@@ -69,6 +69,11 @@
   grid-row-end: 6;
 }
 
+/* TAGS */
 div {
   color: black;
+}
+
+h4 {
+  font-weight: lighter;
 }

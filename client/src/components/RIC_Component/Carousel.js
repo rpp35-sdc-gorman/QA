@@ -30,9 +30,9 @@ class Carousel extends React.Component {
   render() {
     return (
       <div className='carousel'>
-        <div className='carousel_inner' style={{ transform: `translateX(-${this.state.currentIndex * 100}%)`}}>
+        <div className='carousel_inner' style={{ transform: `translateX(-${this.state.currentIndex * 100/3}%)`}}>
           {React.Children.map(this.props.children, (child, index) => {
-            return React.cloneElement(child, { width: '100%'});
+            return React.cloneElement(child, { width: '33%'});
           })}
         </div>
         <div className='indicators'>

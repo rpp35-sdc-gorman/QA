@@ -11,6 +11,7 @@ class RIC extends React.Component {
       currentProduct: null,
       currentProductId: '71697',
       relatedProducts: [],
+      thumbnails: [],
       selectedRelatedProduct: null
     }
   }
@@ -21,14 +22,16 @@ class RIC extends React.Component {
         return response.data
       })
       .then(relatedProducts => {
+        let ratingsAndStyles = []
         relatedProducts.forEach(product => {
-          let [rating, style] = [this.getRating(product), this.getStyle(product)]
-          Promise.allSettled([rating, style])
-            .then(values => {
-              console.log(values);
-            })
-            .catch(err => { throw err; })
+          let [rating, style] = [this.getRating(product), this.getStyle(product)];
+          ratingsAndStyles.push([rating, style]);
         });
+        Promise.allSettled(ratingsAndStyles)
+          .then(values => {
+            console.log(values);
+          })
+          .catch(err => { throw err; })
         return relatedProducts;
       })
       .then(relatedProducts => {
@@ -58,11 +61,17 @@ class RIC extends React.Component {
   render() {
     return(
       <div>
+        <h4>RELATED PRODUCTS</h4>
         <Carousel>
           {this.state.relatedProducts.map(product => {
             return(
               <CarouselItem key={product.id}>
-                <RelatedProductCards category={product.category} name={product.name} default_price={product.default_price} star_rating={product.star_rating}/>
+                <RelatedProductCards category={product.category}
+                  name={product.name}
+                  default_price={product.default_price}
+                  star_rating={product.star_rating}
+                  thumbnail={null}
+                  />
               </CarouselItem>
             )
           })}
