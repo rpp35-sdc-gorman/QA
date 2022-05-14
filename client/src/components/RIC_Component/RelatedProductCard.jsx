@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 var RelatedProductCards = (props) => (
-  <div id="card">
-    {props.category}<br/>
-    {props.name}<br/>
-    {props.default_price}<br/>
-    {props.category}<br/>
-    {props.star_rating}<br/>
+  <div className="card">
+    <div className="card_visual" src={props.thumbnail}></div>
+    <div className="card_category">{props.category}</div>
+    <div className="card_name">{props.name}</div>
+    <div className="card_price">{props.default_price}</div>
+    <div className="card_rating">{props.star_rating}</div><br/>
   </div>
 )
 

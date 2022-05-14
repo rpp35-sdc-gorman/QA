@@ -14,7 +14,7 @@ class QAMain extends React.Component {
 
   componentDidMount() {
     // get initial QA list from server;
-    axios.get(`/question_answer/questions/64620`)
+    axios.get(`/question_answer/questions/71697`)
       .then(QAs => {
         this.setState({
           questions: QAs.data.results
