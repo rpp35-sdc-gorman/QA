@@ -1,12 +1,13 @@
 import React from 'react';
 
-let StarBreakdown = () => {
+import Stars from '../common/5star.jsx';
+var StarBreakdown = (props) => {
   return <></>;
 };
-let Size = () => {
+var Size = (props) => {
   return <></>;
 };
-let Comfort = () => {
+var Comfort = (props) => {
   return <></>;
 };
 
@@ -18,13 +19,16 @@ class Ratings extends React.Component {
 
   render() {
     return (
-      <>
-        <h1>{this.state.AverageRating.toFixed(1)}</h1>
+      <div className="ratingsContainer">
+        <h1>
+          {this.state.AverageRating.toFixed(1)}{' '}
+          <Stars size={45} filled={this.state.AverageRating}></Stars>
+        </h1>
         <p>100% of reviews recommended this product</p>
         <StarBreakdown></StarBreakdown>
         <Size></Size>
         <Comfort></Comfort>
-      </>
+      </div>
     );
   }
 }

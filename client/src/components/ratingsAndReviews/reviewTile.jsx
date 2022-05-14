@@ -1,16 +1,24 @@
 import React from 'react';
 
-ReviewTile = (props) => {
+const ReviewTile = (props) => {
   return (
     <div className="reviewTile" key={props.key}>
       <div className="reviewTileStars"></div>
-      <div className="reviewTileUsername"></div>
-      <h3>{props.title}</h3>
-      <p>{props.description}</p>
-      {props.response ? <div className="response">{props.response}</div> : null}
-      helpful?<span>yes</span> | <span>report</span>
+      <div className="reviewTileUsername">
+        {props.review.reviewer_name}
+        {new Date(props.review.date)}
+      </div>
+      <h3>{props.review.summary}</h3>
+      <p>{props.review.body}</p>
+      {props.review.response ? (
+        <div className="response">{props.review.response}</div>
+      ) : null}
+      helpful?
+      <span onClick={() => console.log('helpfulness clicked')}>yes</span> (
+      {props.review.helpfulness}) | <span>report</span>
     </div>
   );
 };
 
 export default ReviewTile;
+
