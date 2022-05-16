@@ -2,18 +2,18 @@
 
 import React from 'react';
 
-
 import ProductInfo from './ProductInfo';
 import ProductDescription from './ProductDescription';
 
 import sendRequest from '../../../../server/lib/sendRequest';
-
 
 class Overview extends React.Component {
   constructor(props){
     super()
     this.state={
       styles: null,
+      rating: null,
+      info: null,
       currentStyle: null,
       didError: false,
       error: null,
@@ -25,10 +25,13 @@ class Overview extends React.Component {
 
   // fetch one Id statically for now
   componentDidMount(){
-    sendRequest(`products/${this.testId}/styles`)
+    sendRequest(`parser/${this.testId}`)
       .then(res => {
         console.log(res)
-        this.setState({styles: res.data.results})
+        this.setState({
+          styles: res.data.styles,
+          info: res.data.info
+        })
       })
       .catch(err => {
         this.setState({
