@@ -6,6 +6,7 @@ import ProductInfo from './ProductInfo';
 import ProductDescription from './ProductDescription';
 
 import sendRequest from '../../../../server/lib/sendRequest';
+import axios from 'axios';
 
 class Overview extends React.Component {
   constructor(props){
@@ -17,28 +18,31 @@ class Overview extends React.Component {
       currentStyle: null,
       didError: false,
       error: null,
+      force: 0,
     }
     // remote this later
     this.testId = '71697'
+    this.handleStyleChange = this.handleStyleChange.bind(this)
+  }
+
+  getData (endpoint) {
+    axios({
+      method:"GET",
+      url:`http://localhost:3000/overview/parser/${endpoint}`
+    })
+    .then(res => {
+      this.setState({
+        info: res.data.info,
+        styles:res.data.styles.results,
+        rating:res.data.rating
+      })
+    })
   }
 
 
   // fetch one Id statically for now
   componentDidMount(){
-    sendRequest(`parser/${this.testId}`)
-      .then(res => {
-        console.log(res)
-        this.setState({
-          styles: res.data.styles,
-          info: res.data.info
-        })
-      })
-      .catch(err => {
-        this.setState({
-          didError: true,
-          error: err
-        })
-      })
+    this.getData(this.testId)
     // this.setState({products: testProducts})
   }
 
@@ -64,7 +68,11 @@ class Overview extends React.Component {
   handleStyleChange(id){
     // use this style id to set the current style to one that matches that id
     // should be in the current set of styles
-    console.log(id)
+    this.state.styles.forEach(item => {
+      if(item.style_id === id){
+        this.setState({currentStyle: item})
+      }
+    })
   }
 
   render(){
@@ -75,7 +83,7 @@ class Overview extends React.Component {
             currentStyle={this.state.currentStyle}
             handleStyleChange={this.handleStyleChange}
           />
-        <ProductDescription />
+        <ProductDescription info={this.state.info} />
       </section>
     )
   }
