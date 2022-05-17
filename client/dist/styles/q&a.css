@@ -2,14 +2,14 @@
   background-color: #eee;
   color: #444;
   cursor: pointer;
-  padding: 18px;
-  width: 100%;
   border: none;
   text-align: left;
   outline: none;
   font-size: 15px;
   font-weight: bold;
   transition: 0.4s;
+  padding:0 5em;
+  width: 80%;
 }
 
 .active, .accordion:hover {
@@ -21,12 +21,27 @@
   background-color: white;
   max-height: 0;
   overflow: hidden;
+  max-width: 100%;
   transition: max-height 0.4s ease-out;
 }
 
 .panel.active {
   display: block;
   max-height: 200px;
+}
+
+#QA {
+  padding: 0 2em;
+}
+
+#singleQA {
+  margin-bottom: 1em;
+  border: 1px solid gray;
+}
+
+#answers {
+  overflow: 'scroll';
+  max-height: '50vh';
 }
 
 #answer {
@@ -51,6 +66,41 @@ p#answer_body {
 }
 
 #answer_details {
+  display: flex;
+  align-items: center;
   font-size: 0.8em;
   color: grey;
+}
+
+#question {
+  display: flex;
+  flex-direction: row;
+}
+
+#question_details {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 20%;
+  font-size: 0.8em;
+  background-color: #eee;
+  color: #444;
+}
+
+#question_details:hover {
+  background-color: #ccc;
+}
+
+.rightBorder {
+  border-right: 1px solid gray;
+  padding-right: 1em;
+}
+
+.leftBorder {
+  border-left: 1px solid gray;
+  padding-left: 1em;
+}
+
+.underline {
+  text-decoration: underline;
 }

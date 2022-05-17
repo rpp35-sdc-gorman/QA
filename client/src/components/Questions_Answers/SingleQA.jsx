@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import Answers from './Answers.jsx';
+import QuestionVotingReporting from './QuestionVotingReporting.jsx';
 
 class SingleQA extends React.Component {
 
@@ -10,7 +11,7 @@ class SingleQA extends React.Component {
     super(props);
     this.state = {
       allAnswers: [],
-      showAnswers: false
+      showAnswers: true
     }
   }
 
@@ -20,7 +21,6 @@ class SingleQA extends React.Component {
       .then(answers => {
         this.setState({
           allAnswers: answers.data.results.sort((a, b) => b.helpfulness - a.helpfulness),
-          dispAnswers: answers.data.results.slice(0, 2)
         })
       })
   }
@@ -33,9 +33,15 @@ class SingleQA extends React.Component {
   }
 
   render() {
+    let question = this.props.question;
     return (
-      <div>
-        <button className="accordion" onClick={(e) => this.toggleAccordion(e)}>Q: {this.props.question.question_body}</button>
+      <div id="singleQA">
+        <div id="question">
+          <button className="accordion" onClick={(e) => this.toggleAccordion(e)}>
+            Q: {question.question_body}
+          </button>
+            <QuestionVotingReporting question_id={question.question_id} helpfulness={question.question_helpfulness}/>
+        </div>
         <Answers
           allAnswers={this.state.allAnswers}
           showAnswers={this.state.showAnswers}

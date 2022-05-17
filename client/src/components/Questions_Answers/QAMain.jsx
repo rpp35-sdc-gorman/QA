@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import SingleQA from './SingleQA.jsx';
-import QuestionVotingReporting from './QuestionVotingReporting.jsx';
 
 class QAMain extends React.Component {
   constructor(props) {
@@ -41,12 +40,9 @@ class QAMain extends React.Component {
     }
 
     return (
-      <div>
+      <div id="QA">
         {(this.state.questions.length) ? this.state.questions.slice(0, end).map(question =>
-          <div key={question.question_id} id='question'>
-            <SingleQA question={question}/>
-            <QuestionVotingReporting question_id={question.question_id} helpfulness={question.question_helpfulness}/>
-          </div>
+          <SingleQA key={question.question_id} question={question}/>
         ) : <></>}
         {(this.state.questions.length > 2 && !this.state.showAllQuestions) ? toggleQuestions : <></>}
         <button>Add A Question</button>

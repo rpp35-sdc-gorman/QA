@@ -22,8 +22,8 @@ let QuestionVotingReporting = (props) => {
 
   return (
     <div id="question_details">
-      <span>Helpful? <a id="helpful" onClick={voteHelpful}>Yes</a> ({helpfulness})    |    </span>
-      <span><a id="addAnswer" onClick={addAnswer}>Add Answer</a></span>
+      <div className="rightBorder">Helpful? <a className="underline" onClick={voteHelpful}>Yes</a> ({helpfulness})</div>
+      <div className="leftBorder"><a className="underline" onClick={addAnswer}>Add Answer</a></div>
     </div>
   )
 }
