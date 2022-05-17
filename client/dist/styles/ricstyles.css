@@ -1,6 +1,7 @@
 /* CAROUSEL */
 .carousel {
   overflow: hidden;
+  width: 900px;
 }
 
 .carousel_inner {
@@ -10,8 +11,7 @@
 
 .carousel_item {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: left;
   height: 315px;
   color: white;
 }

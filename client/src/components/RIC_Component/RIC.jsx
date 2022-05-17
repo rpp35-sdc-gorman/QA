@@ -22,12 +22,12 @@ class RIC extends React.Component {
         return response.data
       })
       .then(relatedProducts => {
-        let ratingsAndStyles = []
+        let styles = []
         relatedProducts.forEach(product => {
-          let [rating, style] = [this.getRating(product), this.getStyle(product)];
-          ratingsAndStyles.push([rating, style]);
+          let style = this.getStyle(product);
+          styles.push(style);
         });
-        Promise.allSettled(ratingsAndStyles)
+        Promise.allSettled(styles)
           .then(values => {
             console.log(values);
           })
@@ -44,7 +44,7 @@ class RIC extends React.Component {
     return axios.get(`/related_items/ric/ratings/${product.id}`)
     .then(response => {
       product.star_rating = response.data.rating;
-      return product.star_rating;
+      return product;
     })
     .catch(err => { throw err; });
   }
@@ -53,13 +53,14 @@ class RIC extends React.Component {
     return axios.get(`/related_items/ric/styles/${product.id}`)
     .then(response => {
       product.styles = response.data.styles;
-      return product.styles;
+      return product;
     })
     .catch(err => { throw err; });
   }
 
   render() {
-    return(
+    // console.log(this.state.relatedProducts[0].star_rating);
+    return (
       <div>
         <h4>RELATED PRODUCTS</h4>
         <Carousel>

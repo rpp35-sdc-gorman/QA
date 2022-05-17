@@ -4,15 +4,15 @@ const router = express.Router();
 const sendRequest = require('../lib/sendRequest.js');
 
 router.get('/ric/:product_id', (req, res, next) => {
-  // will need to refactor based on if we are using query or parameters
+  // GET RELATED PRODUCT IDS
   const currentProductId = req.params.product_id;
-  const endpoint = `products/${currentProductId}/related`;
-  sendRequest(endpoint)
+  const relatedEndpoint = `products/${currentProductId}/related`;
+  let productsArr = [];
+  sendRequest(relatedEndpoint)
     .then(relatedProducts => {
       return relatedProducts.data
     })
     .then(relatedProductIds => {
-      // there's definitely a way to shorten this, but can't figure it out right now
       return relatedProductIds.map(id => {
         return (
           sendRequest(`products/${id}`)
@@ -20,35 +20,73 @@ router.get('/ric/:product_id', (req, res, next) => {
       });
     })
     .then(products => {
-      Promise.allSettled(products)
+      return Promise.allSettled(products)
         .then(resolvedPromises => {
-          let productsArr = [];
           resolvedPromises.forEach(promise => {
             productsArr.push(promise.value.data);
           });
-          res.send(productsArr);
+          return productsArr;
+        })
+    })
+    // GET RELATED PRODUCT RATINGS
+    .then(products => {
+      let productsWithRatings = [];
+      products.forEach(product => {
+        const ratingsEndpoint = `reviews/meta/?product_id=${product.id}`;
+        productsWithRatings.push(sendRequest(ratingsEndpoint)
+          .then(ratedProducts => {
+            let ratings = ratedProducts.data.ratings;
+            let [ totalResponses, score] = [0, 0];
+            for (let star in ratings) {
+              score += Number(star) * Number(ratings[star]);
+              totalResponses += Number(ratings[star]);
+            }
+            let finalScore = Math.ceil(4 * (score / totalResponses)) / 4;
+            return finalScore;
+          })
+          .then(score => {
+            product.star_rating = score;
+            return product;
+          })
+        )
+      })
+      return productsWithRatings;
+    })
+    // SEND RELATED PRODUCTS WITH RATINGS
+    .then(products => {
+      return Promise.allSettled(products)
+        .then(resolvedPromises => {
+          resultProducts = [];
+          resolvedPromises.forEach(resolved => {
+            resultProducts.push(resolved.value)
+          })
+          res.send(resultProducts);
         })
     })
     .catch(err => { next(err); })
 });
 
-router.get('/ric/ratings/:product_id', (req, res, next) => {
-  // will need to refactor based on if we are using query or parameters
-  const productId = req.params.product_id;
-  const endpoint = `reviews/meta/?product_id=${productId}`;
-  sendRequest(endpoint)
-    .then(relatedProducts => {
-      let ratings = relatedProducts.data.ratings;
-      let [ totalResponses, score] = [0, 0];
-      for (let star in ratings) {
-        score += Number(star) * Number(ratings[star]);
-        totalResponses += Number(ratings[star]);
-      }
-      let finalScore = Math.ceil(4 * (score / totalResponses)) / 4;
-      res.send({ rating: finalScore });
-    })
-    .catch(err => { next(err); })
-});
+// router.get('/ric/ratings/:product_id', (req, res, next) => {
+//   // will need to refactor based on if we are using query or parameters
+//   const productId = req.params.product_id;
+//   const endpoint = `reviews/meta/?product_id=${productId}`;
+//   sendRequest(endpoint)
+//     .then(relatedProducts => {
+//       let ratings = relatedProducts.data.ratings;
+//       let [ totalResponses, score] = [0, 0];
+//       for (let star in ratings) {
+//         score += Number(star) * Number(ratings[star]);
+//         totalResponses += Number(ratings[star]);
+//       }
+//       let finalScore = Math.ceil(4 * (score / totalResponses)) / 4;
+//       return finalScore;
+//     })
+//     .then(score => {
+//       console.log(score);
+//       res.send({ rating: score });
+//     })
+//     .catch(err => { next(err); })
+// });
 
 router.get('/ric/styles/:product_id', (req, res, next) => {
   // will need to refactor based on if we are using query or parameters

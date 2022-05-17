@@ -1,12 +1,13 @@
 import React from 'react';
+import Stars from '../common/5star.jsx';
 
 var RelatedProductCards = (props) => (
   <div className="card">
     <div className="card_visual" src={props.thumbnail}></div>
     <div className="card_category">{props.category}</div>
     <div className="card_name">{props.name}</div>
-    <div className="card_price">{props.default_price}</div>
-    <div className="card_rating">{props.star_rating}</div><br/>
+    <div className="card_price">${props.default_price}</div>
+    <div className="card_rating"><Stars size={10} filled={props.star_rating} /></div>
   </div>
 )
 
