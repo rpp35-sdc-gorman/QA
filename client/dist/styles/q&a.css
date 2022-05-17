@@ -8,6 +8,7 @@
   text-align: left;
   outline: none;
   font-size: 15px;
+  font-weight: bold;
   transition: 0.4s;
 }
 
@@ -24,5 +25,32 @@
 }
 
 .panel.active {
+  display: block;
   max-height: 200px;
+}
+
+#answer {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+}
+
+#answer_label {
+  font-size: 1em;
+  font-weight: bold;
+  color: gray;
+  margin-top: 3%;
+  padding-right: 5px;
+}
+
+p#answer_body {
+  font-size: 0.8em;
+  margin-top: 3%;
+  word-break: break-all;
+  white-space: normal;
+}
+
+#answer_details {
+  font-size: 0.8em;
+  color: grey;
 }

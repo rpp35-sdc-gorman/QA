@@ -1,0 +1,50 @@
+/* Overview rooty styles */
+.Overview{
+
+}
+
+
+/* Gallery */
+.Gallery{
+  display: flex;
+  align-items: flex-start;
+}
+.GalleryMain{
+  align-items: center;
+}
+.Gallery_image{
+  height:25em;
+  width: 25em;
+}
+.GalleryArrow{
+
+}
+
+/* Product Description */
+.ProductDescription {
+  padding:0 5em;
+  font-size: smaller;
+  display: flex;
+  align-items: flex-start;
+}
+
+
+/* more generic styles */
+.description{
+  border-right: 1px solid black
+}
+
+/* style selector bubble buttons */
+.bubble{
+  padding:0;
+  border-radius: 50%;
+  height:4.5em;
+  width: 4.5em;
+  display: grid;
+  place-items: center;
+}
+bubble > img{
+  padding: 0;
+  height:4em;
+  width: 4em;
+}
