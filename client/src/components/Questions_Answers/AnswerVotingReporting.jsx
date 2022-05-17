@@ -11,7 +11,6 @@ let AnswerVotingReporting = (props) => {
     let tmp = (new Date(props.date)).toDateString().split(' ').slice(1)
     tmp[1] = tmp[1].replaceAll(new RegExp("^0+(?!$)",'g'), '')
     tmp = tmp.join(', ');
-    console.log(tmp)
     setDate(tmp.substr(0, 3) + tmp.substr(4));
   });
 
@@ -20,7 +19,7 @@ let AnswerVotingReporting = (props) => {
       setVoted(true);
       // request to vote helpful
       setHelpfulness(helpfulness + 1)
-      axios.put(`/question_answer/helpful/${props.answer_id}`)
+      axios.put(`/question_answer/helpful/answer/${props.answer_id}`)
         .catch((err) => console.log(err));
     }
   }
@@ -29,7 +28,7 @@ let AnswerVotingReporting = (props) => {
     if (!reported) {
       setReported(true);
       // request to report
-      axios.put(`/question_answer/reported/${props.answer_id}`)
+      axios.put(`/question_answer/reported/answer/${props.answer_id}`)
         .catch((err) => console.log(err));
     }
   }

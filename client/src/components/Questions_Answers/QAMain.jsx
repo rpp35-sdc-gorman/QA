@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import SingleQA from './SingleQA.jsx';
+import QuestionVotingReporting from './QuestionVotingReporting.jsx';
 
 class QAMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: []
+      questions: [],
+      showAllQuestions: false
     };
   }
 
@@ -17,19 +19,37 @@ class QAMain extends React.Component {
     axios.get(`/question_answer/questions/71697`)
       .then(QAs => {
         this.setState({
-          questions: QAs.data.results
+          questions: QAs.data.results.sort((a,b) => b.question_helpfulness - a.question_helpfulness)
         })
       })
   }
 
+  toggleQuestions() {
+    this.setState((state) => ({
+      showAllQuestions: !state.showAllQuestions
+    }))
+  }
+
   render() {
     // create component to render QAs in accordion
-    return(
+    var toggleQuestions = <button id="questionToggle" onClick={this.toggleQuestions.bind(this)}>More Answered Questions</button>
+
+    let page;
+    let end = 2;
+    if (this.state.questions.length <= 2 || this.state.showAllQuestions) {
+      end = this.state.questions.length;
+    }
+
+    return (
       <div>
-        {(this.state.questions.length) ? this.state.questions.map(question =>
-          <SingleQA key={question.question_id} question={question}/>
+        {(this.state.questions.length) ? this.state.questions.slice(0, end).map(question =>
+          <div key={question.question_id} id='question'>
+            <SingleQA question={question}/>
+            <QuestionVotingReporting question_id={question.question_id} helpfulness={question.question_helpfulness}/>
+          </div>
         ) : <></>}
-        <button>Submit Question</button>
+        {(this.state.questions.length > 2 && !this.state.showAllQuestions) ? toggleQuestions : <></>}
+        <button>Add A Question</button>
       </div>
     )
   }
