@@ -14,7 +14,7 @@ class RatingsAndReviews extends React.Component {
           <Ratings></Ratings>
         </div>
         <div className="reviewsContainer">
-          <Reviews id={2}></Reviews>
+          <Reviews id={71697}></Reviews>
         </div>
       </div>
     );
