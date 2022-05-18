@@ -1,7 +1,7 @@
 import React from 'react';
 import Stars from '../common/5star.jsx';
 
-var RelatedProductCards = (props) => (
+var ProductCards = (props) => (
   <div className="card">
     <img className="card_visual" src={props.thumbnail} />
     <div className="card_category">{props.category}</div>
@@ -11,4 +11,4 @@ var RelatedProductCards = (props) => (
   </div>
 )
 
-export default RelatedProductCards
+export default ProductCards

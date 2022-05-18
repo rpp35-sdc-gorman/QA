@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import RelatedProductCards from './RelatedProductCard.jsx';
+import ProductsList from './ProductsList.jsx';
 import Carousel, { CarouselItem } from './Carousel';
 
 // currently, implementing without react hooks, but will refactor using react hooks later
@@ -11,6 +11,7 @@ class RIC extends React.Component {
       currentProduct: null,
       currentProductId: '71697',
       relatedProducts: [],
+      yourOutfits: [],
       selectedRelatedProduct: null
     }
   }
@@ -49,21 +50,9 @@ class RIC extends React.Component {
     return (
       <div>
         <h4>RELATED PRODUCTS</h4>
-        <Carousel>
-          {this.state.relatedProducts.map(product => {
-            return(
-              <CarouselItem key={product.id}>
-                <RelatedProductCards category={product.category}
-                  name={product.name}
-                  default_price={product.default_price}
-                  sale_price={product.sale_price}
-                  star_rating={product.star_rating}
-                  thumbnail={product.thumbnail}
-                  />
-              </CarouselItem>
-            )
-          })}
-        </Carousel>
+        <ProductsList products={this.state.relatedProducts} />
+        <h4>YOUR OUTFITS</h4>
+        <ProductsList products={this.state.yourOutfits} />
       </div>
     )
   }
