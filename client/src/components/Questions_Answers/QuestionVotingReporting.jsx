@@ -15,15 +15,10 @@ let QuestionVotingReporting = (props) => {
     }
   }
 
-  function addAnswer() {
-
-  }
-
-
   return (
     <div id="question_details">
       <div className="rightBorder">Helpful? <a className="underline" onClick={voteHelpful}>Yes</a> ({helpfulness})</div>
-      <div className="leftBorder"><a className="underline" onClick={addAnswer}>Add Answer</a></div>
+      <div className="leftBorder"><a className="underline" onClick={props.toggleAddAnswer}>Add Answer</a></div>
     </div>
   )
 }

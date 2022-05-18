@@ -4,12 +4,13 @@ import axios from 'axios';
 
 import SingleQA from './SingleQA.jsx';
 
+
 class QAMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       questions: [],
-      showAllQuestions: false
+      showAllQuestions: false,
     };
   }
 
@@ -40,13 +41,13 @@ class QAMain extends React.Component {
     }
 
     return (
-      <div id="QA">
-        {(this.state.questions.length) ? this.state.questions.slice(0, end).map(question =>
-          <SingleQA key={question.question_id} question={question}/>
-        ) : <></>}
-        {(this.state.questions.length > 2 && !this.state.showAllQuestions) ? toggleQuestions : <></>}
-        <button>Add A Question</button>
-      </div>
+        <div id="QA">
+          {(this.state.questions.length) ? this.state.questions.slice(0, end).map(question =>
+            <SingleQA key={question.question_id} question={question}/>
+          ) : <></>}
+          {(this.state.questions.length > 2 && !this.state.showAllQuestions) ? toggleQuestions : <></>}
+          <button>Add A Question</button>
+        </div>
     )
   }
 }
