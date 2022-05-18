@@ -1,6 +1,5 @@
 import React from 'react';
-
-import Stars from '../common/5star.jsx';
+import Stars from '../common/stars.jsx';
 var StarBreakdown = (props) => {
   return <></>;
 };
