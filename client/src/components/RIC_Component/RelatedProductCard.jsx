@@ -3,7 +3,7 @@ import Stars from '../common/5star.jsx';
 
 var RelatedProductCards = (props) => (
   <div className="card">
-    <div className="card_visual" src={props.thumbnail}></div>
+    <img className="card_visual" src={props.thumbnail} />
     <div className="card_category">{props.category}</div>
     <div className="card_name">{props.name}</div>
     <div className="card_price">${props.default_price}</div>

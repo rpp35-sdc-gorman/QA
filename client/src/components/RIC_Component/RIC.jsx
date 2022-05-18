@@ -11,7 +11,6 @@ class RIC extends React.Component {
       currentProduct: null,
       currentProductId: '71697',
       relatedProducts: [],
-      thumbnails: [],
       selectedRelatedProduct: null
     }
   }
@@ -22,17 +21,7 @@ class RIC extends React.Component {
         return response.data
       })
       .then(relatedProducts => {
-        let styles = []
-        relatedProducts.forEach(product => {
-          let style = this.getStyle(product);
-          styles.push(style);
-        });
-        Promise.allSettled(styles)
-          .then(values => {
-            console.log(values);
-          })
-          .catch(err => { throw err; })
-        return relatedProducts;
+        return this.setDefaultStyle(relatedProducts);
       })
       .then(relatedProducts => {
         this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
@@ -40,26 +29,23 @@ class RIC extends React.Component {
       .catch(err => { throw err; });
   }
 
-  getRating(product) {
-    return axios.get(`/related_items/ric/ratings/${product.id}`)
-    .then(response => {
-      product.star_rating = response.data.rating;
-      return product;
+  setDefaultStyle(products) {
+    products.forEach(product => {
+      product.styles.forEach(style => {
+        if (style['default?']) {
+          product.thumbnail = style.photos[0].thumbnail_url;
+          product.sale_price = style.sale_price;
+        }
+      })
+      if (product.thumbnail === undefined) {
+        product.thumbnail = product.styles[0].photos[0].thumbnail_url;
+        product.sale_price = product.styles[0].sale_price;
+      }
     })
-    .catch(err => { throw err; });
-  }
-
-  getStyle(product) {
-    return axios.get(`/related_items/ric/styles/${product.id}`)
-    .then(response => {
-      product.styles = response.data.styles;
-      return product;
-    })
-    .catch(err => { throw err; });
+    return products;
   }
 
   render() {
-    // console.log(this.state.relatedProducts[0].star_rating);
     return (
       <div>
         <h4>RELATED PRODUCTS</h4>
@@ -70,8 +56,9 @@ class RIC extends React.Component {
                 <RelatedProductCards category={product.category}
                   name={product.name}
                   default_price={product.default_price}
+                  sale_price={product.sale_price}
                   star_rating={product.star_rating}
-                  thumbnail={null}
+                  thumbnail={product.thumbnail}
                   />
               </CarouselItem>
             )

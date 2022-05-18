@@ -50,9 +50,23 @@ router.get('/ric/:product_id', (req, res, next) => {
           })
         )
       })
-      return productsWithRatings;
+      return Promise.all(productsWithRatings);
     })
     // SEND RELATED PRODUCTS WITH RATINGS
+    .then(relatedProducts => {
+      let productsWithStyles = [];
+      relatedProducts.forEach(product => {
+        const endpoint = `products/${product.id}/styles`;
+        productsWithStyles.push(sendRequest(endpoint)
+          .then(productStyles => {
+            product.styles = productStyles.data.results;
+            return product
+          })
+          .catch(err => { next(err); })
+        )
+      })
+      return productsWithStyles;
+    })
     .then(products => {
       return Promise.allSettled(products)
         .then(resolvedPromises => {
@@ -88,16 +102,19 @@ router.get('/ric/:product_id', (req, res, next) => {
 //     .catch(err => { next(err); })
 // });
 
-router.get('/ric/styles/:product_id', (req, res, next) => {
-  // will need to refactor based on if we are using query or parameters
-  const productId = req.params.product_id;
-  const endpoint = `products/${productId}/styles`;
-  sendRequest(endpoint)
-    .then(productStyles => {
-      res.send({ styles: productStyles.data.results })
-    })
-    .catch(err => { next(err); });
-});
+// router.get('/ric/styles/:product_id', (req, res, next) => {
+//   // will need to refactor based on if we are using query or parameters
+//   const productId = req.params.product_id;
+//   const endpoint = `products/${productId}/styles`;
+//   sendRequest(endpoint)
+//     .then(productStyles => {
+//       return productStyles.data.results;
+//     })
+//     .then(styles => {
+//       res.send({ styles })
+//     })
+//     .catch(err => { next(err); });
+// });
 
 
 module.exports  = {relatedRouter: router}
