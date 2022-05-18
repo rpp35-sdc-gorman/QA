@@ -3,7 +3,7 @@
 import React from 'react'
 import {useState} from 'react'
 
-import {ChevronLeft, ChevronRight} from 'akar-icons'
+import {ChevronLeft, ChevronRight, ChevronDown} from 'akar-icons'
 
 const Gallery = (props) => {
 
@@ -42,13 +42,13 @@ const Gallery = (props) => {
       });
     }
 
-
     return(
       <article className='Gallery'>
-        <div className='flexColumn'>
+        <div className='flexColumnCenter'>
           {
             createMiniGallery()
           }
+          <ChevronDown size={16} className="GalleryArrow" />
         </div>
         <div className="flexRow GalleryMain">
           <button className="GalleryArrow"
@@ -56,7 +56,7 @@ const Gallery = (props) => {
           >
               <ChevronLeft strokeWidth='2' size={36} />
           </button>
-          <img className='Gallery_image' src={props.images[currentImage].url}/>
+          <img className='Gallery_image' src={props.images[currentImage].url} />
           <button className="GalleryArrow"
             onClick={() => handlePhotoChange('+')}
             >

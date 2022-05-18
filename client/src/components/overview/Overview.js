@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import ProductInfo from './ProductInfo';
+import Container from './Container';
 import ProductDescription from './ProductDescription';
 
 import sendRequest from '../../../../server/lib/sendRequest';
@@ -21,7 +21,7 @@ class Overview extends React.Component {
       force: 0,
     }
     // remote this later
-    this.testId = '71697'
+    this.testId = '71699'
     this.handleStyleChange = this.handleStyleChange.bind(this)
   }
 
@@ -78,8 +78,9 @@ class Overview extends React.Component {
   render(){
     return(
       <section className='Overview'>
-          <ProductInfo
+          <Container
             styles={this.state.styles}
+            info={this.state.info}
             currentStyle={this.state.currentStyle}
             handleStyleChange={this.handleStyleChange}
           />

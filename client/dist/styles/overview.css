@@ -5,18 +5,22 @@
   place-items: center;
 }
 
+.ProductInfo{
+
+}
 
 /* Gallery */
 .Gallery{
   display: flex;
   align-items: flex-start;
+  padding:1em;
 }
 .GalleryMain{
   align-items: center;
 }
 .Gallery_image{
-  height:28em;
-  width: 25em;
+  height:32em;
+  width: 28em;
   border-radius: 1em;
   border:2px solid black
 }
@@ -29,6 +33,7 @@
 }
 .Gallery_selected{
   border-bottom: 5px solid lightseagreen;
+  border-color: lightseagreen;
 }
 .GalleryArrow{
   background-color: transparent;
@@ -54,7 +59,8 @@
 
 /* more generic styles */
 .description{
-  border-right: 1px solid black
+  border-right: 2px solid black;
+  margin-bottom:2em;
 }
 
 /* style selector bubble buttons */
@@ -65,6 +71,7 @@
   width: 4.5em;
   display: grid;
   place-items: center;
+  border:none;
 }
 bubble > img{
   padding: 0;
