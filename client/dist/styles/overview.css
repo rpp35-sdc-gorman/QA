@@ -15,12 +15,33 @@
   align-items: center;
 }
 .Gallery_image{
-  height:25em;
+  height:28em;
   width: 25em;
+  border-radius: 1em;
+  border:2px solid black
+}
+.Gallery_mini{
+  height:4em;
+  width: 3em;
+  margin:.2em 0;
+  border:1px solid black;
+  border-radius: .25em;
+}
+.Gallery_selected{
+  border-bottom: 5px solid lightseagreen;
 }
 .GalleryArrow{
-
+  background-color: transparent;
+  border:none
 }
+.GalleryArrow:hover{
+  filter:invert(100%);
+  background-color: lightgray;
+}
+.GalleryArrow:active{
+  background-color: grey;
+}
+
 
 /* Product Description */
 .ProductDescription {

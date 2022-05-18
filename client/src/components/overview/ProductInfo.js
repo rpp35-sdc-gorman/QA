@@ -3,7 +3,7 @@
 import React from 'react'
 
 import StyleSelector from './StyleSelector';
-import Stars from '../common/5star.jsx';
+import Stars from '../common/stars.jsx';
 
 // test Data -  remove later
 import {testProductStyles} from '../../../../config'
