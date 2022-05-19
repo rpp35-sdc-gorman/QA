@@ -14,6 +14,7 @@ var ProductsList = (props) => (
               sale_price={product.sale_price}
               star_rating={product.star_rating}
               thumbnail={product.thumbnail}
+              id={product.id}
               />
           </CarouselItem>
         )
