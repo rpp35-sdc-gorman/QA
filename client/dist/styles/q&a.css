@@ -41,8 +41,8 @@
 }
 
 #answers {
-  overflow: 'scroll';
-  max-height: '50vh';
+  overflow: scroll;
+  max-height: 50vh;
 }
 
 #answer {
