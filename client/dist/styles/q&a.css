@@ -120,10 +120,46 @@ p#answer_body {
   z-index: 100;
 }
 
-.addAnswer-inner {
+form#addAnswer-form{
   position: relative;
   padding: 32px;
-  width: 100%;
-  max-width: 640px;
   background-color: white;
+
+  display: flex;
+  width: 60%;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+form#addAnswer-form * {
+  font-size: 0.8em;
+  width: 80%;
+}
+
+form#addAnswer-form button {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  width: 20px;
+  border: none;
+  background-color: white;
+}
+
+form#addAnswer-form button:hover {
+  background-color: #ccc;
+}
+
+form#addAnswer-form > * > *{
+  width: 100%;
+}
+
+form#addAnswer-form * p {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-size: 0.7em;
+  color: rgb(222,62,62)
+}
+
+form#addAnswer-form > * textarea {
+  height: 100px;
 }

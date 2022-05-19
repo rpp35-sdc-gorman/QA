@@ -38,7 +38,6 @@ class SingleQA extends React.Component {
   }
 
   toggleAddAnswer(updated) {
-    console.log(updated);
     if (updated) {
       axios.get(`/question_answer/answers/${this.props.question.question_id}`)
         .then(answers => {
@@ -60,7 +59,7 @@ class SingleQA extends React.Component {
       <div id="singleQA">
         <AddAnswer
             toggleAddAnswer={(updated) => this.toggleAddAnswer(updated)} // closes modal
-            questionToAnswer={question.question_id}
+            questionToAnswer={question}
             showAddAnswer={this.state.showAddAnswer}
           />
         <div id="question">
