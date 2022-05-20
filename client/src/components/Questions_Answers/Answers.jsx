@@ -16,57 +16,30 @@ var Answers = (props) => {
   } else if (expanded && props.allAnswers.length > 2) {
     toggle = <a className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>Collapse answers</a>
   }
-
+  let end;
   let page = props.allAnswers.map((answer, i) => {
     if (props.showAnswers && expanded) {
-      return (
-        <div key={answer.answer_id} className="panel active">
-          <div id="answer">
-            <p id="answer_label">A: </p>
-            <p id="answer_body">{answer.body}</p>
-          </div>
-          <AnswerVotingReporting
-            answer_id={answer.answer_id}
-            answerer_name={answer.answerer_name}
-            helpfulness={answer.helpfulness}
-            date={answer.date}
-          />
-          {/* include component for images */}
-        </div>
-      )
+      end = props.allAnswers.length;
     } else if (props.showAnswers && !expanded) {
-      return (
-        <div key={answer.answer_id} className={(i < 2) ? "panel active": "panel"}>
-          <div id="answer">
-            <p id="answer_label">A: </p>
-            <p id="answer_body">{answer.body}</p>
-          </div>
-          <AnswerVotingReporting
-            answer_id={answer.answer_id}
-            answerer_name={answer.answerer_name}
-            helpfulness={answer.helpfulness}
-            date={answer.date}
-          />
-          {/* include component for images */}
-        </div>
-      )
+      end = 2;
     } else {
-      return (
-        <div key={answer.answer_id} className="panel">
-          <div id="answer">
-            <p id="answer_label">A: </p>
-            <p id="answer_body">{answer.body}</p>
-          </div>
-          <AnswerVotingReporting
-            answer_id={answer.answer_id}
-            answerer_name={answer.answerer_name}
-            helpfulness={answer.helpfulness}
-            date={answer.date}
-          />
-          {/* include component for images */}
-        </div>
-      )
+      end = 0;
     }
+    return (
+      <div key={answer.answer_id} className={(i < end) ? "panel active": "panel"}>
+        <div id="answer">
+          <p id="answer_label">A: </p>
+          <p id="answer_body">{answer.body}</p>
+        </div>
+        <AnswerVotingReporting
+          answer_id={answer.answer_id}
+          answerer_name={answer.answerer_name}
+          helpfulness={answer.helpfulness}
+          date={answer.date}
+        />
+        {/* include component for images */}
+      </div>
+    )
   })
 
   return (
