@@ -54,4 +54,13 @@ router.post('/addAnswerTo/:question_id', (req, res, next) => {
     .catch(err => next(err));
 })
 
+router.post('/addQuestionTo', (req, res, next) => {
+  console.log(req.body);
+  sendRequest(`qa/questions/`, 'POST', req.body)
+    .then(result => {
+      res.sendStatus(201)
+    })
+    .catch(err => next(err));
+})
+
 module.exports  = {qAndARouter: router}

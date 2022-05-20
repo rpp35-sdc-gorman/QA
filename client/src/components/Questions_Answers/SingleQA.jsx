@@ -60,6 +60,7 @@ class SingleQA extends React.Component {
         <AddAnswer
             toggleAddAnswer={(updated) => this.toggleAddAnswer(updated)} // closes modal
             questionToAnswer={question}
+            currentProduct = {this.props.currentProduct}
             showAddAnswer={this.state.showAddAnswer}
           />
         <div id="question">

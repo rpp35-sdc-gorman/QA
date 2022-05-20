@@ -1,21 +1,25 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-var AddAnswer = (props) => {
-  const [answer, setAnswer] = useState('')
+var AddQuestion = (props) => {
+  const [question, setQuestion] = useState('')
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
 
   function handleSubmit(event) {
     event.preventDefault();
     // send request to add answer
-    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email) && answer && nickname) {
-      axios.post(`/question_answer/addAnswerTo/${props.questionToAnswer.question_id}`, {
-        body: answer,
+    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email) && question && nickname) {
+      axios.post(`/question_answer/addQuestionTo`, {
+        body: question,
         name: nickname,
-        email
+        email,
+        product_id: props.product_id
       })
-      .then((result) => props.toggleAddAnswer('update successful'))
+      .then((result) => {
+        console.log(result);
+        props.toggleAddQuestion('update successful')
+      })
       .catch(err => console.log(err));
     } else {
       setEmail(false);
@@ -24,8 +28,8 @@ var AddAnswer = (props) => {
 
   function handleChange(event) {
     let value = _.escape(event.target.value);
-    if (event.target.id === 'answer') {
-      setAnswer(value);
+    if (event.target.id === 'question') {
+      setQuestion(value);
     } else if (event.target.id === 'nickname') {
       setNickname(value);
     } else if (event.target.id === 'email') {
@@ -43,20 +47,20 @@ var AddAnswer = (props) => {
 
   function closeModal(e) {
     e.preventDefault();
-    props.toggleAddAnswer();
+    props.toggleAddQuestion();
   }
 
   return (
-    props.showAddAnswer ?
+    props.showAddQuestion ?
     <div className="modal">
       <form onSubmit={handleSubmit} id="modal-form">
-        <h2>Submit your Answer</h2>
-        <h3>{props.currentProduct}: {props.questionToAnswer.question_body}</h3>
-        <label>Your Answer:
-          <textarea  id="answer" value={answer} onChange={handleChange} maxLength={1000} required
+        <h2>Submit your Question</h2>
+        <h3>{props.productToQuestion}</h3>
+        <label>Your Question:
+          <textarea  id="question" value={question} onChange={handleChange} maxLength={1000} required
             onInvalid={(e) => setCustomValidity('You must enter the following', e)}
             onInput={(e) => setCustomValidity('', e)}/>
-          <p>Characters left: {1000 - answer.length}/1000</p>
+          <p>Characters left: {1000 - question.length}/1000</p>
         </label>
 
         <label>What is your nickname?
@@ -81,4 +85,4 @@ var AddAnswer = (props) => {
   )
 }
 
-export default AddAnswer;
+export default AddQuestion;

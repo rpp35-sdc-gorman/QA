@@ -45,6 +45,11 @@
   max-height: 50vh;
 }
 
+#answers #load {
+  padding-top: 10px;
+  font-size: 0.75em;
+}
+
 #answer {
   display: flex;
   flex-direction: row;
@@ -61,7 +66,7 @@
 
 p#answer_body {
   font-size: 0.8em;
-  margin-top: 3%;
+  margin-top: 3.1%;
   word-break: break-all;
   white-space: normal;
 }
@@ -76,13 +81,15 @@ p#answer_body {
 #question {
   display: flex;
   flex-direction: row;
+  height: 40px;
 }
 
 #question_details {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 20%;
+  padding-right: 10px;
+  min-width: 200px;
   font-size: 0.8em;
   background-color: #eee;
   color: #444;
@@ -106,7 +113,7 @@ p#answer_body {
   text-decoration: underline;
 }
 
-.addAnswer {
+.modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -120,7 +127,7 @@ p#answer_body {
   z-index: 100;
 }
 
-form#addAnswer-form{
+form#modal-form {
   position: relative;
   padding: 32px;
   background-color: white;
@@ -131,12 +138,12 @@ form#addAnswer-form{
   justify-content: flex-start;
 }
 
-form#addAnswer-form * {
+form#modal-form * {
   font-size: 0.8em;
   width: 80%;
 }
 
-form#addAnswer-form button {
+form#modal-form button {
   position: absolute;
   top: 1%;
   right: 1%;
@@ -145,21 +152,28 @@ form#addAnswer-form button {
   background-color: white;
 }
 
-form#addAnswer-form button:hover {
+form#modal-form button:hover {
   background-color: #ccc;
 }
 
-form#addAnswer-form > * > *{
+form#modal-form > * > *{
   width: 100%;
 }
 
-form#addAnswer-form * p {
+form#modal-form * p {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-size: 0.7em;
+  color: black;
+}
+
+form#modal-form label div {
   margin-top: 0px;
   margin-bottom: 5px;
   font-size: 0.7em;
   color: rgb(222,62,62)
 }
 
-form#addAnswer-form > * textarea {
+form#modal-form > * textarea {
   height: 100px;
 }

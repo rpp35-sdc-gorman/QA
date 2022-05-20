@@ -10,11 +10,11 @@ var Answers = (props) => {
 
   let toggle;
   if (props.allAnswers.length === 0) {
-    toggle = <div></div>
+    toggle = <a></a>
   } else if (!expanded && props.allAnswers.length > 2) {
-    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>See more answers</div>
+    toggle = <a className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>See more answers</a>
   } else if (expanded && props.allAnswers.length > 2) {
-    toggle = <div className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>Collapse answers</div>
+    toggle = <a className={props.showAnswers ? "panel active": "panel"} id="load" onClick={toggleExpand}>Collapse answers</a>
   }
 
   let page = props.allAnswers.map((answer, i) => {
