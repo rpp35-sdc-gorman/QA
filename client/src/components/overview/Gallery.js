@@ -32,14 +32,22 @@ const Gallery = (props) => {
     }
 
     const createMiniGallery = () => {
-      return props.images.map((photo, index) => {
+      if(props.images){
+        return props.images.map((photo, index) => {
+          return <img
+                    key={index}
+                    onClick={() => jumpTo(index)}
+                    className={currentImage === index ? 'Gallery_selected Gallery_mini' : 'Gallery_mini' }
+                    src={photo.thumbnail_url}
+                  />
+        });
+      } else {
         return <img
-                  key={index}
-                  onClick={() => jumpTo(index)}
-                  className={currentImage === index ? 'Gallery_selected Gallery_mini' : 'Gallery_mini' }
-                  src={photo.thumbnail_url}
-                />
-      });
+          key={'12938'}
+          className={'Gallery_selected Gallery_mini'}
+          src={'https://via.placeholder.com/150'}
+        />
+      }
     }
 
     return(
@@ -51,13 +59,13 @@ const Gallery = (props) => {
           <ChevronDown size={16} className="GalleryArrow" />
         </div>
         <div className="flexRow GalleryMain">
-          <button className="GalleryArrow"
+          <button id="prevArrow" className="GalleryArrow"
             onClick={() => handlePhotoChange('-')}
           >
               <ChevronLeft strokeWidth='2' size={36} />
           </button>
-          <img className='Gallery_image' src={props.images[currentImage].url} />
-          <button className="GalleryArrow"
+          <img className='Gallery_image' src={props.images ? props.images[currentImage].url : 'https://via.placeholder.com/350'} />
+          <button id="nextArrow" className="GalleryArrow"
             onClick={() => handlePhotoChange('+')}
             >
               <ChevronRight strokeWidth='2' size={36} />

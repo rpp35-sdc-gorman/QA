@@ -11,7 +11,7 @@ let AnswerVotingReporting = (props) => {
     let tmp = (new Date(props.date)).toDateString().split(' ').slice(1)
     tmp[1] = tmp[1].replaceAll(new RegExp("^0+(?!$)",'g'), '')
     tmp = tmp.join(', ');
-    console.log(tmp)
+    // console.log(tmp)
     setDate(tmp.substr(0, 3) + tmp.substr(4));
   });
 

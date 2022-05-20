@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage=true",
     "start": "nodemon server/server.js",
     "react-dev": "webpack --mode development --watch"
   },
