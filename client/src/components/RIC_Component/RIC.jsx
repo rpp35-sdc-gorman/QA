@@ -36,23 +36,65 @@ class RIC extends React.Component {
         if (style['default?']) {
           product.thumbnail = style.photos[0].thumbnail_url;
           product.sale_price = style.sale_price;
+          product.list = 'related';
         }
       })
       if (product.thumbnail === undefined) {
         product.thumbnail = product.styles[0].photos[0].thumbnail_url;
         product.sale_price = product.styles[0].sale_price;
+        product.list = 'related';
       }
     })
     return products;
+  }
+
+  addFavorite(event) {
+    let id = Number(event.currentTarget.id);
+    if (!this.checkExistingOutfit(id)) {
+      for (var i = 0; i < this.state.relatedProducts.length; i++) {
+        if (this.state.relatedProducts[i].id === id) {
+          let outfit = JSON.parse(JSON.stringify(this.state.relatedProducts[i]));
+          outfit.list = 'outfit';
+          this.setState({
+            yourOutfits: [...this.state.yourOutfits, outfit]
+          });
+          return;
+        }
+      }
+    }
+  }
+
+  checkExistingOutfit(id) {
+    for (var i = 0; i < this.state.yourOutfits.length; i++) {
+      if (this.state.yourOutfits[i].id === id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  removeOutfit(event) {
+    let id = Number(event.currentTarget.id);
+    console.log(id);
+    let currentOutfits = this.state.yourOutfits;
+    let updatedOutfits = [];
+    for (var i = 0; i < currentOutfits.length; i++) {
+      if (currentOutfits[i].id !== id) {
+        updatedOutfits.push(currentOutfits[i]);
+      }
+    }
+    this.setState({
+      yourOutfits: updatedOutfits
+    }, () => { console.log(this.state.yourOutfits)});
   }
 
   render() {
     return (
       <div>
         <h4>RELATED PRODUCTS</h4>
-        <ProductsList products={this.state.relatedProducts} />
+        <ProductsList products={this.state.relatedProducts} favorite={this.addFavorite.bind(this)} />
         <h4>YOUR OUTFITS</h4>
-        <ProductsList products={this.state.yourOutfits} />
+        <ProductsList products={this.state.yourOutfits} remove={this.removeOutfit.bind(this)}/>
       </div>
     )
   }
