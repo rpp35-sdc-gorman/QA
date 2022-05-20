@@ -1,7 +1,7 @@
 const axios = require('axios');
 const {token} = require('../../config');
 
-// the Root API address: https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp35/
+// the Root API address: https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/
 
 // Url String
 // data - json parsable object

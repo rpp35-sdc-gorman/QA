@@ -27,6 +27,11 @@
   display: flex;
   flex-direction: column;
 }
+.flexColumnCenter{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .gridRows{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
