@@ -1,24 +1,54 @@
 /* Overview rooty styles */
 .Overview{
-
+  max-width: 100%;
+  display: grid;
+  place-items: center;
 }
 
+.ProductInfo{
+
+}
 
 /* Gallery */
 .Gallery{
   display: flex;
   align-items: flex-start;
+  padding:1em;
 }
 .GalleryMain{
   align-items: center;
 }
 .Gallery_image{
-  height:25em;
-  width: 25em;
+  height:32em;
+  width: 28em;
+  border-radius: 1em;
+  border:2px solid black;
+}
+.Gallery_mini{
+  height:4em;
+  width: 3em;
+  margin:.2em 0;
+  border:1px solid black;
+  border-radius: .25em;
+  cursor: pointer;
+}
+.Gallery_selected{
+  border-bottom: 5px solid lightseagreen;
+  border-color: lightseagreen;
 }
 .GalleryArrow{
-
+  background-color: transparent;
+  border:none;
+  cursor: pointer;
 }
+.GalleryArrow:hover{
+  filter:invert(100%);
+  background-color: lightgray;
+}
+.GalleryArrow:active{
+  background-color: grey;
+}
+
 
 /* Product Description */
 .ProductDescription {
@@ -31,7 +61,8 @@
 
 /* more generic styles */
 .description{
-  border-right: 1px solid black
+  border-right: 2px solid black;
+  margin-bottom:2em;
 }
 
 /* style selector bubble buttons */
@@ -42,6 +73,8 @@
   width: 4.5em;
   display: grid;
   place-items: center;
+  border:none;
+  cursor: pointer;
 }
 bubble > img{
   padding: 0;

@@ -2,14 +2,14 @@
   background-color: #eee;
   color: #444;
   cursor: pointer;
-  padding: 18px;
-  width: 100%;
   border: none;
   text-align: left;
   outline: none;
   font-size: 15px;
   font-weight: bold;
   transition: 0.4s;
+  padding:0 5em;
+  width: 80%;
 }
 
 .active, .accordion:hover {
@@ -21,12 +21,33 @@
   background-color: white;
   max-height: 0;
   overflow: hidden;
+  max-width: 100%;
   transition: max-height 0.4s ease-out;
 }
 
 .panel.active {
   display: block;
   max-height: 200px;
+}
+
+#QA {
+  padding: 0 2em;
+}
+
+#singleQA {
+  margin-bottom: 1em;
+  border: 1px solid gray;
+  z-index: 0;
+}
+
+#answers {
+  overflow: scroll;
+  max-height: 50vh;
+}
+
+#answers #load {
+  padding-top: 10px;
+  font-size: 0.75em;
 }
 
 #answer {
@@ -45,12 +66,114 @@
 
 p#answer_body {
   font-size: 0.8em;
-  margin-top: 3%;
+  margin-top: 3.1%;
   word-break: break-all;
   white-space: normal;
 }
 
 #answer_details {
+  display: flex;
+  align-items: center;
   font-size: 0.8em;
   color: grey;
+}
+
+#question {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+}
+
+#question_details {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  min-width: 200px;
+  font-size: 0.8em;
+  background-color: #eee;
+  color: #444;
+}
+
+#question_details:hover {
+  background-color: #ccc;
+}
+
+.rightBorder {
+  border-right: 1px solid gray;
+  padding-right: 1em;
+}
+
+.leftBorder {
+  border-left: 1px solid gray;
+  padding-left: 1em;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+form#modal-form {
+  position: relative;
+  padding: 32px;
+  background-color: white;
+
+  display: flex;
+  width: 60%;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+form#modal-form * {
+  font-size: 0.8em;
+  width: 80%;
+}
+
+form#modal-form button {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  width: 20px;
+  border: none;
+  background-color: white;
+}
+
+form#modal-form button:hover {
+  background-color: #ccc;
+}
+
+form#modal-form > * > *{
+  width: 100%;
+}
+
+form#modal-form * p {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-size: 0.7em;
+  color: black;
+}
+
+form#modal-form label div {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-size: 0.7em;
+  color: rgb(222,62,62)
+}
+
+form#modal-form > * textarea {
+  height: 100px;
 }

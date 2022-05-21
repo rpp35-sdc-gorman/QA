@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import RelatedProductCards from './RelatedProductCard.jsx';
+import ProductsList from './ProductsList.jsx';
 import Carousel, { CarouselItem } from './Carousel';
 
 // currently, implementing without react hooks, but will refactor using react hooks later
@@ -11,71 +11,93 @@ class RIC extends React.Component {
       currentProduct: null,
       currentProductId: '71697',
       relatedProducts: [],
-      thumbnails: [],
+      yourOutfits: [],
       selectedRelatedProduct: null
     }
   }
 
   componentDidMount() {
+    this.getRelatedItems();
+  }
+
+  getRelatedItems() {
     axios.get(`/related_items/ric/${this.state.currentProductId}`)
-      .then(response => {
-        return response.data
-      })
-      .then(relatedProducts => {
-        let ratingsAndStyles = []
-        relatedProducts.forEach(product => {
-          let [rating, style] = [this.getRating(product), this.getStyle(product)];
-          ratingsAndStyles.push([rating, style]);
-        });
-        Promise.allSettled(ratingsAndStyles)
-          .then(values => {
-            console.log(values);
-          })
-          .catch(err => { throw err; })
-        return relatedProducts;
-      })
-      .then(relatedProducts => {
-        this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
-      })
-      .catch(err => { throw err; });
-  }
-
-  getRating(product) {
-    return axios.get(`/related_items/ric/ratings/${product.id}`)
     .then(response => {
-      product.star_rating = response.data.rating;
-      return product.star_rating;
+      return response.data
+    })
+    .then(relatedProducts => {
+      return this.setDefaultStyle(relatedProducts);
+    })
+    .then(relatedProducts => {
+      this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
     })
     .catch(err => { throw err; });
   }
 
-  getStyle(product) {
-    return axios.get(`/related_items/ric/styles/${product.id}`)
-    .then(response => {
-      product.styles = response.data.styles;
-      return product.styles;
+  setDefaultStyle(products) {
+    products.forEach(product => {
+      product.styles.forEach(style => {
+        if (style['default?']) {
+          product.thumbnail = style.photos[0].thumbnail_url;
+          product.sale_price = style.sale_price;
+          product.list = 'related';
+        }
+      })
+      if (product.thumbnail === undefined) {
+        product.thumbnail = product.styles[0].photos[0].thumbnail_url;
+        product.sale_price = product.styles[0].sale_price;
+        product.list = 'related';
+      }
     })
-    .catch(err => { throw err; });
+    return products;
+  }
+
+  addFavorite(event) {
+    let id = Number(event.currentTarget.id);
+    if (!this.checkExistingOutfit(id)) {
+      for (var i = 0; i < this.state.relatedProducts.length; i++) {
+        if (this.state.relatedProducts[i].id === id) {
+          let outfit = JSON.parse(JSON.stringify(this.state.relatedProducts[i]));
+          outfit.list = 'outfit';
+          this.setState({
+            yourOutfits: [...this.state.yourOutfits, outfit]
+          });
+          return;
+        }
+      }
+    }
+  }
+
+  checkExistingOutfit(id) {
+    for (var i = 0; i < this.state.yourOutfits.length; i++) {
+      if (this.state.yourOutfits[i].id === id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  removeOutfit(event) {
+    let id = Number(event.currentTarget.id);
+    let currentOutfits = this.state.yourOutfits;
+    let updatedOutfits = [];
+    for (var i = 0; i < currentOutfits.length; i++) {
+      if (currentOutfits[i].id !== id) {
+        updatedOutfits.push(currentOutfits[i]);
+      }
+    }
+    this.setState({
+      yourOutfits: updatedOutfits
+    });
   }
 
   render() {
-    return(
+    return (
       <div>
         <h4>RELATED PRODUCTS</h4>
-        <Carousel>
-          {this.state.relatedProducts.map(product => {
-            return(
-              <CarouselItem key={product.id}>
-                <RelatedProductCards category={product.category}
-                  name={product.name}
-                  default_price={product.default_price}
-                  star_rating={product.star_rating}
-                  thumbnail={null}
-                  />
-              </CarouselItem>
-            )
-          })}
-        </Carousel>
+        <ProductsList products={this.state.relatedProducts} favorite={this.addFavorite.bind(this)} />
+        <h4>YOUR OUTFITS</h4>
+        <ProductsList products={this.state.yourOutfits} remove={this.removeOutfit.bind(this)}/>
       </div>
     )
   }

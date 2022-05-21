@@ -81,42 +81,38 @@ it("should render one QA item to screen displaying question body", async () => {
   expect(container.querySelector('button').textContent).toBe('Q: ' + question.question_body);
 });
 
-it("should have all questions loaded by default, but none displayed", async () => {
-  expect(container.querySelectorAll('div.panel').length).toBe(4);
-  expect(container.querySelectorAll('div.panel.active').length).toBe(0);
-  expect(container.querySelector('div.panel#load').textContent).toBe('See more answers');
+it("should have all questions loaded by default, and up to 2 displayed", async () => {
+  expect(container.querySelectorAll('div.panel').length).toBe(3);
+  expect(container.querySelectorAll('div.panel.active').length).toBe(2);
+  expect(container.querySelector('a.panel#load').textContent).toBe('See more answers');
 });
 
-it('should toggle on question click to display/hide first 2 answers to question', async () => {
-	// dispatch a click even on question button
+it('should toggle on question click to hide/display first 2 answers to question', async () => {
+	// dispatch a click event on question button
   await act(() => {
     container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
-
-  expect(container.querySelectorAll('div.panel.active').length).toBe(3);
-  expect(container.querySelector('div.panel.active#load').textContent).toBe('See more answers');
-
-  await act(() => {
-    container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  });
+  // expect to hide answers
   expect(container.querySelectorAll('div.panel.active').length).toBe(0);
-  expect(container.querySelector('div.panel.active#load')).toBe(null);
-  expect(container.querySelector('div#load.panel').textContent).toBe('See more answers');
+  expect(container.querySelector('a.panel.active#load')).toBe(null);
+  // second click should expand answers
+  await act(() => {
+    container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+  expect(container.querySelectorAll('div.panel.active').length).toBe(2);
+  expect(container.querySelectorAll('div.panel').length).toBe(3);
+  expect(container.querySelector('a.panel.active#load').textContent).toBe('See more answers');
 });
 
 it('should display all answers once clicked and switch button text to "Collapse answers"', async () => {
   // dispatch a click event on question button
-  await act(() => {
-    container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  });
-
-  expect(container.querySelectorAll('div.panel.active').length).toBe(3);
+  expect(container.querySelectorAll('div.panel.active').length).toBe(2);
 
   // dispatch click on see more answers div
   await act(() => {
-    container.querySelector('div#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    container.querySelector('a#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
 
-  expect(container.querySelectorAll('div.panel.active').length).toBe(4);
-  expect(container.querySelector('div#load.panel').textContent).toBe('Collapse answers');
+  expect(container.querySelectorAll('div.panel.active').length).toBe(3);
+  expect(container.querySelector('a#load.panel').textContent).toBe('Collapse answers');
 });
