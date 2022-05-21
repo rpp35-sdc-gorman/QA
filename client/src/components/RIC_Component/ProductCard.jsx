@@ -1,5 +1,5 @@
 import React from 'react';
-import Stars from '../common/5star.jsx';
+import Stars from '../common/stars.jsx';
 import { Star, CircleXFill } from 'akar-icons';
 
 var ProductCards = (props) => (
