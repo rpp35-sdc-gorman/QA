@@ -83,4 +83,13 @@ describe('Integration tests', () => {
     expect(container.querySelectorAll('div.panel').length).toBe(3);
     expect(container.querySelector('a.panel.active#load').textContent).toBe('Collapse answers');
   });
+
+  it('should work with AddAnswer to open new modal window', async () => {
+    // dispatch a click to AddAnswer
+    expect(container.querySelectorAll('#addAnswerButton').length).toBe(1);
+    await act(() => {
+      container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(container.querySelectorAll('.modal').length).toBe(1);
+  })
 })
