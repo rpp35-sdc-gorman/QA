@@ -19,8 +19,8 @@ router.get('/answers/:question_id', (req, res, next) => {
     .catch(err => next(err));
 });
 
-
-router.put('/helpful/:answer_id', (req, res, next) => {
+// answer voting/reporting routes
+router.put('/helpful/answer/:answer_id', (req, res, next) => {
   sendRequest(`qa/answers/${req.params.answer_id}/helpful`, 'PUT')
     .then(result => {
       res.sendStatus(204)
@@ -28,12 +28,39 @@ router.put('/helpful/:answer_id', (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.put('/reported/:answer_id', (req, res, next) => {
+router.put('/reported/answer/:answer_id', (req, res, next) => {
   sendRequest(`qa/answers/${req.params.answer_id}/report`, 'PUT')
     .then(answers => {
       res.sendStatus(204)
     })
     .catch(err => next(err));
 });
+
+// question voting/addAnswer routes
+router.put('/helpful/question/:question_id', (req, res, next) => {
+  sendRequest(`qa/questions/${req.params.question_id}/helpful`, 'PUT')
+    .then(result => {
+      res.sendStatus(204)
+    })
+    .catch(err => next(err));
+});
+
+// add question/answer routes
+router.post('/addAnswerTo/:question_id', (req, res, next) => {
+  sendRequest(`qa/questions/${req.params.question_id}/answers`, 'POST', req.body)
+    .then(result => {
+      res.sendStatus(201)
+    })
+    .catch(err => next(err));
+})
+
+router.post('/addQuestionTo', (req, res, next) => {
+  console.log(req.body);
+  sendRequest(`qa/questions/`, 'POST', req.body)
+    .then(result => {
+      res.sendStatus(201)
+    })
+    .catch(err => next(err));
+})
 
 module.exports  = {qAndARouter: router}
