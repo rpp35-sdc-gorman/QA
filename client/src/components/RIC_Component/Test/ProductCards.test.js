@@ -66,5 +66,4 @@ describe("Product Card Unit Tests", () => {
     expect(container.querySelector('svg').getAttribute('class')).not.toBe('card_remove');
     expect(container.querySelector('svg').getAttribute('class')).toBe('card_favorite');
   });
-
-})
+});
