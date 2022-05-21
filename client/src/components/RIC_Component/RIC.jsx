@@ -17,17 +17,21 @@ class RIC extends React.Component {
   }
 
   componentDidMount() {
+    this.getRelatedItems();
+  }
+
+  getRelatedItems() {
     axios.get(`/related_items/ric/${this.state.currentProductId}`)
-      .then(response => {
-        return response.data
-      })
-      .then(relatedProducts => {
-        return this.setDefaultStyle(relatedProducts);
-      })
-      .then(relatedProducts => {
-        this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
-      })
-      .catch(err => { throw err; });
+    .then(response => {
+      return response.data
+    })
+    .then(relatedProducts => {
+      return this.setDefaultStyle(relatedProducts);
+    })
+    .then(relatedProducts => {
+      this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
+    })
+    .catch(err => { throw err; });
   }
 
   setDefaultStyle(products) {
@@ -75,7 +79,6 @@ class RIC extends React.Component {
 
   removeOutfit(event) {
     let id = Number(event.currentTarget.id);
-    console.log(id);
     let currentOutfits = this.state.yourOutfits;
     let updatedOutfits = [];
     for (var i = 0; i < currentOutfits.length; i++) {
@@ -85,7 +88,7 @@ class RIC extends React.Component {
     }
     this.setState({
       yourOutfits: updatedOutfits
-    }, () => { console.log(this.state.yourOutfits)});
+    });
   }
 
   render() {

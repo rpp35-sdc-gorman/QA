@@ -52,7 +52,7 @@ router.get('/ric/:product_id', (req, res, next) => {
       })
       return Promise.all(productsWithRatings);
     })
-    // SEND RELATED PRODUCTS WITH RATINGS
+    // GET RELATED PRODUCT STYLES
     .then(relatedProducts => {
       let productsWithStyles = [];
       relatedProducts.forEach(product => {
@@ -67,6 +67,7 @@ router.get('/ric/:product_id', (req, res, next) => {
       })
       return productsWithStyles;
     })
+    // SEND RELATED PRODUCTS
     .then(products => {
       return Promise.allSettled(products)
         .then(resolvedPromises => {

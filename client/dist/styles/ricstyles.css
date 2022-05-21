@@ -86,7 +86,7 @@
   grid-row-end: 6;
 }
 
-.card_favorite {
+.card_favorite, .card_remove {
   grid-column-start: 3;
   grid-column-end: 4;
   grid-row-start: 1;
@@ -99,6 +99,13 @@
 .card_favorite:hover {
   opacity: 1.0;
   cursor: pointer;
+  fill: rgba(244, 203, 0, 0.892)
+}
+
+.card_remove:hover {
+  opacity: 1.0;
+  cursor: pointer;
+  fill: rgba(160, 0, 0, 0.892)
 }
 
 /* TAGS */
