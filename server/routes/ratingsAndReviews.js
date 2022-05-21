@@ -17,8 +17,8 @@ router.get('/:id/rating', (req, res, next) => {
     .then((response) => response.data)
     .then((data) => res.send(data))
     .catch((err) => {
-      console.error(error.data);
-      res.status(500).send(error.data);
+      // console.error(error.data);
+      res.status(500).send(err.data);
     });
 });
 
