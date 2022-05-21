@@ -2,7 +2,6 @@ import React from "react";
 import { unmountComponentAtNode } from "react-dom";
 import { createRoot } from 'react-dom/client';
 import { act } from "react-dom/test-utils";
-import sendRequest from '../../../../server/lib/sendRequest';
 import axios from 'axios'
 
 import Gallery from './Gallery';
@@ -27,25 +26,63 @@ const photo = {
 global.IS_REACT_ACT_ENVIRONMENT = true
 
 describe("Gallery Unit Tests", () => {
-  let testData = '';
   let container = null;
-  jest.mock(axios);
-  axios.get.mockResolvedValue(testPhotos);
 
   beforeEach(async () => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    await act(async () => {
-      createRoot(container).render(<Gallery images={testPhotos} />);
-    });
   });
   afterEach(() => {
     unmountComponentAtNode(container);
     container.remove();
     container = null;
   });
-  it('Should display one images upon loading', () => {
-    const url = "https://images.unsplash.com/photo-1501088430049-71c79fa3283e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
-    expect(container.querySelector('.Gallery_image').src).toEqual(url);
+  it('Should Render Gallery', () => {
+    act(() => {
+      createRoot(container).render(<Gallery images={testPhotos} />);
+    })
+    expect(container.querySelector('.Gallery')).not.toBeUndefined();
+    expect(container.querySelectorAll('.GalleryArrow').length).toEqual(3);
+    expect(container.querySelectorAll('.Gallery_mini').length).toEqual(2);
+  });
+  it('Should Render Place holder if there is no data', () => {
+    act(() => {
+      createRoot(container).render(<Gallery />);
+    })
+    expect(container.querySelector('.Gallery')).not.toBeUndefined();
+    expect(container.querySelectorAll('.GalleryArrow').length).toEqual(3);
+    expect(container.querySelectorAll('.Gallery_mini').length).toEqual(1);
+  });
+  it('Should change the displayed Image when increment is clicked', () => {
+    // render
+    act(() => {
+      createRoot(container).render(<Gallery images={testPhotos} />);
+    })
+    // snapshot before event
+    const before = container.querySelector('.Gallery').innerHTML
+    act(() => {
+      const advance = document.getElementById('nextArrow');
+      advance.dispatchEvent(new MouseEvent('click', {bubbles: true}))
+    })
+    const after = container.querySelector('.Gallery').innerHTML
+
+    // eval
+    expect(before).not.toBe(after)
+  });
+  it('Should change the displayed image when decrement is clicked', () => {
+    // render
+    act(() => {
+      createRoot(container).render(<Gallery images={testPhotos} />);
+    })
+    // snapshot before event
+    const before = container.querySelector('.Gallery').innerHTML
+    act(() => {
+      const prev = document.getElementById('prevArrow');
+      prev.dispatchEvent(new MouseEvent('click', {bubbles: true}))
+    })
+    // snapshot after event
+    const after = container.querySelector('.Gallery').innerHTML
+    // eval
+    expect(before).not.toBe(after)
   });
 })

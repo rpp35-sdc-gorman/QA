@@ -22,7 +22,7 @@
   height:32em;
   width: 28em;
   border-radius: 1em;
-  border:2px solid black
+  border:2px solid black;
 }
 .Gallery_mini{
   height:4em;
@@ -30,6 +30,7 @@
   margin:.2em 0;
   border:1px solid black;
   border-radius: .25em;
+  cursor: pointer;
 }
 .Gallery_selected{
   border-bottom: 5px solid lightseagreen;
@@ -37,7 +38,8 @@
 }
 .GalleryArrow{
   background-color: transparent;
-  border:none
+  border:none;
+  cursor: pointer;
 }
 .GalleryArrow:hover{
   filter:invert(100%);
@@ -72,6 +74,7 @@
   display: grid;
   place-items: center;
   border:none;
+  cursor: pointer;
 }
 bubble > img{
   padding: 0;

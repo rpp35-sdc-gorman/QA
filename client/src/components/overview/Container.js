@@ -1,4 +1,5 @@
 // This is a Container - it contains.... things
+// it mostly acts as a gate keeper to make sure something is always being rendered
 
 import React from 'react'
 
@@ -10,6 +11,7 @@ const Container = (props) => {
 
 
   // query the api for the specific styles and pass that to style selector
+  // this will be in charge of overlaying a loading screen when there is no data
     return(
       <article>
         { props.currentStyle ?
