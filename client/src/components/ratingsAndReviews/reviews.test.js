@@ -94,7 +94,7 @@ describe('Reviews', () => {
     // cleanup on exiting
     mock.reset();
     // container.unmount();
-    unmountComponentAtNode(container);
+    unmountComponentAtNode(document);
     container.remove();
     container = null;
   });

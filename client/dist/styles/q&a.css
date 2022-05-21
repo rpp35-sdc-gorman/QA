@@ -113,7 +113,7 @@ p#answer_body {
   text-decoration: underline;
 }
 
-.modalAnswers {
+.modalAnswers,.modalQuestions {
   position: fixed;
   top: 0;
   left: 0;

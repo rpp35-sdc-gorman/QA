@@ -36,8 +36,8 @@ let AnswerVotingReporting = (props) => {
   return (
     <div id="answer_details">
       <div className="rightBorder">by {props.answerer_name}, {date}</div>
-      <div className="leftBorder rightBorder">Helpful? <a className="underline" onClick={voteHelpful}>Yes</a> ({helpfulness})</div>
-      <div className="leftBorder"><a className="underline" onClick={report}>{reported ? 'Reported' : 'Report'}</a></div>
+      <div className="leftBorder rightBorder">Helpful? <a id="helpfulAnswer" className="underline" onClick={voteHelpful}>Yes</a> ({helpfulness})</div>
+      <div className="leftBorder"><a id="answerReporting" className="underline" onClick={report}>{reported ? 'Reported' : 'Report'}</a></div>
     </div>
   )
 }

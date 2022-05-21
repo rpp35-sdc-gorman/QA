@@ -76,7 +76,7 @@ var AddAnswer = (props) => {
         </label>
 
         <input id="submitAnswer" type="submit" value="Submit" style={{width: '80px', marginTop: '5px'}}/>
-        <button onClick={closeModal}>X</button>
+        <button id="closeAddAnswer" onClick={closeModal}>X</button>
       </form>
     </div> : <></>
   )

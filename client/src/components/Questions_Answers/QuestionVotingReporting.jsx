@@ -17,8 +17,8 @@ let QuestionVotingReporting = (props) => {
 
   return (
     <div id="question_details">
-      <div className="rightBorder">Helpful? <a className="underline" onClick={voteHelpful}>Yes</a> ({helpfulness})</div>
-      <div className="leftBorder"><a id="addAnswerButton" className="underline" onClick={props.toggleAddAnswer}>Add Answer</a></div>
+      <div className="rightBorder">Helpful? <a id="helpfulQuestion" className="underline" onClick={voteHelpful}>Yes</a> ({helpfulness})</div>
+      <div className="leftBorder"><a id="addAnswerButton" className="underline" onClick={() => props.toggleAddAnswer()}>Add Answer</a></div>
     </div>
   )
 }

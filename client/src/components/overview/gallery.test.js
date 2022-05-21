@@ -33,7 +33,7 @@ describe("Gallery Unit Tests", () => {
     document.body.appendChild(container);
   });
   afterEach(() => {
-    unmountComponentAtNode(container);
+    unmountComponentAtNode(document);
     container.remove();
     container = null;
   });

@@ -27,7 +27,8 @@ var AddQuestion = (props) => {
   }
 
   function handleChange(event) {
-    let value = _.escape(event.target.value);
+    // let value = _.escape(event.target.value);
+    let value = event.target.value;
     if (event.target.id === 'question') {
       setQuestion(value);
     } else if (event.target.id === 'nickname') {
@@ -52,7 +53,7 @@ var AddQuestion = (props) => {
 
   return (
     props.showAddQuestion ?
-    <div className="modal">
+    <div className="modalQuestions">
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Question</h2>
         <h3>{props.productToQuestion}</h3>
@@ -78,8 +79,8 @@ var AddQuestion = (props) => {
           {(email === false) ? <div>Invalid email address</div> : <></>}
         </label>
 
-        <input id="submitAnswer" type="submit" value="Submit" style={{width: '80px', marginTop: '5px'}}/>
-        <button onClick={closeModal}>X</button>
+        <input id="submitQuestion" type="submit" value="Submit" style={{width: '80px', marginTop: '5px'}}/>
+        <button id="closeAddQuestion" onClick={closeModal}>X</button>
       </form>
     </div> : <></>
   )

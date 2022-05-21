@@ -41,7 +41,7 @@ describe("Product Card Unit Tests", () => {
 
   afterEach(() => {
     // cleanup on exiting
-    unmountComponentAtNode(container);
+    unmountComponentAtNode(document);
     container.remove();
     container = null;
   });
