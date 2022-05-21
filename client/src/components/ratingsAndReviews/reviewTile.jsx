@@ -1,8 +1,7 @@
 import React from 'react';
 import Stars from '../common/stars.jsx';
-
+import axios from 'axios';
 const ReviewTile = (props) => {
-  console.log(props.review);
   return (
     <div className="reviewTile">
       <Stars filled={props.review.rating} size={24}></Stars>
@@ -18,12 +17,22 @@ const ReviewTile = (props) => {
       {props.review.response ? (
         <div className="response">{props.review.response}</div>
       ) : null}
-      helpful?
-      <span onClick={() => console.log('helpfulness clicked')}>yes</span> (
-      {props.review.helpfulness}) | <span>report</span>
+      helpful?{' '}
+      <span
+        className={!props.helpful ? `underline` : null}
+        onClick={() => {
+          !props.helpful
+            ? axios
+                .put(`/rating_review/reviews/${props.review.review_id}/helpful`)
+                .then(() => props.helpfulClicked(props.review.review_id))
+            : null;
+        }}
+      >
+        yes
+      </span>{' '}
+      ({props.review.helpfulness}) | <span>report</span>
     </div>
   );
 };
 
 export default ReviewTile;
-

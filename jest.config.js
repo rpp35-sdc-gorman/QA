@@ -1,8 +1,8 @@
 // Sync object
 /** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
-  verbose: true,
-  testEnvironment: 'jsdom'
+  verbose: false,
+  testEnvironment: 'jsdom',
 };
 
 module.exports = config;

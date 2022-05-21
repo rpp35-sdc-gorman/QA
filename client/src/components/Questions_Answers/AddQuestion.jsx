@@ -71,7 +71,7 @@ var AddQuestion = (props) => {
         </label>
 
         <label>What is your email?
-          <input type="text" id="email" value={(email === false) ? '' : email} onChange={handleChange} required
+          <input type="text" id="email" value={(email === false) ? '' : email} maxLength={60} onChange={handleChange} required
             onInvalid={(e) => setCustomValidity('You must enter the following', e)}
             onInput={(e) => setCustomValidity('', e)}/>
           <p>For authentication reasons, you will not be emailed</p>

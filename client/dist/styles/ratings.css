@@ -21,10 +21,20 @@
   overflow: hidden;
 }
 
+.bar {
+  background-color: chartreuse;
+}
+
 .rating-lower {
   padding: 0;
   display: flex;
   z-index: 0;
+}
+
+.bar-lower {
+  width: 100%;
+  min-width: 100%;
+  background-color: #888888;
 }
 
 .modal {
@@ -64,4 +74,20 @@
 }
 .reviewTile {
   border-bottom: 4px solid black;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.ratingsContainer {
+  width: 30%;
+  float: left;
+}
+.fl {
+  float: left;
+}
+
+.w-66 {
+  width: 66%;
 }

@@ -68,6 +68,8 @@ class Reviews extends React.Component {
       name: '',
       email: '',
       photos: '',
+      page: 1,
+      helpful: {},
       characteristics: {},
       characteristicKeys: [],
     };
@@ -131,27 +133,75 @@ class Reviews extends React.Component {
     }
   }
 
+  loadMoreReviews() {
+    this.setState({ page: this.state.page + 1 }, () => {
+      axios
+        .get('/rating_review/' + this.props.id, {
+          params: { sort: this.state.sort, page: this.state.page },
+        })
+        .then((response) => {
+          const reviews = this.state.reviews.concat(response.data.results);
+          this.setState({ reviews });
+        })
+        .catch((err) => console.error(err));
+    });
+  }
   componentDidMount() {
     axios.get('/rating_review/' + this.props.id).then((response) => {
       this.setState({ reviews: response.data.results });
     });
-    axios.get('rating_review/' + this.props.id + '/rating').then(({ data }) => {
-      this.setState({
-        characteristicKeys: Object.keys(data.characteristics),
-        meta: data,
+    axios
+      .get('/rating_review/' + this.props.id + '/rating')
+      .then(({ data }) => {
+        this.setState({
+          characteristicKeys: Object.keys(data.characteristics),
+          meta: data,
+        });
       });
-      console.log(data);
+  }
+
+  helpfulClicked(review_ID) {
+    const review = this.state.reviews.filter(
+      ({ review_id }) => review_ID === review_id
+    )[0];
+
+    review.helpfulness++;
+    this.setState({
+      helpful: { ...this.state.helpful, [review_ID]: true },
+      reviews: this.state.reviews,
     });
   }
 
   render() {
     return (
-      <div>
+      <div className="fl w-66">
         {this.state.reviews.length} reviews, sorted by{' '}
-        <span>{this.state.sort}</span>
-        {this.state.reviews.map((review, i) => {
-          return <ReviewTile key={i} review={review}></ReviewTile>;
-        })}
+        <select
+          onChange={(e) =>
+            this.setState({ sort: e.target.value }, () => {
+              console.log(e.target.value);
+              axios
+                .get(`rating_review/${this.props.id}`, {
+                  params: { sort: this.state.sort },
+                })
+                .then(({ data }) =>
+                  this.setState({ reviews: data.results, page: 0 })
+                );
+            })
+          }
+        >
+          <option>{'relevance'}</option>
+          <option>{'newest'}</option>
+          <option>{'helpful'}</option>
+        </select>
+        {this.state.reviews.map((review, i) => (
+          <ReviewTile
+            key={i}
+            helpfulClicked={this.helpfulClicked.bind(this)}
+            review={review}
+            helpful={this.state.helpful[review.review_id]}
+          ></ReviewTile>
+        ))}
         <Modal
           show={this.state.showNewReviewModal}
           handleClose={() => this.setState({ showNewReviewModal: false })}
@@ -159,9 +209,7 @@ class Reviews extends React.Component {
           <h1>Write your Review</h1>
           <h2>About the TODO product name</h2>
           <SelectableStars
-            select={(rating) => {
-              this.setState({ rating });
-            }}
+            select={(rating) => this.setState({ rating })}
             filled={this.state.rating}
             size={25}
           ></SelectableStars>
@@ -295,7 +343,7 @@ class Reviews extends React.Component {
             />
           </div>
           <div>
-            <label htmlFor="nickname">Nickname</label>
+            <label htmlFor="name">Nickname</label>
             <input
               type="text"
               name="name"
@@ -303,18 +351,24 @@ class Reviews extends React.Component {
               onChange={(e) => this.setState({ name: e.target.value })}
             />
           </div>
-          {this.state.errorMessage}
+          <span id="errorMessage">{this.state.errorMessage}</span>
           <button
+            id="submitNewReview"
             onClick={() => {
               this.submit();
-              this.setState({ showNewReviewModal: false });
             }}
           >
             submit review
           </button>
         </Modal>
-        <button onClick={() => this.setState({ showNewReviewModal: true })}>
+        <button
+          id="addAReview"
+          onClick={() => this.setState({ showNewReviewModal: true })}
+        >
           Add A Review
+        </button>
+        <button id="showMoreReviews" onClick={this.loadMoreReviews.bind(this)}>
+          Show more reviews
         </button>
       </div>
     );
@@ -322,4 +376,3 @@ class Reviews extends React.Component {
 }
 
 export default Reviews;
-

@@ -23,7 +23,8 @@ var AddAnswer = (props) => {
   }
 
   function handleChange(event) {
-    let value = _.escape(event.target.value);
+    // let value = _.escape(event.target.value);
+    let value = event.target.value;
     if (event.target.id === 'answer') {
       setAnswer(value);
     } else if (event.target.id === 'nickname') {
@@ -48,7 +49,7 @@ var AddAnswer = (props) => {
 
   return (
     props.showAddAnswer ?
-    <div className="modal">
+    <div className="modalAnswers">
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Answer</h2>
         <h3>{props.currentProduct}: {props.questionToAnswer.question_body}</h3>
@@ -67,7 +68,7 @@ var AddAnswer = (props) => {
         </label>
 
         <label>What is your email?
-          <input type="text" id="email" value={(email === false) ? '' : email} onChange={handleChange} required
+          <input type="text" id="email" value={(email === false) ? '' : email} maxLength={60} onChange={handleChange} required
             onInvalid={(e) => setCustomValidity('You must enter the following', e)}
             onInput={(e) => setCustomValidity('', e)}/>
           <p>For authentication reasons, you will not be emailed</p>
