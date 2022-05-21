@@ -11,7 +11,6 @@ let AnswerVotingReporting = (props) => {
     let tmp = (new Date(props.date)).toDateString().split(' ').slice(1)
     tmp[1] = tmp[1].replaceAll(new RegExp("^0+(?!$)",'g'), '')
     tmp = tmp.join(', ');
-    console.log(tmp)
     setDate(tmp.substr(0, 3) + tmp.substr(4));
   });
 
@@ -20,7 +19,7 @@ let AnswerVotingReporting = (props) => {
       setVoted(true);
       // request to vote helpful
       setHelpfulness(helpfulness + 1)
-      axios.put(`/question_answer/helpful/${props.answer_id}`)
+      axios.put(`/question_answer/helpful/answer/${props.answer_id}`)
         .catch((err) => console.log(err));
     }
   }
@@ -29,16 +28,16 @@ let AnswerVotingReporting = (props) => {
     if (!reported) {
       setReported(true);
       // request to report
-      axios.put(`/question_answer/reported/${props.answer_id}`)
+      axios.put(`/question_answer/reported/answer/${props.answer_id}`)
         .catch((err) => console.log(err));
     }
   }
 
   return (
     <div id="answer_details">
-      <span>by {props.answerer_name}, {date}    |    </span>
-      <span>Helpful? <a id="helpful" onClick={voteHelpful}>Yes</a> ({helpfulness})    |    </span>
-      <span><a id="report" onClick={report}>{reported ? 'Reported' : 'Report'}</a></span>
+      <div className="rightBorder">by {props.answerer_name}, {date}</div>
+      <div className="leftBorder rightBorder">Helpful? <a className="underline" onClick={voteHelpful}>Yes</a> ({helpfulness})</div>
+      <div className="leftBorder"><a className="underline" onClick={report}>{reported ? 'Reported' : 'Report'}</a></div>
     </div>
   )
 }
