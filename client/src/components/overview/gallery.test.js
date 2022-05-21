@@ -28,8 +28,6 @@ global.IS_REACT_ACT_ENVIRONMENT = true
 describe("Gallery Unit Tests", () => {
   let container = null;
 
-
-
   beforeEach(async () => {
     container = document.createElement("div");
     document.body.appendChild(container);
@@ -82,8 +80,8 @@ describe("Gallery Unit Tests", () => {
       const prev = document.getElementById('prevArrow');
       prev.dispatchEvent(new MouseEvent('click', {bubbles: true}))
     })
+    // snapshot after event
     const after = container.querySelector('.Gallery').innerHTML
-
     // eval
     expect(before).not.toBe(after)
   });
