@@ -11,7 +11,7 @@ class RatingsAndReviews extends React.Component {
     return (
       <div>
         <div className="ratingsContainer">
-          <Ratings></Ratings>
+          <Ratings id={71697}></Ratings>
         </div>
         <div className="reviewsContainer">
           <Reviews id={71697}></Reviews>

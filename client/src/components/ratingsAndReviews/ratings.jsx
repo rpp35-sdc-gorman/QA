@@ -24,7 +24,7 @@ class Ratings extends React.Component {
 
   componentDidMount() {
     axios
-      .get(`rating_review/${this.props.id}/rating`)
+      .get(`/rating_review/${this.props.id}/rating`)
       .then(({ data }) => this.setState({ meta: data }));
   }
 
