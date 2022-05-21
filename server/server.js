@@ -22,5 +22,5 @@ app.use('/question_answer', qAndARouter);
 app.use('/related_items', relatedRouter);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Atelier 🥳 listening on port ${port}`);
 });

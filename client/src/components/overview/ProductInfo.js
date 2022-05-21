@@ -1,38 +1,44 @@
 // This is the Product Info Component
 
-import React from 'react'
+import React from 'react';
 
 import StyleSelector from './StyleSelector';
-import Stars from '../common/5star.jsx';
+import Stars from '../common/stars.jsx';
 
 // test Data -  remove later
-import {testProductStyles} from '../../../../config'
+import { testProductStyles } from '../../../../config';
 
 // recieving list of styles and selected style from props
 
-class ProductInfo extends React.Component{
-  constructor(props){
-    super()
-    this.state= {
-      forceUpdate: 0
-    }
+class ProductInfo extends React.Component {
+  constructor(props) {
+    super();
+    this.state = {
+      forceUpdate: 0,
+    };
   }
 
   // query the api for the specific styles and pass that to style selector
-  render(){
-    return(
-      <article className='ProductInfo'>
-        { this.props.currentStyle ?
+  render() {
+    return (
+      <article className="ProductInfo">
+        {this.props.currentStyle ? (
           <section>
             <article className="info">
-              <div className='flexRow'>
+              <div className="flexRow">
                 <Stars />
-                <sub><a>Read All Reviews</a></sub>
+                <sub>
+                  <a>Read All Reviews</a>
+                </sub>
               </div>
               <div>
                 <h4>Category</h4>
                 <h2>{this.props.currentStyle.name}</h2>
-                <h4>${this.props.currentStyle.sale_price || this.props.currentStyle.original_price }</h4>
+                <h4>
+                  $
+                  {this.props.currentStyle.sale_price ||
+                    this.props.currentStyle.original_price}
+                </h4>
               </div>
             </article>
             <StyleSelector
@@ -41,11 +47,9 @@ class ProductInfo extends React.Component{
               handleStyleChange={this.props.handleStyleChange}
             />
           </section>
-          :
-          null
-        }
+        ) : null}
       </article>
-    )
+    );
   }
 }
 
