@@ -49,7 +49,7 @@ var AddAnswer = (props) => {
 
   return (
     props.showAddAnswer ?
-    <div className="modal">
+    <div className="modalAnswers">
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Answer</h2>
         <h3>{props.currentProduct}: {props.questionToAnswer.question_body}</h3>
