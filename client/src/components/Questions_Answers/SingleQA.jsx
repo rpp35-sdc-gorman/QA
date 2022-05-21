@@ -67,7 +67,7 @@ class SingleQA extends React.Component {
           <button className="accordion" onClick={(e) => this.toggleAccordion(e)}>
             Q: {question.question_body}
           </button>
-            <QuestionVotingReporting question_id={question.question_id} helpfulness={question.question_helpfulness} toggleAddAnswer={() => this.toggleAddAnswer()}/>
+          <QuestionVotingReporting question_id={question.question_id} helpfulness={question.question_helpfulness} toggleAddAnswer={() => this.toggleAddAnswer()}/>
         </div>
         <Answers
           allAnswers={this.state.allAnswers}
