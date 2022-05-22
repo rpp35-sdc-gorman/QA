@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import RelatedProducts from './RelatedProducts.jsx';
 import YourOutfits from './YourOutfits.jsx';
-import Carousel, { CarouselItem } from './Carousel';
+import Modal from '../common/modal.jsx';
+import Comparison from './Comparison.jsx';
 
 // currently, implementing without react hooks, but will refactor using react hooks later
 class RIC extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentProductId: 71697,
-      currentProduct: [],
+      currentProductId: 71699,
+      currentProduct: {},
       relatedProducts: [],
-      selectedRelatedProduct: null
+      comparedProduct: null,
+      modal: false
     }
   }
 
@@ -24,14 +26,13 @@ class RIC extends React.Component {
   getCurrentProduct() {
     axios.get(`/related_items/ric/main/${this.state.currentProductId}`)
     .then(response => {
-      console.log(response.data);
       return response.data
     })
     .then(currentProduct => {
       return this.setDefaultStyle([currentProduct], 'outfit');
     })
     .then(currentProduct => {
-      this.setState({ currentProduct: currentProduct });
+      this.setState({ currentProduct: currentProduct[0] });
     })
     .catch(err => {throw err });
   }
@@ -45,7 +46,7 @@ class RIC extends React.Component {
       return this.setDefaultStyle(relatedProducts, 'related');
     })
     .then(relatedProducts => {
-      this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
+      this.setState({ relatedProducts });
     })
     .catch(err => { throw err; });
   }
@@ -70,17 +71,31 @@ class RIC extends React.Component {
 
   compare(event) {
     let id = Number(event.currentTarget.id);
-    console.log(event.currentTarget.id);
-    console.log(event.currentTarget.props);
+    let comparedProduct;
+    for (var i = 0; i < this.state.relatedProducts.length; i++) {
+      if (this.state.relatedProducts[i].id === id) {
+        comparedProduct = this.state.relatedProducts[i];
+        break;
+      }
+    }
+    this.setState({ comparedProduct, modal: true });
+  }
+
+  close() {
+    this.setState({ comparedProduct: null, modal: false });
   }
 
   render() {
+
     return (
       <div>
         <h4>RELATED PRODUCTS</h4>
         <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} />
+        <Modal handleClose={this.close.bind(this)} show={this.state.modal}>
+          {this.state.comparedProduct === null ? null : <Comparison main={this.state.currentProduct} related={this.state.comparedProduct} />}
+        </Modal>
         <h4>YOUR OUTFITS</h4>
-        <YourOutfits currentProduct={this.state.currentProduct[0]}/>
+        <YourOutfits currentProduct={this.state.currentProduct}/>
       </div>
     )
   }

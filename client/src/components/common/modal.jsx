@@ -1,10 +1,11 @@
 import React from 'react';
+
 const Modal = ({ handleClose, show, children }) => {
   return (
     <div className={show ? 'modal display-block' : 'modal display-none'}>
       <section className="modal-main">
         {show ? children : null}
-        <button type="button" onClick={handleClose}>
+        <button type="button" className='close' onClick={handleClose}>
           Close
         </button>
       </section>
