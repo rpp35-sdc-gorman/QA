@@ -32,6 +32,8 @@
 
 #QA {
   padding: 0 2em;
+  max-height: 100vh;
+  overflow: scroll;
 }
 
 #singleQA {
@@ -59,7 +61,6 @@
 #answer_label {
   font-size: 1em;
   font-weight: bold;
-  color: gray;
   margin-top: 3%;
   padding-right: 5px;
 }
@@ -76,6 +77,20 @@ p#answer_body {
   align-items: center;
   font-size: 0.8em;
   color: grey;
+}
+.rightBorder {
+  border-right: 1px solid gray;
+  padding-right: 1em;
+}
+
+.leftBorder {
+  border-left: 1px solid gray;
+  padding-left: 1em;
+}
+
+.seller {
+  color: black;
+  font-weight: 900;
 }
 
 #question {
@@ -99,21 +114,11 @@ p#answer_body {
   background-color: #ccc;
 }
 
-.rightBorder {
-  border-right: 1px solid gray;
-  padding-right: 1em;
-}
-
-.leftBorder {
-  border-left: 1px solid gray;
-  padding-left: 1em;
-}
-
 .underline {
   text-decoration: underline;
 }
 
-.modalAnswers,.modalQuestions {
+.modalAnswers, .modalQuestions {
   position: fixed;
   top: 0;
   left: 0;

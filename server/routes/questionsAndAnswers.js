@@ -4,7 +4,7 @@ const sendRequest = require('../lib/sendRequest');
 
 
 router.get('/questions/:product_id', (req, res, next) => {
-  sendRequest(`qa/questions?product_id=${req.params.product_id}&count=100`)
+  sendRequest(`qa/questions?product_id=${req.params.product_id}&count=2&page=${req.query.page_num}`)
     .then(results => {
       res.status(200).json(results.data)
     })
@@ -55,7 +55,6 @@ router.post('/addAnswerTo/:question_id', (req, res, next) => {
 })
 
 router.post('/addQuestionTo', (req, res, next) => {
-  console.log(req.body);
   sendRequest(`qa/questions/`, 'POST', req.body)
     .then(result => {
       res.sendStatus(201)

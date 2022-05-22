@@ -36,6 +36,7 @@ var Answers = (props) => {
           answerer_name={answer.answerer_name}
           helpfulness={answer.helpfulness}
           date={answer.date}
+          updateAnswerHelpfulness={props.updateAnswerHelpfulness}
         />
         {/* include component for images */}
       </div>

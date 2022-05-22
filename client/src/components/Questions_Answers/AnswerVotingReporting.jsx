@@ -20,6 +20,7 @@ let AnswerVotingReporting = (props) => {
       // request to vote helpful
       setHelpfulness(helpfulness + 1)
       axios.put(`/question_answer/helpful/answer/${props.answer_id}`)
+        .then(result => props.updateAnswerHelpfulness())
         .catch((err) => console.log(err));
     }
   }
@@ -35,7 +36,7 @@ let AnswerVotingReporting = (props) => {
 
   return (
     <div id="answer_details">
-      <div className="rightBorder">by {props.answerer_name}, {date}</div>
+      <div className="rightBorder">by <span className={props.answerer_name === "Seller" ? "seller" : ""}>{props.answerer_name}</span>, {date}</div>
       <div className="leftBorder rightBorder">Helpful? <a id="helpfulAnswer" className="underline" onClick={voteHelpful}>Yes</a> ({helpfulness})</div>
       <div className="leftBorder"><a id="answerReporting" className="underline" onClick={report}>{reported ? 'Reported' : 'Report'}</a></div>
     </div>
