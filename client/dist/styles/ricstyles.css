@@ -102,6 +102,10 @@
   fill: rgba(244, 203, 0, 0.892)
 }
 
+.addition:hover {
+  cursor: pointer;
+}
+
 .card_remove:hover {
   opacity: 1.0;
   cursor: pointer;

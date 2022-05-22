@@ -6,8 +6,8 @@ var ProductCards = (props) => (
   <div className="card">
     <img className="card_visual" src={props.thumbnail} />
     {props.list === 'related' ?
-      <Star color='white' strokeWidth={2} size={20} className='card_favorite' id={props.id} onClick={props.favorite} /> :
-      <CircleXFill color='white' strokeWidth={2} size={20} className='card_remove' id={props.id} onClick={props.remove} />}
+      <Star color='white' strokeWidth={2} size={20} className='card_favorite' id={props.id} onClick={props.compare} index={props.index}/> :
+      <CircleXFill color='white' strokeWidth={2} size={20} className='card_remove' id={props.id} onClick={props.remove} index={props.index}/>}
     <div className="card_category">{props.category}</div>
     <div className="card_name">{props.name}</div>
     <div className="card_price">${props.default_price}</div>
