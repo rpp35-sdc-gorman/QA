@@ -116,6 +116,7 @@ p#answer_body {
 
 .underline {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .modalAnswers, .modalQuestions {
@@ -181,4 +182,22 @@ form#modal-form label div {
 
 form#modal-form > * textarea {
   height: 100px;
+}
+
+#QAsearch {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+#QAsearch input {
+  height: 3em;
+  width: 100%;
+}
+
+#QAsearch i {
+  position: absolute;
+  right: 1em;
 }

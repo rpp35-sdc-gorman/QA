@@ -4,16 +4,17 @@ import axios from 'axios';
 
 import SingleQA from './SingleQA.jsx';
 import AddQuestion from './AddQuestion.jsx';
+import Search from './Search.jsx';
 
 class QAMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       questions: [],
-      showAllQuestions: false,
+      filterTerm: '',
+      end: 2,
       showAddQuestion: false,
       newQuestion: null,
-      page_num: 1,
       hasMoreQuestions: true
     };
 
@@ -23,7 +24,7 @@ class QAMain extends React.Component {
 
   componentDidMount() {
     // get initial QA list from server;
-    axios.get(`/question_answer/questions/71697`, { params: {page_num: this.state.page_num}})
+    axios.get(`/question_answer/questions/71697`, { params: {count: 100, page_num: 1}})
       .then(questions => {
         let hasMoreQuestions = true;
         if (questions.data.results.length < 2) {
@@ -37,38 +38,32 @@ class QAMain extends React.Component {
   }
 
   loadMoreQuestions() {
-    axios.get(`/question_answer/questions/71697`, { params: {page_num: this.state.page_num + 1}})
-      .then(questions => {
-        if (questions.data.results.length > 0) {
-          this.setState((state) => {
-            const updatedQuestions = state.questions.concat(questions.data.results);
-            return {
-              page_num: state.page_num + 1,
-              questions: updatedQuestions.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
-            }
-          }, () => {
-            // check next page to see if more questions left to load
-            axios.get(`/question_answer/questions/71697`, { params: {page_num: this.state.page_num + 1}})
-              .then(questions => {
-                if (questions.data.results.length === 0) {
-                  this.setState({
-                    hasMoreQuestions: false
-                  })
-                }
-              })
-          })
-        }
-      })
+    this.setState((state) => ({
+      end: state.end + 2,
+      hasMoreQuestions: (state.questions.length - (state.end + 2) <= 0) ? false : true
+     }))
   }
 
   toggleAddQuestion(updated) {
     if (updated) {
       this.loadMoreQuestions();
     }
-    console.log('yoyo', updated);
     this.setState((state) => ({
       showAddQuestion: !state.showAddQuestion
     }))
+  }
+
+  setFilter(filterTerm) {
+    filterTerm = filterTerm.toLowerCase();
+    if (filterTerm.length >= 3) {
+      this.setState({
+        filterTerm
+      })
+    } else {
+      this.setState({
+        filterTerm: ''
+      })
+    }
   }
 
   render() {
@@ -85,7 +80,8 @@ class QAMain extends React.Component {
             showAddQuestion={this.state.showAddQuestion}
           />
 
-          {(this.state.questions.length) ? this.state.questions.map(question =>
+          <Search setFilter={(filterTerm) => this.setFilter(filterTerm)}/>
+          {(this.state.questions.length) ? this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).slice(0, this.state.end).map(question =>
             <SingleQA key={question.question_id} question={question} currentProduct={'current product name'}/>
           ) : <></>}
         </div>

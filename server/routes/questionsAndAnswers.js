@@ -4,7 +4,7 @@ const sendRequest = require('../lib/sendRequest');
 
 
 router.get('/questions/:product_id', (req, res, next) => {
-  sendRequest(`qa/questions?product_id=${req.params.product_id}&count=2&page=${req.query.page_num}`)
+  sendRequest(`qa/questions?product_id=${req.params.product_id}&count=${req.query.count}&page=${req.query.page_num}`)
     .then(results => {
       res.status(200).json(results.data)
     })
