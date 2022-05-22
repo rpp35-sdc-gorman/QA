@@ -107,29 +107,4 @@ describe('Integration tests', () => {
     });
     expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
   })
-
-  // TO MOVE TO QAMAIN
-  // it('should work with AddQuestions to open new modal window', async () => {
-  //   // dispatch a click to AddQuestion
-  //   expect(container.querySelectorAll('#addQuestionButton').length).toBe(1);
-  //   await act(() => {
-  //     container.querySelector('#addQuestionButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  //   });
-  //   expect(container.querySelectorAll('.modalQuestions').length).toBe(1);
-  // })
-
-  // it('should close addQuestion modal on button click', async () => {
-  //   // dispatch a click to AddQuestion
-  //   expect(container.querySelectorAll('#addQuestionButton').length).toBe(1);
-  //   await act(() => {
-  //     container.querySelector('#addQuestionButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  //   });
-  //   expect(container.querySelectorAll('.modalQuestions').length).toBe(1);
-
-  //   // dispatch a click to closeModal
-  //   await act(() => {
-  //     container.querySelector('#closeAddQuestion').dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  //   });
-  //   expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
-  // })
 })

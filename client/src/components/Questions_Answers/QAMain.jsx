@@ -35,7 +35,6 @@ class QAMain extends React.Component {
   }
 
   toggleAddQuestion(updated) {
-    console.log(updated);
     if (updated) {
       axios.get(`/question_answer/questions/71697`)
         .then(questions => {
@@ -74,7 +73,7 @@ class QAMain extends React.Component {
             <SingleQA key={question.question_id} question={question} currentProduct={'current product name'}/>
           ) : <></>}
           {(this.state.questions.length > 2 && !this.state.showAllQuestions) ? toggleQuestions : <></>}
-          <button onClick={this.toggleAddQuestion}>Add Question</button>
+          <button id="addQuestionButton" onClick={this.toggleAddQuestion}>Add Question</button>
         </div>
     )
   }

@@ -17,7 +17,6 @@ var AddQuestion = (props) => {
         product_id: props.product_id
       })
       .then((result) => {
-        console.log(result);
         props.toggleAddQuestion('update successful')
       })
       .catch(err => console.log(err));
