@@ -15,6 +15,8 @@ class Carousel extends React.Component {
       calculatedIndex: 1,
       numDisplayedCards: null,
       increment: null,
+      showBack: true,
+      showNext: true,
       cardWidth: 275
     }
 
@@ -23,8 +25,12 @@ class Carousel extends React.Component {
 
   componentDidMount() {
     let numDisplayedCards = Math.floor(900/this.state.cardWidth);
+    let showBack = this.state.calculatedIndex === 1 ? false : true;
+    let showNext = this.state.calculatedIndex !== 1 ? true : false;
     this.setState({
       numDisplayedCards,
+      showBack,
+      showNext,
       increment: (1 / numDisplayedCards)
     })
   }
@@ -36,12 +42,18 @@ class Carousel extends React.Component {
     } else if (nextIndex >= maxDisplayed) {
       nextIndex = maxDisplayed;
     }
+    let showBack = (Math.round(nextIndex * 100) / 100) <= 1 ? false : true;
+    let showNext = (Math.round(nextIndex * 100) / 100) >= maxDisplayed ? true : false;
     this.setState({
+      showBack,
+      showNext,
       calculatedIndex: nextIndex
     });
   }
 
   render() {
+    let back = <button id='back' onClick={() => { this.updateIndex(this.state.calculatedIndex - this.state.increment)}}>Back</button>;
+    let next = <button id='next' onClick={() => { this.updateIndex(this.state.calculatedIndex + this.state.increment)}}>Next</button>;
     return (
       <div className='carousel'>
         <div className='carousel_inner' style={{ transform: `translateX(-${(this.state.calculatedIndex - 1) * 100}%)`}}>
@@ -50,8 +62,8 @@ class Carousel extends React.Component {
           })}
         </div>
         <div className='indicators'>
-          <button onClick={() => { this.updateIndex(this.state.calculatedIndex - this.state.increment)}}>Back</button>
-          <button onClick={() => { this.updateIndex(this.state.calculatedIndex + this.state.increment)}}>Next</button>
+          {this.state.showBack ? back : null}
+          {!this.state.showNext ? next : null}
         </div>
       </div>
     );
