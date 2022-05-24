@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import { getAverageRating } from '../common/averageRating.js';
 import Stars from '../common/stars.jsx';
 var PercentBar = (props) => {
   return (
@@ -37,21 +38,29 @@ class Ratings extends React.Component {
           (a, b) => parseInt(a) + parseInt(b)
         )
       : 100;
-    console.log(this.state.meta, total);
+    const recommended = this.state.meta.recommended
+      ? ((100 * Number(this.state.meta.recommended.true)) / total).toFixed(1)
+      : 0;
 
+    console.log(this.state.meta);
     return (
       <div className="ratingsContainer">
         <h1>
-          {this.state.AverageRating.toFixed(1)}{' '}
-          <Stars size={45} filled={this.state.AverageRating}></Stars>
+          {getAverageRating(this.state.meta).toFixed(1)}{' '}
+          <Stars size={30} filled={getAverageRating(this.state.meta)}></Stars>
         </h1>
-        <p>100% of reviews recommended this product</p>
+        <p>{recommended}% of reviews recommended this product</p>
         {'12345'.split('').map((count) =>
           this.state.meta.ratings ? (
-            <div>
-              {count + ' Stars'}
+            <div
+              key={count}
+              className="hover-gray"
+              onClick={() => this.props.filter(count)}
+            >
+              <div className="fl w4">
+                {count + ' Star' + (count === '1' ? '' : 's')}
+              </div>
               <PercentBar
-                key={count}
                 fill={((this.state.meta.ratings[count] || 0) / total) * 100}
               />
             </div>
