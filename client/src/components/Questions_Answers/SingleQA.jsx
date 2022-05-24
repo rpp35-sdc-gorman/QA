@@ -60,9 +60,8 @@ class SingleQA extends React.Component {
           }))
         })
     } else {
-      this.setState((state) => ({
-        showAddAnswer: !state.showAddAnswer
-      }))
+      let tmp = !this.state.showAddAnswer;
+      this.setState({showAddAnswer: tmp})
     }
   }
 

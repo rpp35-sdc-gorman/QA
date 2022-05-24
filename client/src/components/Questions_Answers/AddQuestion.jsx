@@ -47,12 +47,15 @@ var AddQuestion = (props) => {
 
   function closeModal(e) {
     e.preventDefault();
+    setQuestion('');
+    setNickname('');
+    setEmail('');
     props.toggleAddQuestion();
   }
 
   return (
     props.showAddQuestion ?
-    <div className="modalQuestions">
+    <div className="modalQuestions" onClick={closeModal}>
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Question</h2>
         <h3>{props.productToQuestion}</h3>

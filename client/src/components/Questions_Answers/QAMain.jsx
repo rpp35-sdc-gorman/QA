@@ -48,9 +48,8 @@ class QAMain extends React.Component {
     if (updated) {
       this.loadMoreQuestions();
     }
-    this.setState((state) => ({
-      showAddQuestion: !state.showAddQuestion
-    }))
+    let tmp = !this.state.showAddQuestion;
+    this.setState({showAddQuestion: tmp})
   }
 
   setFilter(filterTerm) {
