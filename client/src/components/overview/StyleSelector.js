@@ -25,7 +25,6 @@ class StyleSelector extends React.Component{
   }
 
   createBubbles () {
-    console.log(this.props)
     return this.props.styles.map((item, index) => {
       return <Bubble
                 key={index}
@@ -36,6 +35,26 @@ class StyleSelector extends React.Component{
     })
   }
 
+  formatPrice (original, sale) {
+    if (sale) {
+      return (
+        <span className="price">
+          <span className="price-sale">
+            ${sale}
+          </span>
+          <span className="price-cross">
+            ${original}
+          </span>
+        </span>
+      )
+    } else {
+      return (
+        <span className="price-original">
+          ${original}
+        </span>
+      )
+    }
+  }
 
   render(){
     return(
@@ -43,23 +62,23 @@ class StyleSelector extends React.Component{
         <Gallery
           images={this.props.currentStyle.photos}
         />
-        <section>
+        <section className="Style_Selector">
           <article className="info">
             <div className='flexRow'>
-              <Stars />
+              <Stars  />
               <sub><a>Read All Reviews</a></sub>
             </div>
             <div>
               <h4>{this.props.info.category}</h4>
               <h2>{this.props.currentStyle.name}</h2>
-              <h4>${this.props.currentStyle.sale_price || this.props.currentStyle.original_price }</h4>
+              <h4>{this.formatPrice(this.props.currentStyle.original_price, this.props.currentStyle.sale_price)}</h4>
             </div>
           </article>
           <h4>Style > {this.props.currentStyle.name}</h4>
           <div className="gridRows">
             {this.state.bubbles}
           </div>
-          <OrderForm />
+          <OrderForm inventory={this.props.currentStyle.skus} />
         </section>
       </article>
     )
