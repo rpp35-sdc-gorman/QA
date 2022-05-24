@@ -9,7 +9,7 @@
   font-weight: bold;
   transition: 0.4s;
   padding:0 5em;
-  width: 80%;
+  min-width: 70%;
 }
 
 .active, .accordion:hover {
@@ -27,13 +27,16 @@
 
 .panel.active {
   display: block;
-  max-height: 200px;
+  max-height: 25vh;
 }
 
-#QA {
+#QAMain {
   padding: 0 2em;
-  max-height: 100vh;
-  overflow: scroll;
+}
+
+#QABody {
+  max-height: 80vh;
+  overflow: auto;
 }
 
 #singleQA {
@@ -43,7 +46,7 @@
 }
 
 #answers {
-  overflow: scroll;
+  overflow: auto;
   max-height: 50vh;
 }
 
@@ -78,6 +81,17 @@ p#answer_body {
   font-size: 0.8em;
   color: grey;
 }
+
+#answerImages {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+#answerImages * {
+  padding-right: 1em;
+}
+
 .rightBorder {
   border-right: 1px solid gray;
   padding-right: 1em;
@@ -90,6 +104,7 @@ p#answer_body {
 
 .seller {
   color: black;
+  font-size: 1.1em;
   font-weight: 900;
 }
 
@@ -97,6 +112,7 @@ p#answer_body {
   display: flex;
   flex-direction: row;
   height: 40px;
+  width: 100%;
 }
 
 #question_details {
@@ -104,7 +120,7 @@ p#answer_body {
   align-items: center;
   justify-content: flex-end;
   padding-right: 10px;
-  min-width: 200px;
+  flex: 1;
   font-size: 0.8em;
   background-color: #eee;
   color: #444;
@@ -125,7 +141,7 @@ p#answer_body {
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.6);
 
   display: flex;
   justify-content: center;

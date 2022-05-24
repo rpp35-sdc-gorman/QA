@@ -23,14 +23,13 @@ class SingleQA extends React.Component {
 
   componentDidMount() {
     // get answers to question
-    axios.get(`/question_answer/answers/${this.props.question.question_id}`)
+    axios.get(`/question_answer/answers/${this.props.question.question_id}`, {params: {count: 100}})
       .then(answers => {
         let allAnswers = [];
         let seller = answers.data.results.filter(answer => answer.answerer_name === "Seller").sort((a, b) => b.helpfulness - a.helpfulness);
         if (seller) {
           allAnswers = allAnswers.concat(seller);
         }
-        console.log(allAnswers, seller)
         this.setState((state) =>  ({
           allAnswers: allAnswers.concat(answers.data.results.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness)),
         }))
@@ -46,13 +45,15 @@ class SingleQA extends React.Component {
 
   toggleAddAnswer(updated) {
     if (updated === 'addAnswer successful') {
-      axios.get(`/question_answer/answers/${this.props.question.question_id}`)
+      axios.get(`/question_answer/answers/${this.props.question.question_id}`, {params: {count: 100}})
         .then(answers => {
           let allAnswers = [];
           let seller = answers.data.results.filter(answer => answer.answerer_name === "Seller").sort((a, b) => b.helpfulness - a.helpfulness);
           if (seller) {
             allAnswers = allAnswers.concat(seller);
           }
+          console.log('1', allAnswers);
+          console.log('2', allAnswers.concat(answers.data.results.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness)))
           this.setState((state) =>  ({
             allAnswers: allAnswers.concat(answers.data.results.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness)),
             showAddAnswer: !state.showAddAnswer

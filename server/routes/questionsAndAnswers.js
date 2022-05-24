@@ -12,7 +12,8 @@ router.get('/questions/:product_id', (req, res, next) => {
 });
 
 router.get('/answers/:question_id', (req, res, next) => {
-  sendRequest(`qa/questions/${req.params.question_id}/answers`)
+  let count = req.query.count || 5
+  sendRequest(`qa/questions/${req.params.question_id}/answers?count=${count}`)
     .then(answers => {
       res.status(200).json(answers.data)
     })

@@ -71,16 +71,16 @@ class QAMain extends React.Component {
     var loadMoreQuestions = <button id="questionToggle" onClick={this.loadMoreQuestions}>More Answered Questions</button>
 
     return (
-      <div>
-        <div id="QA">
-          <AddQuestion
-            toggleAddQuestion={(updated) => this.toggleAddQuestion(updated)} // closes modal
-            productToQuestion={'current product name'} // tmp variable for product name
-            product_id={71697}
-            showAddQuestion={this.state.showAddQuestion}
-          />
+      <div id="QAMain">
+        <AddQuestion
+          toggleAddQuestion={(updated) => this.toggleAddQuestion(updated)} // closes modal
+          productToQuestion={'current product name'} // tmp variable for product name
+          product_id={71697}
+          showAddQuestion={this.state.showAddQuestion}
+        />
 
-          <Search setFilter={(filterTerm) => this.setFilter(filterTerm)}/>
+        <Search setFilter={(filterTerm) => this.setFilter(filterTerm)}/>
+        <div id="QABody">
           {(this.state.questions.length) ? this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).slice(0, this.state.end).map(question =>
             <SingleQA key={question.question_id} question={question} currentProduct={'current product name'}/>
           ) : <></>}

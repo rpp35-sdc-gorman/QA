@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import AnswerVotingReporting from './AnswerVotingReporting.jsx';
+import AnswerImages from './AnswerImages.jsx';
+import Modal from '../common/modal.jsx';
 
 var Answers = (props) => {
   const [expanded, setExpanded] = useState(false);
+  const [showImage, setShowImage] = useState(false);
+  const [displayImage, setDisplayImage] = useState('');
 
   function toggleExpand() {
     setExpanded(!expanded);
+  }
+
+  function toggleImage(event) {
+    setDisplayImage(event.target.src);
+    setShowImage(true);
   }
 
   let toggle;
@@ -31,6 +40,7 @@ var Answers = (props) => {
           <p id="answer_label">A: </p>
           <p id="answer_body">{answer.body}</p>
         </div>
+        <AnswerImages photos={answer.photos} toggleImage={(img) => toggleImage(img)}/>
         <AnswerVotingReporting
           answer_id={answer.answer_id}
           answerer_name={answer.answerer_name}
@@ -38,13 +48,16 @@ var Answers = (props) => {
           date={answer.date}
           updateAnswerHelpfulness={props.updateAnswerHelpfulness}
         />
-        {/* include component for images */}
       </div>
     )
   })
 
   return (
     <div id="answers" >
+      <Modal handleClose={() => setShowImage(false)} show={showImage}>
+        <img src={displayImage}/>
+
+      </Modal>
       {props.allAnswers.length > 0 ? page : <div>No answers yet</div>}
       {toggle}
     </div>

@@ -15,7 +15,7 @@ var AddAnswer = (props) => {
         name: nickname,
         email
       })
-      .then((result) => props.toggleAddAnswer('update successful'))
+      .then((result) => props.toggleAddAnswer('addAnswer successful'))
       .catch(err => console.log(err));
     } else {
       setEmail(false);
