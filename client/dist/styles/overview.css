@@ -59,10 +59,28 @@
 }
 
 
-/* more generic styles */
+/*---- more generic styles -----*/
 .description{
   border-right: 2px solid black;
   margin-bottom:2em;
+  padding-right:2em;
+}
+
+.feature{
+  display: flex;
+  align-items: center;
+  padding:.25em 0;
+}
+
+
+/* ----prices--- */
+.price-cross{
+  text-decoration: line-through;
+  color:grey;
+}
+.price-sale{
+  padding-right:.5em;
+  color:red;
 }
 
 /* style selector bubble buttons */
@@ -76,8 +94,55 @@
   border:none;
   cursor: pointer;
 }
-bubble > img{
+.bubble > img{
   padding: 0;
   height:4em;
   width: 4em;
+}
+
+/* Order Form */
+.OrderForm{
+
+}
+
+.form-error{
+  color:red;
+  padding:.5em 0;
+}
+
+.dropdown{
+  /* width:10em; */
+  font-size: large;
+  font-weight: bold;
+  height:3.5em;
+  padding-right:2.5em;
+  padding-left: .25em;
+  text-align: left;
+  /* margin-right:1em; */
+}
+.dropdown > option{
+  text-align: left;
+}
+
+.order-submit-button{
+  font-weight: bold;
+  height:3.5em;
+  width: 15em;
+  text-align: left;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.order-favorite-button{
+  height:3.5em;
+  width:3.5em;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.input-group{
+  margin:.5em 0em;
+  justify-content: space-between ;
 }

@@ -18,10 +18,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Overview />
-        <QAMain />
-        <RatingsAndReviews></RatingsAndReviews>
-        <RIC />
+        {/* <Overview /> */}
+        {/* <QAMain /> */}
+        <RatingsAndReviews />
+        {/* <RIC /> */}
       </div>
     );
   }
