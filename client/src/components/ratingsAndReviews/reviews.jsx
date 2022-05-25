@@ -181,7 +181,7 @@ class Reviews extends React.Component {
             this.setState({ sort: e.target.value }, () => {
               console.log(e.target.value);
               axios
-                .get(`rating_review/${this.props.id}`, {
+                .get(`/rating_review/${this.props.id}`, {
                   params: { sort: this.state.sort },
                 })
                 .then(({ data }) =>
