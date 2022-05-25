@@ -102,6 +102,10 @@
   fill: rgba(244, 203, 0, 0.892)
 }
 
+.addition:hover {
+  cursor: pointer;
+}
+
 .card_remove:hover {
   opacity: 1.0;
   cursor: pointer;
@@ -115,4 +119,42 @@ div {
 
 h4 {
   font-weight: lighter;
+}
+
+table {
+  table-layout: fixed;
+  width: 80%;
+  vertical-align: middle;
+}
+
+/* Modal Bits */
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th {
+  font-size: 2em;
+  font-weight: 200;
+  white-space: wrap;
+  height: 50;
+}
+
+th.left, td.left {
+  text-align: left;
+}
+
+th.right, td.right {
+  text-align: right;
+}
+
+th.mid, td.mid {
+  text-align: center;
 }

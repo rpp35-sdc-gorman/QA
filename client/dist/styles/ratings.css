@@ -55,6 +55,8 @@
   background: white;
   width: 80%;
   height: 75vh;
+  border-style: solid;
+  border-color: black;
   z-index: 10;
   overflow: scroll;
   top: 50%;

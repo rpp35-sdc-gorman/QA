@@ -36,7 +36,7 @@ router.get('/ric/:product_id', (req, res, next) => {
         productsWithRatings.push(sendRequest(ratingsEndpoint)
           .then(ratedProducts => {
             let ratings = ratedProducts.data.ratings;
-            let [ totalResponses, score] = [0, 0];
+            let [totalResponses, score] = [0, 0];
             for (let star in ratings) {
               score += Number(star) * Number(ratings[star]);
               totalResponses += Number(ratings[star]);
@@ -77,6 +77,46 @@ router.get('/ric/:product_id', (req, res, next) => {
           })
           res.send(resultProducts);
         })
+    })
+    .catch(err => { next(err); })
+});
+
+router.get('/ric/main/:product_id', (req, res, next) => {
+  // GET RELATED PRODUCT IDS
+  const currentProductId = req.params.product_id;
+  const currentProductEndpoint = `products/${currentProductId}`;
+  sendRequest(currentProductEndpoint)
+    .then(currentProduct => {
+      return currentProduct.data
+    })
+    // GET RELATED PRODUCT RATINGS
+    .then(product => {
+      const ratingsEndpoint = `reviews/meta/?product_id=${product.id}`;
+      return sendRequest(ratingsEndpoint)
+        .then(ratedProducts => {
+          let ratings = ratedProducts.data.ratings;
+          let [totalResponses, score] = [0, 0];
+          for (let star in ratings) {
+            score += Number(star) * Number(ratings[star]);
+            totalResponses += Number(ratings[star]);
+          }
+          let finalScore = Math.ceil(4 * (score / totalResponses)) / 4;
+          return finalScore;
+        })
+        .then(score => {
+          product.star_rating = score;
+          return product;
+        })
+    })
+    // GET RELATED PRODUCT STYLES AND SEND
+    .then(product => {
+      const endpoint = `products/${product.id}/styles`;
+      sendRequest(endpoint)
+        .then(productStyles => {
+          product.styles = productStyles.data.results;
+          res.send(product)
+        })
+        .catch(err => { next(err); })
     })
     .catch(err => { next(err); })
 });
