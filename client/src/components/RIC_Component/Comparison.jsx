@@ -43,8 +43,8 @@ class Comparison extends React.Component {
   render() {
     const main = this.props.main.name;
     const related = this.props.related.name;
-    return (
-      <div>
+    return (main !== undefined ?
+      <div id='comparison'>
         <h3 style={{padding: '2em'}}>Comparing</h3>
         <table className='center'>
           <thead>
@@ -65,7 +65,7 @@ class Comparison extends React.Component {
             })}
           </tbody>
         </table>
-      </div>
+      </div> : <></>
     )
   }
 }

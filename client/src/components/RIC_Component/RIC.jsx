@@ -92,7 +92,7 @@ class RIC extends React.Component {
         <h4>RELATED PRODUCTS</h4>
         <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} />
         <Modal handleClose={this.close.bind(this)} show={this.state.modal}>
-          {this.state.comparedProduct === null ? null : <Comparison main={this.state.currentProduct} related={this.state.comparedProduct} />}
+          <Comparison main={this.state.currentProduct} related={this.state.comparedProduct} />
         </Modal>
         <h4>YOUR OUTFITS</h4>
         <YourOutfits currentProduct={this.state.currentProduct}/>

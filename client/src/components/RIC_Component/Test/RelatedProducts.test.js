@@ -12,7 +12,6 @@ import Carousel, { CarouselItem } from '../Carousel';
 global.IS_REACT_ACT_ENVIRONMENT = true
 describe('Products List Test', () =>{
   let container = null;
-  let product = exampleProducts.products.data[3];
   beforeEach(async () => {
     // setup a DOM element as a render target
     container = document.createElement("div");
@@ -73,25 +72,15 @@ describe('Products List Test', () =>{
     });
 
     it('should hide next button after reaching end of list', async () => {
-      console.log('first: ', container.querySelector('div.carousel').innerHTML);
+      // console.log('first: ', container.querySelector('div.carousel').innerHTML);
       await act(() => {
         container.querySelector('#next').dispatchEvent(new MouseEvent('click', { bubbles: true }))
       });
       await act(() => {
         container.querySelector('#next').dispatchEvent(new MouseEvent('click', { bubbles: true }))
       });
-      console.log('second: ', container.querySelector('div.carousel').innerHTML);
-      // console.log(container.querySelector('div.carousel').innerHTML);
+      // console.log('second: ', container.querySelector('div.carousel').innerHTML);
       expect(container.querySelectorAll('#next').length).toEqual(0);
     });
-
-    // it('should hide next button after reaching end of list', async () => {
-    //   const beginState = container.querySelector('div.carousel').innerHTML;
-    //   await act(() => {
-    //     container.querySelector('#next').dispatchEvent(new MouseEvent('click', { bubbles: true }))
-    //   });
-    //   const afterState = container.querySelector('div.carousel').innerHTML;
-    //   expect(beginState).toBe(afterState);
-    // });
   })
 })
