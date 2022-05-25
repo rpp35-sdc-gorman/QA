@@ -194,14 +194,17 @@ class Reviews extends React.Component {
           <option>{'newest'}</option>
           <option>{'helpful'}</option>
         </select>
-        {this.state.reviews.map((review, i) => (
-          <ReviewTile
-            key={i}
-            helpfulClicked={this.helpfulClicked.bind(this)}
-            review={review}
-            helpful={this.state.helpful[review.review_id]}
-          ></ReviewTile>
-        ))}
+        {this.state.reviews.map((review, i) =>
+          this.props.filtered[review.rating] ||
+          '12345'.split('').every((v) => !this.props.filtered[v]) ? (
+            <ReviewTile
+              key={i}
+              helpfulClicked={this.helpfulClicked.bind(this)}
+              review={review}
+              helpful={this.state.helpful[review.review_id]}
+            ></ReviewTile>
+          ) : null
+        )}
         <Modal
           show={this.state.showNewReviewModal}
           handleClose={() => this.setState({ showNewReviewModal: false })}
