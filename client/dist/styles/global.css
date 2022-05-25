@@ -38,3 +38,7 @@
   gap:.25em;
   grid-auto-flow: row;
 }
+
+img, button, select {
+  cursor: pointer;
+}
