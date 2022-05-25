@@ -53,6 +53,8 @@
 #answers #load {
   padding-top: 10px;
   font-size: 0.75em;
+  cursor: pointer;
+  font-weight: 900;
 }
 
 #answer {
