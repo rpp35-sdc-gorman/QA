@@ -41,7 +41,9 @@ class Ratings extends React.Component {
     const recommended = this.state.meta.recommended
       ? ((100 * Number(this.state.meta.recommended.true)) / total).toFixed(1)
       : 0;
-
+    const chosen = Object.keys(this.props.filtered).filter(
+      (k) => this.props.filtered[k]
+    );
     console.log(this.state.meta);
     return (
       <div className="ratingsContainer">
@@ -50,22 +52,33 @@ class Ratings extends React.Component {
           <Stars size={30} filled={getAverageRating(this.state.meta)}></Stars>
         </h1>
         <p>{recommended}% of reviews recommended this product</p>
-        {'12345'.split('').map((count) =>
-          this.state.meta.ratings ? (
-            <div
-              key={count}
-              className="hover-gray"
-              onClick={() => this.props.filter(count)}
+        {chosen.length > 0 ? (
+          <p>
+            Showing {chosen.join(', ')}.{' '}
+            <a
+              href="#"
+              onClick={() => chosen.forEach((val) => this.props.filter(val))}
             >
-              <div className="fl w4">
-                {count + ' Star' + (count === '1' ? '' : 's')}
+              show all reviews
+            </a>
+          </p>
+        ) : null}
+        {this.state.meta.ratings
+          ? '12345'.split('').map((count) => (
+              <div
+                key={count}
+                className="hover-gray"
+                onClick={() => this.props.filter(count)}
+              >
+                <div className="fl w4">
+                  {count + ' Star' + (count === '1' ? '' : 's')}
+                </div>
+                <PercentBar
+                  fill={((this.state.meta.ratings[count] || 0) / total) * 100}
+                />
               </div>
-              <PercentBar
-                fill={((this.state.meta.ratings[count] || 0) / total) * 100}
-              />
-            </div>
-          ) : null
-        )}
+            ))
+          : null}
       </div>
     );
   }

@@ -23,6 +23,7 @@ class RatingsAndReviews extends React.Component {
           filter={(count) => {
             this.setState({ [count]: !this.state[count] });
           }}
+          filtered={this.state}
         ></Ratings>
         <div className="reviewsContainer">
           <Reviews id={71697} filtered={this.state}></Reviews>
