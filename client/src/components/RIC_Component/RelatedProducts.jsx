@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import ProductCards from './ProductCard.jsx';
 import Carousel, { CarouselItem } from './Carousel';
 
-var ProductsList = (props) => (
+var RelatedProducts = (props) => (
   <div>
     <Carousel>
       {props.products.map((product, index) => {
         return(
-          <CarouselItem key={index}>
+          <CarouselItem key={product.id}>
             <ProductCards category={product.category}
               name={product.name}
               default_price={product.default_price}
@@ -16,8 +16,8 @@ var ProductsList = (props) => (
               thumbnail={product.thumbnail}
               id={product.id}
               list={product.list}
-              favorite={props.favorite}
-              remove={props.remove}
+              compare={props.compare}
+              index={index}
               />
           </CarouselItem>
         )
@@ -26,4 +26,4 @@ var ProductsList = (props) => (
   </div>
 )
 
-export default ProductsList;
+export default RelatedProducts;

@@ -2,9 +2,7 @@ import React from "react";
 import { unmountComponentAtNode } from "react-dom";
 import { createRoot } from 'react-dom/client';
 import { act } from "react-dom/test-utils";
-import axios from 'axios';
 import ProductCards from '../ProductCard.jsx';
-// import { relatedProducts } from './ricTestData.js';
 
 global.IS_REACT_ACT_ENVIRONMENT = true
 describe("Product Card Unit Tests", () => {
@@ -62,9 +60,7 @@ describe("Product Card Unit Tests", () => {
   });
 
   it("should render corret icon for action button", async () => {
-    console.log('THIS IS THE COMPONENT: ', container.querySelector('svg').getAttribute('class'));
     expect(container.querySelector('svg').getAttribute('class')).not.toBe('card_remove');
     expect(container.querySelector('svg').getAttribute('class')).toBe('card_favorite');
   });
-
-})
+});

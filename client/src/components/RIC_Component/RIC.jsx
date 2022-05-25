@@ -1,23 +1,40 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import ProductsList from './ProductsList.jsx';
-import Carousel, { CarouselItem } from './Carousel';
+import RelatedProducts from './RelatedProducts.jsx';
+import YourOutfits from './YourOutfits.jsx';
+import Modal from '../common/modal.jsx';
+import Comparison from './Comparison.jsx';
 
 // currently, implementing without react hooks, but will refactor using react hooks later
 class RIC extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentProduct: null,
-      currentProductId: '71697',
+      currentProductId: 71699,
+      currentProduct: {},
       relatedProducts: [],
-      yourOutfits: [],
-      selectedRelatedProduct: null
+      comparedProduct: null,
+      modal: false
     }
   }
 
-  componentDidMount() {
-    this.getRelatedItems();
+  async componentDidMount() {
+    await this.getRelatedItems();
+    await this.getCurrentProduct();
+  }
+
+  getCurrentProduct() {
+    axios.get(`/related_items/ric/main/${this.state.currentProductId}`)
+    .then(response => {
+      return response.data
+    })
+    .then(currentProduct => {
+      return this.setDefaultStyle([currentProduct], 'outfit');
+    })
+    .then(currentProduct => {
+      this.setState({ currentProduct: currentProduct[0] });
+    })
+    .catch(err => {throw err });
   }
 
   getRelatedItems() {
@@ -26,78 +43,59 @@ class RIC extends React.Component {
       return response.data
     })
     .then(relatedProducts => {
-      return this.setDefaultStyle(relatedProducts);
+      return this.setDefaultStyle(relatedProducts, 'related');
     })
     .then(relatedProducts => {
-      this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
+      this.setState({ relatedProducts });
     })
     .catch(err => { throw err; });
   }
 
-  setDefaultStyle(products) {
+  setDefaultStyle(products, list) {
     products.forEach(product => {
       product.styles.forEach(style => {
         if (style['default?']) {
           product.thumbnail = style.photos[0].thumbnail_url;
           product.sale_price = style.sale_price;
-          product.list = 'related';
+          product.list = list;
         }
       })
       if (product.thumbnail === undefined) {
         product.thumbnail = product.styles[0].photos[0].thumbnail_url;
         product.sale_price = product.styles[0].sale_price;
-        product.list = 'related';
+        product.list = list;
       }
     })
     return products;
   }
 
-  addFavorite(event) {
+  compare(event) {
     let id = Number(event.currentTarget.id);
-    if (!this.checkExistingOutfit(id)) {
-      for (var i = 0; i < this.state.relatedProducts.length; i++) {
-        if (this.state.relatedProducts[i].id === id) {
-          let outfit = JSON.parse(JSON.stringify(this.state.relatedProducts[i]));
-          outfit.list = 'outfit';
-          this.setState({
-            yourOutfits: [...this.state.yourOutfits, outfit]
-          });
-          return;
-        }
+    let comparedProduct;
+    for (var i = 0; i < this.state.relatedProducts.length; i++) {
+      if (this.state.relatedProducts[i].id === id) {
+        comparedProduct = this.state.relatedProducts[i];
+        break;
       }
     }
+    this.setState({ comparedProduct, modal: true });
   }
 
-  checkExistingOutfit(id) {
-    for (var i = 0; i < this.state.yourOutfits.length; i++) {
-      if (this.state.yourOutfits[i].id === id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  removeOutfit(event) {
-    let id = Number(event.currentTarget.id);
-    let currentOutfits = this.state.yourOutfits;
-    let updatedOutfits = [];
-    for (var i = 0; i < currentOutfits.length; i++) {
-      if (currentOutfits[i].id !== id) {
-        updatedOutfits.push(currentOutfits[i]);
-      }
-    }
-    this.setState({
-      yourOutfits: updatedOutfits
-    });
+  close() {
+    this.setState({ comparedProduct: null, modal: false });
   }
 
   render() {
+
     return (
       <div>
         <h4>RELATED PRODUCTS</h4>
-        <ProductsList products={this.state.relatedProducts} favorite={this.addFavorite.bind(this)} />
+        <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} />
+        <Modal handleClose={this.close.bind(this)} show={this.state.modal}>
+          <Comparison main={this.state.currentProduct} related={this.state.comparedProduct} />
+        </Modal>
         <h4>YOUR OUTFITS</h4>
-        <ProductsList products={this.state.yourOutfits} remove={this.removeOutfit.bind(this)}/>
+        <YourOutfits currentProduct={this.state.currentProduct}/>
       </div>
     )
   }
