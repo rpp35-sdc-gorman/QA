@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { act } from "react-dom/test-utils";
 import axios from 'axios'
 
-import Gallery from './Gallery';
+import Gallery from '../Gallery';
 
 
 const testPhotos = [
@@ -33,7 +33,7 @@ describe("Gallery Unit Tests", () => {
     document.body.appendChild(container);
   });
   afterEach(() => {
-    unmountComponentAtNode(container);
+    unmountComponentAtNode(document)
     container.remove();
     container = null;
   });
