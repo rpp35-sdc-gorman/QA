@@ -45,14 +45,14 @@ describe('Comparison Modal Test', () =>{
       })
       expect(container.querySelector('div.comparison')).toBe(null);
     });
+    it('should be not be open if comparison button was never clicked', async () => {
+      await act(() => {
+        createRoot(container).render(
+        <Modal>
+          <Comparison main={mainProduct} related={comparedProduct} />
+        </Modal>)
+      })
+      expect(container.querySelector('div.modal.display-block')).toBe(null);
+    });
   })
-  it('should be not be open if comparison button was never clicked', async () => {
-    await act(() => {
-      createRoot(container).render(
-      <Modal>
-        <Comparison main={mainProduct} related={comparedProduct} />
-      </Modal>)
-    })
-    expect(container.querySelector('div.modal.display-block')).toBe(null);
-  });
 })
