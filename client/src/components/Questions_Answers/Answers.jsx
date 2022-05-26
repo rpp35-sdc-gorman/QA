@@ -8,13 +8,15 @@ var Answers = (props) => {
   const [showImage, setShowImage] = useState(false);
   const [displayImage, setDisplayImage] = useState('');
 
-  function toggleExpand() {
+  function toggleExpand(event) {
+    props.clickTracker(event);
     setExpanded(!expanded);
   }
 
   function toggleImage(event) {
+    props.clickTracker(event);
     setDisplayImage(event.target.src);
-    setShowImage(true);
+    setShowImage(!showImage);
   }
 
   let toggle;
@@ -47,6 +49,7 @@ var Answers = (props) => {
           helpfulness={answer.helpfulness}
           date={answer.date}
           updateAnswerHelpfulness={props.updateAnswerHelpfulness}
+          clickTracker={props.clickTracker}
         />
       </div>
     )
@@ -54,7 +57,7 @@ var Answers = (props) => {
 
   return (
     <div id="answers" >
-      <Modal handleClose={() => setShowImage(false)} show={showImage}>
+      <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
         <img src={displayImage}/>
 
       </Modal>
