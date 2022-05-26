@@ -72,11 +72,9 @@ describe('Products List Test', () =>{
     });
 
     it('should hide next button after reaching end of list', async () => {
-      console.log('first: ', container.querySelector('div.carousel').innerHTML);
       await act(async () => {
         await container.querySelector('#next').dispatchEvent(new MouseEvent('click', { bubbles: true }))
       });
-      console.log('second: ', container.querySelector('div.carousel').innerHTML);
       expect(container.querySelectorAll('button.next').length).toEqual(0);
     });
   })
