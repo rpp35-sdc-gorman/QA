@@ -46,7 +46,7 @@ class RIC extends React.Component {
       return this.setDefaultStyle(relatedProducts, 'related');
     })
     .then(relatedProducts => {
-      this.setState({ relatedProducts });
+      this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
     })
     .catch(err => { throw err; });
   }
