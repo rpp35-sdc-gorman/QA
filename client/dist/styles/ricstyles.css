@@ -86,7 +86,7 @@
   grid-row-end: 6;
 }
 
-.card_favorite, .card_remove {
+.card_compare, .card_remove {
   grid-column-start: 3;
   grid-column-end: 4;
   grid-row-start: 1;

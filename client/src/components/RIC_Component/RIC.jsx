@@ -32,7 +32,7 @@ class RIC extends React.Component {
       return this.setDefaultStyle([currentProduct], 'outfit');
     })
     .then(currentProduct => {
-      this.setState({ currentProduct: currentProduct[0] }, () => {console.log(this.state.currentProduct)});
+      this.setState({ currentProduct: currentProduct[0] });
     })
     .catch(err => {throw err });
   }
@@ -46,7 +46,7 @@ class RIC extends React.Component {
       return this.setDefaultStyle(relatedProducts, 'related');
     })
     .then(relatedProducts => {
-      this.setState({ relatedProducts }, () => {console.log(this.state.relatedProducts)});
+      this.setState({ relatedProducts });
     })
     .catch(err => { throw err; });
   }
@@ -71,7 +71,6 @@ class RIC extends React.Component {
 
   compare(event) {
     let id = Number(event.currentTarget.id);
-    console.log(id);
     let comparedProduct;
     for (var i = 0; i < this.state.relatedProducts.length; i++) {
       if (this.state.relatedProducts[i].id === id) {
@@ -79,7 +78,7 @@ class RIC extends React.Component {
         break;
       }
     }
-    this.setState({ comparedProduct, modal: true }, () => {console.log(this.state.comparedProduct)});
+    this.setState({ comparedProduct, modal: true });
   }
 
   close() {
@@ -88,7 +87,7 @@ class RIC extends React.Component {
 
   render() {
 
-    return (
+    return (this.state.relatedProducts.length ?
       <div>
         <h4>RELATED PRODUCTS</h4>
         <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} />
@@ -97,7 +96,7 @@ class RIC extends React.Component {
         </Modal>
         <h4>YOUR OUTFITS</h4>
         <YourOutfits currentProduct={this.state.currentProduct}/>
-      </div>
+      </div> : null
     )
   }
 }

@@ -10,7 +10,7 @@ var ProductCards = (props) => (
         color="white"
         strokeWidth={2}
         size={20}
-        className="card_favorite"
+        className="card_compare"
         id={props.id}
         onClick={props.compare}
       />

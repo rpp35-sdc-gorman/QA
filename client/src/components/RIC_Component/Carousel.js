@@ -16,8 +16,8 @@ class Carousel extends React.Component {
       numDisplayedCards: null,
       increment: null,
       showBack: true,
-      showNext: true,
-      cardWidth: 275
+      showNext: false,
+      cardWidth: 250
     }
 
     this.updateIndex = this.updateIndex.bind(this);
@@ -25,8 +25,8 @@ class Carousel extends React.Component {
 
   componentDidMount() {
     let numDisplayedCards = Math.floor(900/this.state.cardWidth);
-    let showBack = this.state.calculatedIndex === 1 ? false : true;
-    let showNext = this.state.calculatedIndex !== 1 ? true : false;
+    let showBack = false;
+    let showNext = !(React.Children.count(this.props.children) > numDisplayedCards);
     this.setState({
       numDisplayedCards,
       showBack,
@@ -37,9 +37,7 @@ class Carousel extends React.Component {
 
   updateIndex (nextIndex) {
     let maxDisplayed = React.Children.count(this.props.children) / this.state.numDisplayedCards;
-    if (nextIndex < 0) {
-      nextIndex = 0;
-    } else if (nextIndex >= maxDisplayed) {
+    if (nextIndex >= maxDisplayed) {
       nextIndex = maxDisplayed;
     }
     let showBack = (Math.round(nextIndex * 100) / 100) <= 1 ? false : true;
