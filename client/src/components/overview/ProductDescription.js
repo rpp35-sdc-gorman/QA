@@ -1,6 +1,6 @@
 
 import React from 'react';
-
+import {Check} from 'akar-icons';
 
 //static display - shouldn't need much work as long as data is correct
 function ProductDescription (props) {
@@ -13,10 +13,10 @@ function ProductDescription (props) {
         <h3>{props.info.slogan}</h3>
         <p>{props.info.description}</p>
       </div>
-      <ul>
+      <ul className="features">
         {
           props.info.features.map(item => {
-            return <li>{item.value}</li>
+            return <li className="feature"><Check size={16}/>{item.value}</li>
           })
         }
       </ul>
