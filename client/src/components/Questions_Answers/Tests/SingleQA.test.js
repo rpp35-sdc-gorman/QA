@@ -42,14 +42,14 @@ describe('Unit tests', () => {
     });
     // expect to hide answers
     expect(container.querySelectorAll('div.panel.active').length).toBe(0);
-    expect(container.querySelector('a.panel.active#load')).toBe(null);
+    expect(container.querySelector('section.panel.active#load')).toBe(null);
     // second click should expand answers
     await act(() => {
       container.querySelector('button').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(container.querySelectorAll('div.panel.active').length).toBe(2);
     expect(container.querySelectorAll('div.panel').length).toBe(3);
-    expect(container.querySelector('a.panel.active#load').textContent).toBe('See more answers');
+    expect(container.querySelector('section.panel.active#load').textContent).toBe('See more answers');
   });
 })
 
@@ -58,14 +58,14 @@ describe('Integration tests', () => {
     // expect to have 2/3 answers visible by default
     expect(container.querySelectorAll('div.panel.active').length).toBe(2);
     expect(container.querySelectorAll('div.panel').length).toBe(3);
-    expect(container.querySelector('a.panel.active#load').textContent).toBe('See more answers');
+    expect(container.querySelector('section.panel.active#load').textContent).toBe('See more answers');
 
     // click to see more answers
     await act(() => {
-      container.querySelector('a.panel.active#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      container.querySelector('section.panel.active#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(container.querySelectorAll('div.panel.active').length).toBe(3);
-    expect(container.querySelector('a.panel.active#load').textContent).toBe('Collapse answers');
+    expect(container.querySelector('section.panel.active#load').textContent).toBe('Collapse answers');
 
     // click on question to hide all answers
     await act(() => {
@@ -73,7 +73,7 @@ describe('Integration tests', () => {
     });
     expect(container.querySelectorAll('div.panel.active').length).toBe(0);
     expect(container.querySelectorAll('div.panel').length).toBe(3);
-    expect(container.querySelector('a.panel.active#load')).toBe(null);
+    expect(container.querySelector('section.panel.active#load')).toBe(null);
 
     // click on question to show all answers
     await act(() => {
@@ -81,7 +81,7 @@ describe('Integration tests', () => {
     });
     expect(container.querySelectorAll('div.panel.active').length).toBe(3);
     expect(container.querySelectorAll('div.panel').length).toBe(3);
-    expect(container.querySelector('a.panel.active#load').textContent).toBe('Collapse answers');
+    expect(container.querySelector('section.panel.active#load').textContent).toBe('Collapse answers');
   });
 
   it('should work with AddAnswer to open new modal window', async () => {
@@ -90,6 +90,21 @@ describe('Integration tests', () => {
     await act(() => {
       container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    expect(container.querySelectorAll('.modal').length).toBe(1);
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
+  })
+
+  it('should close addAnswer modal on button click', async () => {
+    // dispatch a click to AddAnswer
+    expect(container.querySelectorAll('#addAnswerButton').length).toBe(1);
+    await act(() => {
+      container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
+
+    // dispatch a click to closeModal
+    await act(() => {
+      container.querySelector('#closeAddAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
   })
 })

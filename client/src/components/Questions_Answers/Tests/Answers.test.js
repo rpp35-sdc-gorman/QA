@@ -29,20 +29,20 @@ describe('Unit tests', () => {
   it("should have all questions loaded by default, and up to 2 displayed", () => {
     expect(container.querySelectorAll('div.panel').length).toBe(3);
     expect(container.querySelectorAll('div.panel.active').length).toBe(2);
-    expect(container.querySelector('a.panel#load').textContent).toBe('See more answers');
+    expect(container.querySelector('section.panel#load').textContent).toBe('See more answers');
   });
 
   it('should display all answers once clicked and switch button text to "Collapse answers"', () => {
     // dispatch a click event on question button
     expect(container.querySelectorAll('div.panel.active').length).toBe(2);
-    expect(container.querySelector('a#load.panel').textContent).toBe('See more answers');
+    expect(container.querySelector('section#load.panel').textContent).toBe('See more answers');
 
     // dispatch click on see more answers div
     act(() => {
-      container.querySelector('a#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      container.querySelector('section#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
     expect(container.querySelectorAll('div.panel.active').length).toBe(3);
-    expect(container.querySelector('a#load.panel').textContent).toBe('Collapse answers');
+    expect(container.querySelector('section#load.panel').textContent).toBe('Collapse answers');
   });
 })

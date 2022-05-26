@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
 var AddAnswer = (props) => {
   const [answer, setAnswer] = useState('')
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
+  const [photos, setPhotos] = useState([])
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -13,14 +14,19 @@ var AddAnswer = (props) => {
       axios.post(`/question_answer/addAnswerTo/${props.questionToAnswer.question_id}`, {
         body: answer,
         name: nickname,
-        email
+        email,
+        photos
       })
-      .then((result) => props.toggleAddAnswer('update successful'))
+      .then((result) => props.toggleAddAnswer('addAnswer successful'))
       .catch(err => console.log(err));
     } else {
       setEmail(false);
     }
   }
+
+  // useEffect(() => {
+  //   console.log('updated', photos, props.showAddAnswer);
+  // })
 
   function handleChange(event) {
     // let value = _.escape(event.target.value);
@@ -31,6 +37,13 @@ var AddAnswer = (props) => {
       setNickname(value);
     } else if (event.target.id === 'email') {
       setEmail(value);
+    } else if (event.target.id === 'photos') {
+      let files = photos;
+      _.each(document.getElementById('photos').files, (file, key) => {
+        files.push(file.name);
+      })
+      files = _.uniq(files);
+      setPhotos(files);
     }
   }
 
@@ -44,12 +57,16 @@ var AddAnswer = (props) => {
 
   function closeModal(e) {
     e.preventDefault();
+    setAnswer('');
+    setNickname('');
+    setEmail('');
+    setPhotos([]);
     props.toggleAddAnswer();
   }
 
   return (
     props.showAddAnswer ?
-    <div className="modalAnswers">
+    <div className="modalAnswers" onClick={closeModal}>
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Answer</h2>
         <h3>{props.currentProduct}: {props.questionToAnswer.question_body}</h3>
@@ -75,8 +92,16 @@ var AddAnswer = (props) => {
           {(email === false) ? <div>Invalid email address</div> : <></>}
         </label>
 
+        <label> Upload pictures:
+          <input id="photos" onChange={handleChange} type="file" multiple/>
+          <ul>
+            {photos.map((photo, i) => (
+              <li key={i}>{photo}</li>
+            ))}
+          </ul>
+        </label>
         <input id="submitAnswer" type="submit" value="Submit" style={{width: '80px', marginTop: '5px'}}/>
-        <button onClick={closeModal}>X</button>
+        <button id="closeAddAnswer" onClick={closeModal}>X</button>
       </form>
     </div> : <></>
   )

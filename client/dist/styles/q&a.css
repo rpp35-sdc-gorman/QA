@@ -9,7 +9,7 @@
   font-weight: bold;
   transition: 0.4s;
   padding:0 5em;
-  width: 80%;
+  min-width: 70%;
 }
 
 .active, .accordion:hover {
@@ -27,11 +27,16 @@
 
 .panel.active {
   display: block;
-  max-height: 200px;
+  max-height: 25vh;
 }
 
-#QA {
+#QAMain {
   padding: 0 2em;
+}
+
+#QABody {
+  max-height: 80vh;
+  overflow: auto;
 }
 
 #singleQA {
@@ -41,13 +46,15 @@
 }
 
 #answers {
-  overflow: scroll;
+  overflow: auto;
   max-height: 50vh;
 }
 
 #answers #load {
   padding-top: 10px;
   font-size: 0.75em;
+  cursor: pointer;
+  font-weight: 900;
 }
 
 #answer {
@@ -59,7 +66,6 @@
 #answer_label {
   font-size: 1em;
   font-weight: bold;
-  color: gray;
   margin-top: 3%;
   padding-right: 5px;
 }
@@ -78,25 +84,14 @@ p#answer_body {
   color: grey;
 }
 
-#question {
+#answerImages {
   display: flex;
   flex-direction: row;
-  height: 40px;
+  justify-content: flex-start;
 }
 
-#question_details {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 10px;
-  min-width: 200px;
-  font-size: 0.8em;
-  background-color: #eee;
-  color: #444;
-}
-
-#question_details:hover {
-  background-color: #ccc;
+#answerImages * {
+  padding-right: 1em;
 }
 
 .rightBorder {
@@ -109,17 +104,46 @@ p#answer_body {
   padding-left: 1em;
 }
 
-.underline {
-  text-decoration: underline;
+.seller {
+  color: black;
+  font-size: 1.1em;
+  font-weight: 900;
 }
 
-.modalAnswers {
+#question {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  width: 100%;
+}
+
+#question_details {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  flex: 1;
+  font-size: 0.8em;
+  background-color: #eee;
+  color: #444;
+}
+
+#question_details:hover {
+  background-color: #ccc;
+}
+
+.underline {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.modalAnswers, .modalQuestions {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.6);
 
   display: flex;
   justify-content: center;
@@ -176,4 +200,22 @@ form#modal-form label div {
 
 form#modal-form > * textarea {
   height: 100px;
+}
+
+#QAsearch {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+#QAsearch input {
+  height: 3em;
+  width: 100%;
+}
+
+#QAsearch i {
+  position: absolute;
+  right: 1em;
 }
