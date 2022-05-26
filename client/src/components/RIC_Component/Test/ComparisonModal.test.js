@@ -52,7 +52,7 @@ describe('Comparison Modal Test', () =>{
           <Comparison main={mainProduct} related={comparedProduct} />
         </Modal>)
       })
-      expect(container.querySelector('div.modal.display-block')).toBe(null);
+      expect(container.querySelector('div.modal display-block')).toBe(null);
     });
   })
 })

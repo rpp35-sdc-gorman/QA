@@ -12,7 +12,7 @@ var ProductCards = (props) => (
         size={20}
         className="card_favorite"
         id={props.id}
-        onClick={props.favorite}
+        onClick={props.compare}
       />
     ) : (
       <CircleXFill
