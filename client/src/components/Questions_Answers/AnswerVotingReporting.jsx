@@ -14,8 +14,9 @@ let AnswerVotingReporting = (props) => {
     setDate(tmp.substr(0, 3) + tmp.substr(4));
   });
 
-  function voteHelpful() {
+  function voteHelpful(event) {
     if (!voted) {
+      props.clickTracker(event);
       setVoted(true);
       // request to vote helpful
       setHelpfulness(helpfulness + 1)
@@ -25,8 +26,9 @@ let AnswerVotingReporting = (props) => {
     }
   }
 
-  function report() {
+  function report(event) {
     if (!reported) {
+      props.clickTracker(event);
       setReported(true);
       // request to report
       axios.put(`/question_answer/reported/answer/${props.answer_id}`)

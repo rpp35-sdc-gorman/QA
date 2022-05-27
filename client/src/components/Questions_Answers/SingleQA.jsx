@@ -36,15 +36,17 @@ class SingleQA extends React.Component {
       })
   }
 
-  toggleAccordion(e) {
-    e.preventDefault();
+  toggleAccordion(event) {
+    event.preventDefault();
+    this.props.clickTracker(event);
     this.setState((state) => {
       return {showAnswers: !state.showAnswers}
     })
   }
 
-  toggleAddAnswer(updated) {
-    if (updated === 'addAnswer successful') {
+  toggleAddAnswer(event) {
+    this.props.clickTracker(event);
+    if (event.target.id === 'submitAnswer') {
       axios.get(`/question_answer/answers/${this.props.question.question_id}`, {params: {count: 100}})
         .then(answers => {
           let allAnswers = [];
@@ -52,8 +54,6 @@ class SingleQA extends React.Component {
           if (seller) {
             allAnswers = allAnswers.concat(seller);
           }
-          console.log('1', allAnswers);
-          console.log('2', allAnswers.concat(answers.data.results.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness)))
           this.setState((state) =>  ({
             allAnswers: allAnswers.concat(answers.data.results.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness)),
             showAddAnswer: !state.showAddAnswer
@@ -66,7 +66,7 @@ class SingleQA extends React.Component {
   }
 
   updateAnswerHelpfulness() {
-    axios.get(`/question_answer/answers/${this.props.question.question_id}`)
+    axios.get(`/question_answer/answers/${this.props.question.question_id}`, {params: {count: 100}})
       .then(answers => {
         let allAnswers = [];
         let seller = answers.data.results.filter(answer => answer.answerer_name === "Seller").sort((a, b) => b.helpfulness - a.helpfulness);
@@ -84,21 +84,26 @@ class SingleQA extends React.Component {
     return (
       <div id="singleQA">
         <AddAnswer
-            toggleAddAnswer={(updated) => this.toggleAddAnswer(updated)} // closes modal
+            toggleAddAnswer={(event) => this.toggleAddAnswer(event)} // closes modal
             questionToAnswer={question}
             currentProduct = {this.props.currentProduct}
             showAddAnswer={this.state.showAddAnswer}
           />
         <div id="question">
-          <button className="accordion" onClick={(e) => this.toggleAccordion(e)}>
+          <button className="accordion" onClick={(event) => this.toggleAccordion(event)}>
             Q: {question.question_body}
           </button>
-          <QuestionVotingReporting question_id={question.question_id} helpfulness={question.question_helpfulness} toggleAddAnswer={() => this.toggleAddAnswer()}/>
+          <QuestionVotingReporting
+            question_id={question.question_id}
+            helpfulness={question.question_helpfulness}
+            toggleAddAnswer={(event) => this.toggleAddAnswer(event)}
+            clickTracker={this.props.clickTracker}/>
         </div>
         <Answers
           allAnswers={this.state.allAnswers}
           showAnswers={this.state.showAnswers}
           updateAnswerHelpfulness={this.updateAnswerHelpfulness}
+          clickTracker={this.props.clickTracker}
         />
       </div>
     )

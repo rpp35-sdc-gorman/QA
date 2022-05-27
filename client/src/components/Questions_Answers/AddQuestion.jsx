@@ -17,7 +17,7 @@ var AddQuestion = (props) => {
         product_id: props.product_id
       })
       .then((result) => {
-        props.toggleAddQuestion('update successful')
+        props.toggleAddQuestion(event)
       })
       .catch(err => console.log(err));
     } else {
@@ -45,12 +45,12 @@ var AddQuestion = (props) => {
     }
   }
 
-  function closeModal(e) {
-    e.preventDefault();
+  function closeModal(event) {
+    event.preventDefault();
     setQuestion('');
     setNickname('');
     setEmail('');
-    props.toggleAddQuestion();
+    props.toggleAddQuestion(event);
   }
 
   return (

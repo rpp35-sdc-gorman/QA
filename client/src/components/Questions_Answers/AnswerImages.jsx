@@ -11,8 +11,8 @@ var AnswerImages = (props) => {
           src={photo.url}
         />
       })} */}
-      <img onClick={(photo) => props.toggleImage(photo)} src={'https://via.placeholder.com/75'} />
-      <img onClick={(photo) => props.toggleImage(photo)} src={'https://via.placeholder.com/75'} />
+      <img onClick={(event) => props.toggleImage(event)} src={'https://via.placeholder.com/75'} />
+      <img onClick={(event) => props.toggleImage(event)} src={'https://via.placeholder.com/75'} />
     </div>
   )
 }

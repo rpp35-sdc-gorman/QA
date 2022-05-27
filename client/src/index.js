@@ -6,6 +6,8 @@ import QAMain from './components/Questions_Answers/QAMain.jsx';
 import RatingsAndReviews from './components/ratingsAndReviews/ratingsAndReviews.jsx';
 import RIC from './components/RIC_Component/RIC.jsx';
 
+import ClickTracker from './components/common/ClickTracker.jsx';
+
 const container = document.getElementById('root');
 const root = createRoot(container);
 
@@ -16,10 +18,11 @@ class App extends React.Component {
   }
 
   render() {
+    const QA = ClickTracker(QAMain, 'Question & Answer');
     return (
       <div>
         <Overview />
-        <QAMain />
+        <QA />
         <RatingsAndReviews />
         <RIC />
       </div>
