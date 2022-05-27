@@ -41,7 +41,7 @@ class Carousel extends React.Component {
       nextIndex = maxDisplayed;
     }
     let showBack = (Math.round(nextIndex * 100) / 100) <= 1 ? false : true;
-    let showNext = (Math.round(nextIndex * 100) / 100) >= maxDisplayed ? true : false;
+    let showNext = (Math.round(nextIndex * 100) / 100) >= (Math.round(maxDisplayed * 100) / 100) ? true : false;
     this.setState({
       showBack,
       showNext,

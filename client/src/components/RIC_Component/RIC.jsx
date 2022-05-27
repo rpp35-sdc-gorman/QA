@@ -86,9 +86,8 @@ class RIC extends React.Component {
   }
 
   render() {
-
     return (this.state.relatedProducts.length ?
-      <div>
+      <div className='RIC'>
         <h4>RELATED PRODUCTS</h4>
         <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} />
         <Modal handleClose={this.close.bind(this)} show={this.state.modal}>
