@@ -7,7 +7,7 @@ import exampleData from './ExampleData.js';
 
 import QAMain from '../QAMain.jsx';
 
-global.IS_REACT_ACT_ENVIRONMENT = true
+global.IS_REACT_ACT_ENVIRONMENT = true // stops warning: The current testing environment is not configured to support act(...)
 
 jest.mock('axios');
 let toggleAddQuestion = jest.fn();
@@ -35,7 +35,7 @@ describe('Unit tests with less than 2 questions', () => {
   axios.get.mockResolvedValue({'data': [ {'value': {...exampleData.question, 'answers': exampleData.answers}} ]}); // need to end with answers cause of Date part of AnswerVotingReporting in re-rendering
   it('should render one question to DOM without a "More Answered Questions" toggle', async () => {
     expect(axios.get).toBeCalledWith('/question_answer/71697', {"params": {"count": 100, "page_num": 1}});
-    expect(container.querySelector('#questionToggle')).toBe(null);
+    expect(container.querySelector('#questionToggle')).toBeNull();
 
     //displays Add Question button
     expect(container.querySelectorAll('#addQuestionButton').length).toBe(1);
@@ -62,7 +62,7 @@ describe('Unit tests with more than 2 questions', () => {
     expect(container.querySelector('#addQuestionButton').textContent).toBe('Add Question');
   });
 
-  it('should load more questions on "More Answered Questions" click, and turn off option to load more questions', async () => {
+  it('should load more questions on "More Answered Questions" click, and turn off option to load more questions if all loaded', async () => {
     expect(axios.get).toBeCalled();
     expect(container.querySelector('#questionToggle').textContent).toBe('More Answered Questions');
 
@@ -70,12 +70,21 @@ describe('Unit tests with more than 2 questions', () => {
     await act(async () => {
       await container.querySelector('#questionToggle').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    expect(container.querySelector('#questionToggle')).toBe(null);
     expect(container.querySelectorAll('#singleQA').length).toBe(3);
+    expect(container.querySelector('#questionToggle')).toBeNull();
   });
 })
 
 describe('Integration tests', () => {
+  var questions = exampleData.APIquestion3;
+  beforeAll(() => {
+    questions.data.forEach(question => {
+      question.value['answers'] = exampleData.answers;
+    })
+    axios.get.mockResolvedValue(questions);
+  })
+
+  /**  AddQuestion integration tests ***/
   it('should work with AddQuestions to open and close new modal window', async () => {
     // dispatch a click to AddQuestion
     expect(container.querySelectorAll('.modalQuestions').length).toBe(0);
@@ -93,8 +102,10 @@ describe('Integration tests', () => {
   })
 
   it('should be able to add a question', async () => {
+    expect(container.querySelectorAll('#singleQA').length).toBe(2);
+
     // Make sure to resolve with a promise
-    axios.post.mockResolvedValue('add question success');
+    await act(async () => axios.post.mockResolvedValue('add question success'));
     // on load GET requests
     expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}});
 
@@ -107,19 +118,54 @@ describe('Integration tests', () => {
     expect(container.querySelectorAll('.modalQuestions').length).toBe(1);
 
     // add question
-    await act(() => {
+    await act(async () => {
       Simulate.change(container.querySelector('textarea#question'), { target: { id:"question", value: "random question" } });
       Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
       Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
     })
 
-    await act(() => {
+    await act(async () => {
       container.querySelector('#submitQuestion').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    // should trigger a re-render of questions with a POST to add question then GET request to update
+    // // should trigger a re-render of questions with a POST to add question then GET request to update
     expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 71697});
-    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}});
+    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
+    // expanding questions should give 3 + 1 questions total, with only 2 showing at first now but would need new mockResolvedValue to test explicitly
     expect(container.querySelectorAll('#singleQA').length).toBe(2);
+  })
+
+  /**  Search integration tests ***/
+  it('should not filter if search term is less than 3 chars long', async () => {
+    await act(async () => {
+      Simulate.change(container.querySelector('input'), {target: {value: 'wh'}})
+    })
+    expect(container.querySelectorAll('#singleQA').length).toBe(2);
+
+    // confirm total length is still 3
+    await act(async () => {
+      await container.querySelector('#questionToggle').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(container.querySelectorAll('#singleQA').length).toBe(3);
+    expect(container.querySelector('#questionToggle')).toBeNull();
+  })
+
+  it('should be able to update question list based on filter in Search component', async () => {
+    expect(container.querySelector('input').value).toBe('');
+    expect(container.querySelectorAll('#singleQA').length).toBe(2);
+    await act(async () => {
+      Simulate.change(container.querySelector('input'), {target: {value: 'why'}})
+    })
+    expect(container.querySelectorAll('#singleQA').length).toBe(1);
+    expect(container.querySelector('#singleQA #question .accordion').textContent).toBe('Q: Why is this product cheaper here than other sites?');
+    expect(container.querySelector('#questionToggle')).toBeNull(); // asserts only 1 question in list
+  })
+
+  it('should not matter letter casing in search', async () => {
+    await act(async () => {
+      Simulate.change(container.querySelector('input'), {target: {value: 'RaNdOm'}})
+    })
+    expect(container.querySelectorAll('#singleQA').length).toBe(2);
+    expect(container.querySelector('#questionToggle')).toBeNull(); // asserts only 2 questions in list
   })
 })

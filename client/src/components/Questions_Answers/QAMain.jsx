@@ -72,7 +72,7 @@ class QAMain extends React.Component {
   toggleAddQuestion(event) {
     this.props.clickTracker(event);
     if (event.target.id === 'submitQuestion') {
-      this.loadMoreQuestions();
+      this.reload();
     }
     let tmp = !this.state.showAddQuestion;
     this.setState({showAddQuestion: tmp})
@@ -110,7 +110,7 @@ class QAMain extends React.Component {
             <SingleQA key={question.question_id} question={question} currentProduct={'current product name'} clickTracker={this.props.clickTracker} reload={this.reload.bind(this)}/>
           ) : <></>}
         </div>
-        {this.state.hasMoreQuestions ? loadMoreQuestions : <></>}
+        {(this.state.hasMoreQuestions && this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).length > 2) ? loadMoreQuestions : <></>}
         <button id="addQuestionButton" onClick={(event) => this.toggleAddQuestion(event)}>Add Question</button>
       </div>
     )
