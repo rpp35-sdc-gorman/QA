@@ -1,4 +1,5 @@
 var path = require('path');
+var CompressionPlugin = require('compression-webpack-plugin');
 var SRC_DIR = path.join(__dirname, '/client/src');
 var DIST_DIR = path.join(__dirname, '/client/dist');
 
@@ -37,5 +38,11 @@ module.exports = {
         include: /\.module\.css$/
       }
     ]
-  }
+  },
+  plugins: [
+    new CompressionPlugin({
+      test: /\.js(\?.*)?$/i,
+      algorithm: "brotliCompress"
+    }),
+  ]
 };

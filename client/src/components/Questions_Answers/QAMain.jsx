@@ -37,15 +37,17 @@ class QAMain extends React.Component {
       })
   }
 
-  loadMoreQuestions() {
+  loadMoreQuestions(event) {
+    this.props.clickTracker(event);
     this.setState((state) => ({
       end: state.end + 2,
       hasMoreQuestions: (state.questions.length - (state.end + 2) <= 0) ? false : true
      }))
   }
 
-  toggleAddQuestion(updated) {
-    if (updated) {
+  toggleAddQuestion(event) {
+    this.props.clickTracker(event);
+    if (event.target.id === 'submitQuestion') {
       this.loadMoreQuestions();
     }
     let tmp = !this.state.showAddQuestion;
@@ -72,7 +74,7 @@ class QAMain extends React.Component {
     return (
       <div id="QAMain">
         <AddQuestion
-          toggleAddQuestion={(updated) => this.toggleAddQuestion(updated)} // closes modal
+          toggleAddQuestion={(event) => this.toggleAddQuestion(event)} // closes modal
           productToQuestion={'current product name'} // tmp variable for product name
           product_id={71697}
           showAddQuestion={this.state.showAddQuestion}
@@ -81,11 +83,11 @@ class QAMain extends React.Component {
         <Search setFilter={(filterTerm) => this.setFilter(filterTerm)}/>
         <div id="QABody">
           {(this.state.questions.length) ? this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).slice(0, this.state.end).map(question =>
-            <SingleQA key={question.question_id} question={question} currentProduct={'current product name'}/>
+            <SingleQA key={question.question_id} question={question} currentProduct={'current product name'} clickTracker={this.props.clickTracker}/>
           ) : <></>}
         </div>
         {this.state.hasMoreQuestions ? loadMoreQuestions : <></>}
-        <button onClick={() => this.toggleAddQuestion()}>Add Question</button>
+        <button onClick={(event) => this.toggleAddQuestion(event)}>Add Question</button>
       </div>
     )
   }

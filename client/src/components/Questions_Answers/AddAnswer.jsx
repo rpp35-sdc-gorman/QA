@@ -17,7 +17,7 @@ var AddAnswer = (props) => {
         email,
         photos
       })
-      .then((result) => props.toggleAddAnswer('addAnswer successful'))
+      .then((result) => props.toggleAddAnswer(event))
       .catch(err => console.log(err));
     } else {
       setEmail(false);
@@ -55,13 +55,13 @@ var AddAnswer = (props) => {
     }
   }
 
-  function closeModal(e) {
-    e.preventDefault();
+  function closeModal(event) {
+    event.preventDefault();
     setAnswer('');
     setNickname('');
     setEmail('');
     setPhotos([]);
-    props.toggleAddAnswer();
+    props.toggleAddAnswer(event);
   }
 
   return (
