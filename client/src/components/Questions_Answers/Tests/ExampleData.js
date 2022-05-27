@@ -1,5 +1,5 @@
 export default {
-  answers: {'data': {'results': [
+  answers:  [
     {
       "answer_id": 8,
       "body": "What a great question!",
@@ -32,7 +32,7 @@ export default {
       "helpfulness": 8,
       "photos": [],
     }
-  ]}},
+  ],
   question: {
     "question_id": 37,
     "question_body": "Why is this product cheaper here than other sites?",
@@ -51,7 +51,7 @@ export default {
       }
     }
   },
-  APIquestion: {data: {results: [{
+  APIquestion2: {data: [{'value': {
     "question_id": 37,
     "question_body": "Why is this product cheaper here than other sites?",
     "question_date": "2018-10-18T00:00:00.000Z",
@@ -67,26 +67,8 @@ export default {
         "helpfulness": 4,
         "photos": []
       }
-    }
-  }]}},
-  APIquestion2: {data: {results: [{
-    "question_id": 37,
-    "question_body": "Why is this product cheaper here than other sites?",
-    "question_date": "2018-10-18T00:00:00.000Z",
-    "asker_name": "williamsmith",
-    "question_helpfulness": 4,
-    "reported": false,
-    "answers": {
-      68: {
-        "id": 68,
-        "body": "We are selling it here without any markup from the middleman!",
-        "date": "2018-08-18T00:00:00.000Z",
-        "answerer_name": "Seller",
-        "helpfulness": 4,
-        "photos": []
-      }
-    }},
-    {
+    }}},
+    {'value': {
       "question_id": 38,
       "question_body": "Random other question?",
       "question_date": "2018-10-18T00:00:00.000Z",
@@ -103,9 +85,9 @@ export default {
           "photos": []
         }
       }
-    }
-  ]}},
-  APIquestion3: {data: {results: [{
+    }}
+  ]},
+  APIquestion3: {data: [{'value': {
     "question_id": 37,
     "question_body": "Why is this product cheaper here than other sites?",
     "question_date": "2018-10-18T00:00:00.000Z",
@@ -121,8 +103,8 @@ export default {
         "helpfulness": 4,
         "photos": []
       }
-    }},
-    {
+    }}},
+    {'value': {
       "question_id": 38,
       "question_body": "Random other question?",
       "question_date": "2018-10-18T00:00:00.000Z",
@@ -139,8 +121,8 @@ export default {
           "photos": []
         }
       }
-    },
-    {
+    }},
+    {'value': {
       "question_id": 39,
       "question_body": "Random other question2?",
       "question_date": "2018-10-18T00:00:00.000Z",
@@ -157,6 +139,6 @@ export default {
           "photos": []
         }
       }
-    }
-  ]}}
+    }}
+  ]}
 }

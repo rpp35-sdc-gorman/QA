@@ -13,6 +13,7 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 jest.mock('axios');
 axios.put.mockResolvedValue('voted question as helpful');
 let toggleAddAnswer = jest.fn();
+let clickTracker = jest.fn();
 
 let container = null;
 beforeEach(() => {
@@ -35,6 +36,7 @@ describe('Unit tests', () => {
           question_id={exampleData.question.question_id}
           helpfulness={exampleData.question.question_helpfulness}
           toggleAddAnswer={toggleAddAnswer}
+          clickTracker={clickTracker}
         />);
     });
   });
@@ -50,13 +52,13 @@ describe('Unit tests', () => {
       container.querySelector('#helpfulQuestion').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     })
     expect(container.querySelector("#question_details").children[0].textContent).toBe('Helpful? Yes (5)');
-    expect(axios.put).toBeCalledWith(`/question_answer/helpful/question/${exampleData.question.question_id}`)
+    expect(axios.put).toBeCalledWith(`/question_answer/voting/question/helpful/${exampleData.question.question_id}`)
   })
 
   it('should call toggleAddAnswer from parent component on "Add Answer" click', () => {
     act(() => {
       container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     })
-    expect(toggleAddAnswer).toBeCalledWith();
+    expect(toggleAddAnswer).toBeCalledWith(expect.objectContaining({target: container.querySelector('#addAnswerButton')}));
   })
 })

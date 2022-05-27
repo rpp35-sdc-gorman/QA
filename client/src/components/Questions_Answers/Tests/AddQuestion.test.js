@@ -59,10 +59,10 @@ describe('Unit tests on opened Add Question modal', () => {
 
   it("should call closeModal and subsequently toggleAddQuestion on close button click", async () => {
     // click close modal button
-    await act(() => {
+    await act(async () => {
       container.querySelector('#closeAddQuestion').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    expect(toggleAddQuestion).toBeCalledWith();
+    expect(toggleAddQuestion).toBeCalledWith(expect.objectContaining({target: container.querySelector('#closeAddQuestion')}));
   });
 
   it("should have three input fields displayed that are all required", () => {
@@ -82,30 +82,30 @@ describe('Unit tests on opened Add Question modal', () => {
   });
 
   it("should have field validation in place for invalid email", async () => {
-    await act(() => {
+    await act(async () => {
       Simulate.change(container.querySelector('textarea#question'), { target: { id:"question", value: "random question" } });
       Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
       Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "asdf" } });
     })
 
-    act(() => {
+    await act(async () => {
       container.querySelector('#submitQuestion').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(axios.post).not.toBeCalled();
   });
 
   it("should have field validation in place for invalid email", async () => {
-    await act(() => {
+    await act(async () => {
       Simulate.change(container.querySelector('textarea#question'), { target: { id:"question", value: "random question" } });
       Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
       Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
     })
 
-    await act(() => {
+    await act(async () => {
       container.querySelector('#submitQuestion').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(axios.post).toBeCalled();
     expect(axios.post).toBeCalledWith("/question_answer/addQuestionTo", {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 71697});
-    expect(toggleAddQuestion).toBeCalledWith('update successful');
+    expect(toggleAddQuestion).toBeCalledWith(expect.objectContaining({target: container.querySelector('form#modal-form')}));
   });
 })

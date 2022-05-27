@@ -3,10 +3,12 @@ const router = express.Router();
 const sendRequest = require('../lib/sendRequest');
 
 router.get('/:product_id', (req, res, next) => {
+  // getting questions
   sendRequest(`qa/questions?product_id=${req.params.product_id}&count=${req.query.count}&page=${req.query.page_num || 1}`)
     .then(questions => questions.data.results)
     .then(questions => {
       let questionsWithAnswers = []; // array of promises
+      // getting answers for each question
       questions.forEach((question) => {
         // setting what array of promises will resolve/reject to
         questionsWithAnswers.push(sendRequest(`qa/questions/${question.question_id}/answers?count=${req.query.count}`)

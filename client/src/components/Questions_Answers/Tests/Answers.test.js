@@ -9,13 +9,15 @@ import Answers from '../Answers.jsx';
 
 global.IS_REACT_ACT_ENVIRONMENT = true;
 
+let clickTracker = jest.fn();
+
 let container = null;
-beforeEach(() => {
+beforeEach(async () => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
-  act(() => {
-    createRoot(container).render(<Answers allAnswers={exampleData.answers.data.results} showAnswers={true}/>);
+  await act(async () => {
+    createRoot(container).render(<Answers allAnswers={exampleData.answers} showAnswers={true} clickTracker={clickTracker}/>);
   });
 });
 afterEach(() => {

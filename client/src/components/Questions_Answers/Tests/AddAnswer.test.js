@@ -31,7 +31,7 @@ it("should not be displayed on load with showAddAnswer === false", async () => {
     createRoot(container).render(
       <AddAnswer
         toggleAddAnswer={(updated) => toggleAddAnswer(updated)} // closes modal
-        questionToAnswer={exampleData.question}
+        questionToAnswer={{...exampleData.question, 'answers': exampleData.answers}}
         currentProduct = {'current product name'}
         showAddAnswer={false}
       />);
@@ -44,7 +44,7 @@ describe('Unit tests on opened Add Answer modal', () => {
       createRoot(container).render(
         <AddAnswer
           toggleAddAnswer={(updated) => toggleAddAnswer(updated)} // closes modal
-          questionToAnswer={exampleData.question}
+          questionToAnswer={{...exampleData.question, 'answers': exampleData.answers}}
           currentProduct = {'current product name'}
           showAddAnswer={true}
         />);
@@ -59,22 +59,24 @@ describe('Unit tests on opened Add Answer modal', () => {
 
   it("should call closeModal and subsequently toggleAddAnswers on close button click", async () => {
     // click close modal button
-    await act(() => {
+    await act(async () => {
       container.querySelector('button#closeAddAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    expect(toggleAddAnswer).toBeCalledWith(undefined);
+    expect(toggleAddAnswer).toBeCalledWith(expect.objectContaining({target: container.querySelector('button#closeAddAnswer')}));
   });
 
-  it("should have three input fields displayed that are all required", () => {
-    expect(container.querySelectorAll('.modalAnswers form label').length).toBe(3);
+  it("should have 4 input fields displayed, with first 3 beingrequired", () => {
+    expect(container.querySelectorAll('.modalAnswers form label').length).toBe(4);
 
-    container.querySelectorAll('.modalAnswers form label').forEach(label => {
-      expect(label.children[0].hasAttribute('required')).toBe(true);
+    container.querySelectorAll('.modalAnswers form label').forEach((label, i) => {
+      if (i < 3) {
+        expect(label.children[0].hasAttribute('required')).toBe(true);
+      }
     })
   });
 
   it("should have three input fields displayed with char limits in place", () => {
-    expect(container.querySelectorAll('.modalAnswers form label').length).toBe(3);
+    expect(container.querySelectorAll('.modalAnswers form label').length).toBe(4);
     expect(Number(container.querySelector('textarea#answer').getAttribute('maxlength'))).toBe(1000);
     expect(Number(container.querySelector('input#nickname').getAttribute('maxlength'))).toBe(60);
     expect(container.querySelector('input#nickname').getAttribute('placeholder')).toBe("Example: jack543!");
@@ -88,7 +90,7 @@ describe('Unit tests on opened Add Answer modal', () => {
       Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "asdf" } });
     })
 
-    act(() => {
+    await act(async () => {
       container.querySelector('#submitAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(axios.post).not.toBeCalled();
@@ -101,11 +103,11 @@ describe('Unit tests on opened Add Answer modal', () => {
       Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
     })
 
-    await act(() => {
+    await act(async () => {
       container.querySelector('#submitAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(axios.post).toBeCalled();
-    expect(axios.post).toBeCalledWith(`/question_answer/addAnswerTo/${exampleData.question.question_id}`, {"body": "random answer", "name": "jon", "email": "a1@test.ca"});
-    expect(toggleAddAnswer).toBeCalledWith('update successful');
+    expect(axios.post).toBeCalledWith(`/question_answer/addAnswerTo/${exampleData.question.question_id}`, {"body": "random answer", "name": "jon", "email": "a1@test.ca", "photos": []});
+    expect(toggleAddAnswer).toBeCalledWith(expect.objectContaining({target: container.querySelector('form')}));
   });
 })

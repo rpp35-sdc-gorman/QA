@@ -25,8 +25,12 @@ class QAMain extends React.Component {
   componentDidMount() {
     // get initial QA list from server;
     axios.get(`/question_answer/71697`, { params: {count: 100, page_num: 1}})
-      .then(result => {
-        let questionsWithAnswers = _.pluck(result.data, 'value');
+      .then(results => {
+        // let questionsWithAnswers = _.pluck(results.data, 'value');
+        let questionsWithAnswers = [];
+        for (let i = 0; i < results.data.length; i++) {
+          questionsWithAnswers.push(results.data[i].value);
+        }
         let hasMoreQuestions = true;
         if (questionsWithAnswers.length < 2) {
           hasMoreQuestions = false;
@@ -41,7 +45,11 @@ class QAMain extends React.Component {
   reload() {
     axios.get(`/question_answer/71697`, { params: {count: 100, page_num: 1}})
       .then(result => {
-        let questionsWithAnswers = _.pluck(result.data, 'value');
+        // let questionsWithAnswers = _.pluck(result.data, 'value');
+        let questionsWithAnswers = [];
+        for (let i = 0; i < results.data.length; i++) {
+          questionsWithAnswers.push(results.data[i].value);
+        }
         let hasMoreQuestions = true;
         if (questionsWithAnswers.length < 2) {
           hasMoreQuestions = false;
@@ -103,7 +111,7 @@ class QAMain extends React.Component {
           ) : <></>}
         </div>
         {this.state.hasMoreQuestions ? loadMoreQuestions : <></>}
-        <button onClick={(event) => this.toggleAddQuestion(event)}>Add Question</button>
+        <button id="addQuestionButton" onClick={(event) => this.toggleAddQuestion(event)}>Add Question</button>
       </div>
     )
   }

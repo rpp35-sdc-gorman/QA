@@ -11,6 +11,7 @@ global.IS_REACT_ACT_ENVIRONMENT = true
 
 jest.mock('axios');
 let toggleAddQuestion = jest.fn();
+let clickTracker = jest.fn();
 
 var container = null;
 beforeEach(async () => {
@@ -18,7 +19,7 @@ beforeEach(async () => {
   container = document.createElement("div");
   document.body.appendChild(container);
   await act(async () => {
-    createRoot(container).render(<QAMain/>);
+    createRoot(container).render(<QAMain clickTracker={clickTracker}/>);
   });
 });
 
@@ -31,10 +32,9 @@ afterEach(() => {
 
 describe('Unit tests with less than 2 questions', () => {
   // Make sure to resolve with a promise
-  axios.get.mockResolvedValueOnce(exampleData.APIquestion).mockResolvedValue(exampleData.answers); // need to end with answers cause of Date part of AnswerVotingReporting in re-rendering
+  axios.get.mockResolvedValue({'data': [ {'value': {...exampleData.question, 'answers': exampleData.answers}} ]}); // need to end with answers cause of Date part of AnswerVotingReporting in re-rendering
   it('should render one question to DOM without a "More Answered Questions" toggle', async () => {
-    expect(axios.get).toBeCalledWith('/question_answer/questions/71697');
-    expect(axios.get).toBeCalledWith('/question_answer/answers/37');
+    expect(axios.get).toBeCalledWith('/question_answer/71697', {"params": {"count": 100, "page_num": 1}});
     expect(container.querySelector('#questionToggle')).toBe(null);
 
     //displays Add Question button
@@ -44,11 +44,17 @@ describe('Unit tests with less than 2 questions', () => {
 })
 
 describe('Unit tests with more than 2 questions', () => {
-  axios.get.mockResolvedValueOnce(exampleData.answers).mockResolvedValueOnce(exampleData.APIquestion3).mockResolvedValue(exampleData.answers);
-  it('should render one question to DOM without a "More Answered Questions" toggle', async () => {
-    expect(axios.get).toBeCalledWith('/question_answer/answers/37');
-    expect(axios.get).toBeCalledWith('/question_answer/questions/71697');
-    expect(axios.get).toBeCalledWith('/question_answer/answers/37');
+  var questions = exampleData.APIquestion3;
+  beforeAll(() => {
+    questions.data.forEach(question => {
+      question.value['answers'] = exampleData.answers;
+    })
+    axios.get.mockResolvedValue(questions);
+  })
+
+  it('should render one question to DOM with a "More Answered Questions" toggle', async () => {
+    expect(axios.get).toBeCalled();
+    expect(axios.get).toBeCalledWith('/question_answer/71697', {"params": {"count": 100, "page_num": 1}});
     expect(container.querySelector('#questionToggle').textContent).toBe('More Answered Questions');
 
     //displays Add Question button
@@ -57,9 +63,7 @@ describe('Unit tests with more than 2 questions', () => {
   });
 
   it('should load more questions on "More Answered Questions" click, and turn off option to load more questions', async () => {
-    expect(axios.get).toBeCalledWith('/question_answer/answers/37');
-    expect(axios.get).toBeCalledWith('/question_answer/questions/71697');
-    expect(axios.get).toBeCalledWith('/question_answer/answers/37');
+    expect(axios.get).toBeCalled();
     expect(container.querySelector('#questionToggle').textContent).toBe('More Answered Questions');
 
     // dispatch click to Load More Questions
@@ -73,7 +77,6 @@ describe('Unit tests with more than 2 questions', () => {
 
 describe('Integration tests', () => {
   it('should work with AddQuestions to open and close new modal window', async () => {
-    axios.get.mockResolvedValueOnce(exampleData.APIquestion).mockResolvedValue(exampleData.answers);
     // dispatch a click to AddQuestion
     expect(container.querySelectorAll('.modalQuestions').length).toBe(0);
     await act(async () => {
@@ -91,12 +94,9 @@ describe('Integration tests', () => {
 
   it('should be able to add a question', async () => {
     // Make sure to resolve with a promise
-    axios.get.mockResolvedValueOnce(exampleData.APIquestion).mockResolvedValueOnce(exampleData.answers)
-    .mockResolvedValueOnce(exampleData.APIquestion2).mockResolvedValue(exampleData.answers) // need to end with answers cause of Date part of AnswerVotingReporting in re-rendering
     axios.post.mockResolvedValue('add question success');
     // on load GET requests
-    expect(axios.get).toBeCalledWith('/question_answer/questions/71697');
-    expect(axios.get).toBeCalledWith('/question_answer/answers/37')
+    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}});
 
     // dispatch a click to AddQuestion
     expect(container.querySelectorAll('.modalQuestions').length).toBe(0);
@@ -119,7 +119,7 @@ describe('Integration tests', () => {
 
     // should trigger a re-render of questions with a POST to add question then GET request to update
     expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 71697});
-    expect(axios.get).toBeCalledWith(`/question_answer/questions/71697`);
+    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}});
     expect(container.querySelectorAll('#singleQA').length).toBe(2);
   })
 })
