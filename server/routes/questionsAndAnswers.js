@@ -2,49 +2,36 @@ const express = require('express');
 const router = express.Router();
 const sendRequest = require('../lib/sendRequest');
 
-
-router.get('/questions/:product_id', (req, res, next) => {
-  sendRequest(`qa/questions?product_id=${req.params.product_id}&count=${req.query.count}&page=${req.query.page_num}`)
-    .then(results => {
-      res.status(200).json(results.data)
+router.get('/:product_id', (req, res, next) => {
+  sendRequest(`qa/questions?product_id=${req.params.product_id}&count=${req.query.count}&page=${req.query.page_num || 1}`)
+    .then(questions => questions.data.results)
+    .then(questions => {
+      let questionsWithAnswers = []; // array of promises
+      questions.forEach((question) => {
+        // setting what array of promises will resolve/reject to
+        questionsWithAnswers.push(sendRequest(`qa/questions/${question.question_id}/answers?count=${req.query.count}`)
+          .then(answers => {
+            // resolves to ORIGINAL question object with .answers key tacked on
+            question.answers = answers.data.results;
+            return question;
+          })
+          .catch(err => next(err)))
+      })
+      return Promise.allSettled(questionsWithAnswers);
     })
-    .catch(err => next(err));
-});
-
-router.get('/answers/:question_id', (req, res, next) => {
-  let count = req.query.count || 5
-  sendRequest(`qa/questions/${req.params.question_id}/answers?count=${count}`)
-    .then(answers => {
-      res.status(200).json(answers.data)
+    .then(questionsWithAnswers => {
+      res.send(questionsWithAnswers)
     })
-    .catch(err => next(err));
-});
+    .catch(err => res.sendStatus(500))
+})
 
-// answer voting/reporting routes
-router.put('/helpful/answer/:answer_id', (req, res, next) => {
-  sendRequest(`qa/answers/${req.params.answer_id}/helpful`, 'PUT')
+router.put('/voting/:qa/:action/:id', (req, res, next) => {
+  sendRequest(`qa/${req.params.qa}s/${req.params.id}/${req.params.action}`, 'PUT')
     .then(result => {
-      res.sendStatus(204)
+      res.sendStatus(200);
     })
     .catch(err => next(err));
-});
-
-router.put('/reported/answer/:answer_id', (req, res, next) => {
-  sendRequest(`qa/answers/${req.params.answer_id}/report`, 'PUT')
-    .then(answers => {
-      res.sendStatus(204)
-    })
-    .catch(err => next(err));
-});
-
-// question voting/addAnswer routes
-router.put('/helpful/question/:question_id', (req, res, next) => {
-  sendRequest(`qa/questions/${req.params.question_id}/helpful`, 'PUT')
-    .then(result => {
-      res.sendStatus(204)
-    })
-    .catch(err => next(err));
-});
+})
 
 // add question/answer routes
 router.post('/addAnswerTo/:question_id', (req, res, next) => {

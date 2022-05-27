@@ -55,7 +55,7 @@ var AddQuestion = (props) => {
 
   return (
     props.showAddQuestion ?
-    <div className="modalQuestions" onClick={closeModal}>
+    <div className="modalQuestions">
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Question</h2>
         <h3>{props.productToQuestion}</h3>

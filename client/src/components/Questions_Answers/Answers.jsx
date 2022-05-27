@@ -48,7 +48,6 @@ var Answers = (props) => {
           answerer_name={answer.answerer_name}
           helpfulness={answer.helpfulness}
           date={answer.date}
-          updateAnswerHelpfulness={props.updateAnswerHelpfulness}
           clickTracker={props.clickTracker}
         />
       </div>

@@ -24,14 +24,30 @@ class QAMain extends React.Component {
 
   componentDidMount() {
     // get initial QA list from server;
-    axios.get(`/question_answer/questions/71697`, { params: {count: 100, page_num: 1}})
-      .then(questions => {
+    axios.get(`/question_answer/71697`, { params: {count: 100, page_num: 1}})
+      .then(result => {
+        let questionsWithAnswers = _.pluck(result.data, 'value');
         let hasMoreQuestions = true;
-        if (questions.data.results.length < 2) {
+        if (questionsWithAnswers.length < 2) {
           hasMoreQuestions = false;
         }
         this.setState({
-          questions: questions.data.results.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
+          questions: questionsWithAnswers.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
+          hasMoreQuestions
+        })
+      })
+  }
+
+  reload() {
+    axios.get(`/question_answer/71697`, { params: {count: 100, page_num: 1}})
+      .then(result => {
+        let questionsWithAnswers = _.pluck(result.data, 'value');
+        let hasMoreQuestions = true;
+        if (questionsWithAnswers.length < 2) {
+          hasMoreQuestions = false;
+        }
+        this.setState({
+          questions: questionsWithAnswers.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
           hasMoreQuestions
         })
       })
@@ -83,7 +99,7 @@ class QAMain extends React.Component {
         <Search setFilter={(filterTerm) => this.setFilter(filterTerm)}/>
         <div id="QABody">
           {(this.state.questions.length) ? this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).slice(0, this.state.end).map(question =>
-            <SingleQA key={question.question_id} question={question} currentProduct={'current product name'} clickTracker={this.props.clickTracker}/>
+            <SingleQA key={question.question_id} question={question} currentProduct={'current product name'} clickTracker={this.props.clickTracker} reload={this.reload.bind(this)}/>
           ) : <></>}
         </div>
         {this.state.hasMoreQuestions ? loadMoreQuestions : <></>}

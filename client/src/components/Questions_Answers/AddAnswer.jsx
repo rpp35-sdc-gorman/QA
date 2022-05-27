@@ -24,10 +24,6 @@ var AddAnswer = (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   console.log('updated', photos, props.showAddAnswer);
-  // })
-
   function handleChange(event) {
     // let value = _.escape(event.target.value);
     let value = event.target.value;
@@ -66,7 +62,7 @@ var AddAnswer = (props) => {
 
   return (
     props.showAddAnswer ?
-    <div className="modalAnswers" onClick={closeModal}>
+    <div className="modalAnswers">
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Answer</h2>
         <h3>{props.currentProduct}: {props.questionToAnswer.question_body}</h3>
