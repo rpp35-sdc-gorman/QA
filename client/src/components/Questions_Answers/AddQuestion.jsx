@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import _ from 'lodash';
 
 var AddQuestion = (props) => {
   const [question, setQuestion] = useState('')
@@ -26,8 +27,7 @@ var AddQuestion = (props) => {
   }
 
   function handleChange(event) {
-    // let value = _.escape(event.target.value);
-    let value = event.target.value;
+    let value = _.escape(event.target.value);
     if (event.target.id === 'question') {
       setQuestion(value);
     } else if (event.target.id === 'nickname') {

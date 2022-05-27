@@ -108,4 +108,20 @@ describe('Unit tests on opened Add Question modal', () => {
     expect(axios.post).toBeCalledWith("/question_answer/addQuestionTo", {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 71697});
     expect(toggleAddQuestion).toBeCalledWith(expect.objectContaining({target: container.querySelector('form#modal-form')}));
   });
+
+  it("should escape values submitted values to prevent XSS", async () => {
+    await act(async () => {
+      Simulate.change(container.querySelector('textarea#question'), { target: { id:"question", value: "<script src='malware.js'></script>" } });
+      Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "<script src='jon.js'></script>" } });
+      Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
+    })
+
+    await act(async () => {
+      container.querySelector('#submitQuestion').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(axios.post).toBeCalled();
+    expect(axios.post).toBeCalledWith("/question_answer/addQuestionTo", {"body": "&lt;script src=&#39;malware.js&#39;&gt;&lt;/script&gt;",
+      "name": "&lt;script src=&#39;jon.js&#39;&gt;&lt;/script&gt;", "email": "a1@test.ca", "product_id": 71697});
+    expect(toggleAddQuestion).toBeCalledWith(expect.objectContaining({target: container.querySelector('form#modal-form')}));
+  });
 })
