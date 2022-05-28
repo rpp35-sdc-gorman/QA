@@ -51,7 +51,9 @@ describe('Carousel Test', () => {
     renderer.render(<Carousel />);
     const result = renderer.getRenderOutput();
     expect(result.props.className).toBe('carousel');
-    expect(result.props.children[0].props.className).toBe('carousel_inner');
+    expect(result.props.children[0].props.className).toBe('back');
+    expect(result.props.children[1].props.className).toBe('carousel_inner');
+    expect(result.props.children[2].props.className).toBe('next');
   });
 
   it('should have product cards in carousel', async () => {
@@ -80,5 +82,37 @@ describe('Carousel Test', () => {
   it('should hide back button at mount', async () => {
     expect(container.querySelector('button.back')).toBe(null);
   });
+
+  it('should show next and back button contingent on how many cards are showing', async () => {
+    await act(async () => {
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 640,
+      });
+      await window.dispatchEvent(new Event('resize'))
+    })
+    expect(container.querySelector('button.back')).toBe(null);
+    expect(container.querySelector('button.next')).not.toBe(null);
+    await act(async () => {
+      await container.querySelector('#next').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.querySelector('button.next')).not.toBe(null);
+    await act(async () => {
+      await container.querySelector('#next').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.querySelector('button.next')).toBe(null);
+    expect(container.querySelector('button.back')).not.toBe(null);
+    await act(async () => {
+      await container.querySelector('#back').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.querySelector('button.back')).not.toBe(null);
+    expect(container.querySelector('button.next')).not.toBe(null);
+    await act(async () => {
+      await container.querySelector('#back').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.querySelector('button.back')).toBe(null);
+    expect(container.querySelector('button.next')).not.toBe(null);
+  })
   // need to figure out way to remove element carousel item from carousel and rerender
 })
