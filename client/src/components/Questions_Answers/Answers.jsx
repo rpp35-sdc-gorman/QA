@@ -48,7 +48,6 @@ var Answers = (props) => {
           answerer_name={answer.answerer_name}
           helpfulness={answer.helpfulness}
           date={answer.date}
-          updateAnswerHelpfulness={props.updateAnswerHelpfulness}
           clickTracker={props.clickTracker}
         />
       </div>
@@ -59,7 +58,6 @@ var Answers = (props) => {
     <div id="answers" >
       <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
         <img src={displayImage}/>
-
       </Modal>
       {props.allAnswers.length > 0 ? page : <div>No answers yet</div>}
       {toggle}

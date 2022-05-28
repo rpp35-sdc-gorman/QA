@@ -10,6 +10,7 @@ class QAMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      product_id: '',
       questions: [],
       filterTerm: '',
       end: 2,
@@ -23,15 +24,39 @@ class QAMain extends React.Component {
   }
 
   componentDidMount() {
+    let product_id = window.location.href.split('/').pop();
     // get initial QA list from server;
-    axios.get(`/question_answer/questions/71697`, { params: {count: 100, page_num: 1}})
-      .then(questions => {
+    axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1}})
+      .then(results => {
+        let questionsWithAnswers = [];
+        for (let i = 0; i < results.data.length; i++) {
+          questionsWithAnswers.push(results.data[i].value);
+        }
         let hasMoreQuestions = true;
-        if (questions.data.results.length < 2) {
+        if (questionsWithAnswers.length < 2) {
           hasMoreQuestions = false;
         }
         this.setState({
-          questions: questions.data.results.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
+          product_id,
+          questions: questionsWithAnswers.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
+          hasMoreQuestions
+        },)
+      })
+  }
+
+  reload() {
+    axios.get(`/question_answer/${this.state.product_id}`, { params: {count: 100, page_num: 1}})
+      .then(results => {
+        let questionsWithAnswers = [];
+        for (let i = 0; i < results.data.length; i++) {
+          questionsWithAnswers.push(results.data[i].value);
+        }
+        let hasMoreQuestions = true;
+        if (questionsWithAnswers.length < 2) {
+          hasMoreQuestions = false;
+        }
+        this.setState({
+          questions: questionsWithAnswers.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
           hasMoreQuestions
         })
       })
@@ -47,8 +72,8 @@ class QAMain extends React.Component {
 
   toggleAddQuestion(event) {
     this.props.clickTracker(event);
-    if (event.target.id === 'submitQuestion') {
-      this.loadMoreQuestions();
+    if (event.target.id === 'modal-form') {
+      this.reload();
     }
     let tmp = !this.state.showAddQuestion;
     this.setState({showAddQuestion: tmp})
@@ -76,18 +101,18 @@ class QAMain extends React.Component {
         <AddQuestion
           toggleAddQuestion={(event) => this.toggleAddQuestion(event)} // closes modal
           productToQuestion={'current product name'} // tmp variable for product name
-          product_id={71697}
+          product_id={this.state.product_id}
           showAddQuestion={this.state.showAddQuestion}
         />
 
         <Search setFilter={(filterTerm) => this.setFilter(filterTerm)}/>
         <div id="QABody">
           {(this.state.questions.length) ? this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).slice(0, this.state.end).map(question =>
-            <SingleQA key={question.question_id} question={question} currentProduct={'current product name'} clickTracker={this.props.clickTracker}/>
+            <SingleQA key={question.question_id} question={question} currentProduct={'current product name'} clickTracker={this.props.clickTracker} reload={this.reload.bind(this)}/>
           ) : <></>}
         </div>
-        {this.state.hasMoreQuestions ? loadMoreQuestions : <></>}
-        <button onClick={(event) => this.toggleAddQuestion(event)}>Add Question</button>
+        {(this.state.hasMoreQuestions && this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).length > 2) ? loadMoreQuestions : <></>}
+        <button id="addQuestionButton" onClick={(event) => this.toggleAddQuestion(event)}>Add Question</button>
       </div>
     )
   }

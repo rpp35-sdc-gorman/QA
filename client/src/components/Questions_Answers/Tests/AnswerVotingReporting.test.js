@@ -13,8 +13,9 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 jest.mock('axios');
 axios.put.mockResolvedValue('voted question as helpful');
 let toggleAddQuestion = jest.fn();
+let clickTracker = jest.fn();
 
-let answer = exampleData.answers.data.results[0];
+let answer = exampleData.answers[0];
 
 let container = null;
 beforeEach(() => {
@@ -37,6 +38,7 @@ it("should not give option to vote or report answer if accordion list is closed"
         answerer_name={answer.answerer_name}
         helpfulness={answer.helpfulness}
         date={answer.date}
+        clickTracker={clickTracker}
       />);
   });
   expect(container.querySelectorAll('.answer_details').length).toEqual(0);
@@ -51,6 +53,7 @@ describe('Unit tests', () => {
           answerer_name={answer.answerer_name}
           helpfulness={answer.helpfulness}
           date={answer.date}
+          clickTracker={clickTracker}
         />);
     });
   });
@@ -62,20 +65,20 @@ describe('Unit tests', () => {
     expect(container.querySelector("#answer_details").children[2].textContent).toBe('Report');
   })
 
-  it('should increment answer helpfulness on click of Yes and send PUT request', () => {
-    act(() => {
+  it('should increment answer helpfulness on click of Yes and send PUT request', async () => {
+    await act(() => {
       container.querySelector('#helpfulAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     })
     expect(container.querySelector("#answer_details").children[1].textContent).toBe('Helpful? Yes (9)');
-    expect(axios.put).toBeCalledWith(`/question_answer/helpful/answer/${answer.answer_id}`)
+    expect(axios.put).toBeCalledWith(`/question_answer/voting/answer/helpful/${answer.answer_id}`)
   })
 
-  it('should send PUT request on click of report and change text to from "Report" to "Reported"', () => {
+  it('should send PUT request on click of report and change text to from "Report" to "Reported"', async () => {
     expect(container.querySelector("#answer_details").children[2].textContent).toBe('Report');
-    act(() => {
-      container.querySelector('#answerReporting').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    await act(async () => {
+      await container.querySelector('#answerReporting').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     })
     expect(container.querySelector("#answer_details").children[2].textContent).toBe('Reported');
-    expect(axios.put).toBeCalledWith(`/question_answer/reported/answer/${answer.answer_id}`)
+    expect(axios.put).toBeCalledWith(`/question_answer/voting/answer/report/${answer.answer_id}`)
   })
 })

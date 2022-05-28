@@ -1,7 +1,7 @@
 import React from "react";
 import { unmountComponentAtNode } from "react-dom";
 import { createRoot } from 'react-dom/client';
-import { act } from "react-dom/test-utils";
+import { act, Simulate } from "react-dom/test-utils";
 import axios from 'axios';
 import exampleData from './ExampleData.js';
 
@@ -10,15 +10,21 @@ import SingleQA from '../SingleQA.jsx';
 global.IS_REACT_ACT_ENVIRONMENT = true
 
 jest.mock('axios');
-// Make sure to resolve with a promise
-axios.get.mockResolvedValue(exampleData.answers);
+axios.post.mockResolvedValue('successful addAnswer');
+let clickTracker = jest.fn();
+let reload = jest.fn();
+
 var container = null;
 beforeEach(async () => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
   await act(async () => {
-    createRoot(container).render(<SingleQA question={exampleData.question}/>);
+    createRoot(container).render(<SingleQA
+      question={{...exampleData.question, 'answers': exampleData.answers}}
+      clickTracker={clickTracker}
+      reload={reload}
+    />);
   });
 });
 
@@ -31,7 +37,6 @@ afterEach(() => {
 
 describe('Unit tests', () => {
   it("should render one QA item to screen displaying question body", async () => {
-    expect(axios.get).toBeCalledTimes(1);
     expect(container.querySelector('button').textContent).toBe('Q: ' + exampleData.question.question_body);
   });
 
@@ -61,7 +66,7 @@ describe('Integration tests', () => {
     expect(container.querySelector('section.panel.active#load').textContent).toBe('See more answers');
 
     // click to see more answers
-    await act(() => {
+    await act(async () => {
       container.querySelector('section.panel.active#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(container.querySelectorAll('div.panel.active').length).toBe(3);
@@ -87,7 +92,7 @@ describe('Integration tests', () => {
   it('should work with AddAnswer to open new modal window', async () => {
     // dispatch a click to AddAnswer
     expect(container.querySelectorAll('#addAnswerButton').length).toBe(1);
-    await act(() => {
+    await act(async () => {
       container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
@@ -96,15 +101,37 @@ describe('Integration tests', () => {
   it('should close addAnswer modal on button click', async () => {
     // dispatch a click to AddAnswer
     expect(container.querySelectorAll('#addAnswerButton').length).toBe(1);
-    await act(() => {
+    await act(async () => {
       container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
 
     // dispatch a click to closeModal
-    await act(() => {
+    await act(async () => {
       container.querySelector('#closeAddAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
+  })
+
+  it('should add an answer on submitAnswer button click', async () => {
+    // dispatch a click to AddAnswer
+    expect(container.querySelectorAll('#addAnswerButton').length).toBe(1);
+    await act(async () => {
+      container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
+
+    // add question
+    await act(async () => {
+      Simulate.change(container.querySelector('textarea#answer'), { target: { id:"answer", value: "random test answer" } });
+      Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
+      Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
+    })
+
+    await act(async () => {
+      container.querySelector('input#submitAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(reload).toBeCalled();
   })
 })

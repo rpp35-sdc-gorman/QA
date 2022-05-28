@@ -12,6 +12,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
+app.set('views', `${__dirname}/views`);
+app.set('view engine', 'ejs');
+
 // serve the public folder
 // app.use(compression());
 app.use('*.js', function (req, res, next) {
@@ -19,14 +22,22 @@ app.use('*.js', function (req, res, next) {
   res.set('Content-Encoding', 'br');
   next();
 });
-app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// default product page
+app.get('/', (req, res) => {
+  res.redirect('/product/71697')
+})
+
+// makes files in dist folder available
+app.use('/product', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// app.use((req, res, next) => {
-//   res.set('Accept-Encoding', 'gzip');
-//   next();
-// })
 
+
+app.get('/product/:id', (req, res) => {
+  // sends base inex.html file
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+})
 
 // routes
 app.use('/overview', overviewRouter);
@@ -40,6 +51,8 @@ app.post('/trackClick', (req, res) => {
     .then(result => res.sendStatus(200))
     .catch(err => res.status(500).send(err));
 })
+
+
 app.listen(port, () => {
   console.log(`Atelier 🥳 listening on port ${port}`);
 });
