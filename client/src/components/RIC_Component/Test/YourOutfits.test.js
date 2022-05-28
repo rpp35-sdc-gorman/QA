@@ -65,6 +65,7 @@ describe('Your Outfits Test', () => {
     expect(container.querySelectorAll('div.card_category')[1].textContent).toBe(currentProduct.category);
     expect(container.querySelectorAll('div.card_name')[1].textContent).toBe(currentProduct.name);
     expect(container.querySelectorAll('div.card_price')[1].textContent).toBe(`$${currentProduct.default_price}`);
+    expect(container.querySelectorAll('svg.card_remove').length).not.toEqual(0);
   });
 
   it('should should not add the current product if it has already been added', async() => {

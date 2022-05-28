@@ -19,12 +19,12 @@ class YourOutfits extends React.Component {
   }
 
   addCurrentProduct(event) {
-    this.props.clickTracker(event);
     if (!this.checkExistingOutfit(this.props.currentProduct.id)) {
       this.setState({
         yourOutfits: [...this.state.yourOutfits, this.props.currentProduct]
       }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
     }
+    this.props.clickTracker(event);
   }
 
   checkExistingOutfit(id) {
@@ -37,7 +37,6 @@ class YourOutfits extends React.Component {
   }
 
   removeOutfit(event) {
-    this.props.clickTracker(event);
     let id = Number(event.currentTarget.id);
     let currentOutfits = this.state.yourOutfits;
     let updatedOutfits = [];
@@ -49,6 +48,7 @@ class YourOutfits extends React.Component {
     this.setState({
       yourOutfits: updatedOutfits
     }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
+    this.props.clickTracker(event);
   }
 
   render() {

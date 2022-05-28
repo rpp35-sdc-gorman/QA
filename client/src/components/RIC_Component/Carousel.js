@@ -36,7 +36,6 @@ class Carousel extends React.Component {
   }
 
   updateIndex (event, nextIndex) {
-    this.props.clickTracker(event);
     let maxDisplayed = React.Children.count(this.props.children) / this.state.numDisplayedCards;
     if (nextIndex >= maxDisplayed) {
       nextIndex = maxDisplayed;
@@ -48,22 +47,25 @@ class Carousel extends React.Component {
       showNext,
       calculatedIndex: nextIndex
     });
+    this.props.clickTracker(event);
   }
 
   render() {
-    let back = <button id='back' onClick={(event) => { this.updateIndex(event, this.state.calculatedIndex - this.state.increment)}}>Back</button>;
-    let next = <button id='next' onClick={(event) => { this.updateIndex(event, this.state.calculatedIndex + this.state.increment)}}>Next</button>;
+    let back = <button id='back' className='back' onClick={(event) => { this.updateIndex(event, this.state.calculatedIndex - this.state.increment)}}>&lt;</button>;
+    let next = <button id='next' className='next' onClick={(event) => { this.updateIndex(event, this.state.calculatedIndex + this.state.increment)}}>&gt;</button>;
     return (
       <div className='carousel'>
+        {this.state.showBack ? back : null}
         <div className='carousel_inner' style={{ transform: `translateX(-${(this.state.calculatedIndex - 1) * 100}%)`}}>
           {React.Children.map(this.props.children, (child, index) => {
             return React.cloneElement(child, { width: `${this.state.cardWidth}px`});
           })}
         </div>
-        <div className='indicators'>
+        {!this.state.showNext ? next : null}
+        {/* <div className='indicators'>
           {this.state.showBack ? back : null}
           {!this.state.showNext ? next : null}
-        </div>
+        </div> */}
       </div>
     );
   }
