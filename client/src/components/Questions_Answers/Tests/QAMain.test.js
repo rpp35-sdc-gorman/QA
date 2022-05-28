@@ -34,7 +34,7 @@ describe('Unit tests with less than 2 questions', () => {
   // Make sure to resolve with a promise
   axios.get.mockResolvedValue({'data': [ {'value': {...exampleData.question, 'answers': exampleData.answers}} ]}); // need to end with answers cause of Date part of AnswerVotingReporting in re-rendering
   it('should render one question to DOM without a "More Answered Questions" toggle', async () => {
-    expect(axios.get).toBeCalledWith('/question_answer/71697', {"params": {"count": 100, "page_num": 1}});
+    expect(axios.get).toBeCalledWith('/question_answer/', {"params": {"count": 100, "page_num": 1}});
     expect(container.querySelector('#questionToggle')).toBeNull();
 
     //displays Add Question button
@@ -54,7 +54,7 @@ describe('Unit tests with more than 2 questions', () => {
 
   it('should render one question to DOM with a "More Answered Questions" toggle', async () => {
     expect(axios.get).toBeCalled();
-    expect(axios.get).toBeCalledWith('/question_answer/71697', {"params": {"count": 100, "page_num": 1}});
+    expect(axios.get).toBeCalledWith('/question_answer/', {"params": {"count": 100, "page_num": 1}});
     expect(container.querySelector('#questionToggle').textContent).toBe('More Answered Questions');
 
     //displays Add Question button
@@ -108,7 +108,7 @@ describe('Integration tests', () => {
     // Make sure to resolve with a promise
     await act(async () => axios.post.mockResolvedValue('add question success'));
     // on load GET request
-    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}});
+    expect(axios.get).toBeCalledWith("/question_answer/", {"params": {"count": 100, "page_num": 1}});
 
     // dispatch a click to AddQuestion
     expect(container.querySelectorAll('.modalQuestions').length).toBe(0);
@@ -130,8 +130,8 @@ describe('Integration tests', () => {
     });
 
     // should trigger a re-render of questions with a POST to add question then GET request to update
-    expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 71697});
-    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
+    expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": ''});
+    expect(axios.get).toBeCalledWith("/question_answer/", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
     // expanding questions should give 3 + 1 questions total, with only 2 showing at first now but would need new mockResolvedValue to test explicitly
   })
 
@@ -199,7 +199,7 @@ describe('Integration tests', () => {
     // Make sure to resolve with a promise
     await act(async () => axios.post.mockResolvedValue('add answer success'));
     // on load GET request
-    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}});
+    expect(axios.get).toBeCalledWith("/question_answer/", {"params": {"count": 100, "page_num": 1}});
 
     // dispatch a click to AddAnswer
     expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
@@ -221,8 +221,8 @@ describe('Integration tests', () => {
     });
 
     // should trigger a re-render of questions with a POST to add question then GET request to update
-    expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 71697});
-    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
+    expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": ''});
+    expect(axios.get).toBeCalledWith("/question_answer/", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
     // expanding questions should give 3 + 1 questions total, with only 2 showing at first now but would need new mockResolvedValue to test explicitly
   })
 })

@@ -42,6 +42,7 @@ var AddAnswer = (props) => {
       })
       files = _.uniq(files);
       setPhotos(files);
+      console.log(photos);
     }
   }
 

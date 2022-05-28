@@ -1,18 +1,18 @@
 import React from 'react';
 
 var AnswerImages = (props) => {
-  let photo = 'https://via.placeholder.com/75'
   return (
     <div id="answerImages">
-      {/* {props.photos.map((photo, index) => {
-        return
-        <img
-          key={index}
-          src={photo.url}
-        />
-      })} */}
-      <img onClick={(event) => props.toggleImage(event)} src={'https://via.placeholder.com/75'} />
-      <img onClick={(event) => props.toggleImage(event)} src={'https://via.placeholder.com/75'} />
+      {props.photos.length > 0 ? props.photos.map((photo, index) => {
+        return (
+          <div key={photo.id}>
+            <img
+              src={photo.url}
+              onClick={(event) => props.toggleImage(event)}
+            />
+          </div>
+        )
+      }) : <></>}
     </div>
   )
 }

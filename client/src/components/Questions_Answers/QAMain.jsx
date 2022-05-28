@@ -40,12 +40,12 @@ class QAMain extends React.Component {
           product_id,
           questions: questionsWithAnswers.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
           hasMoreQuestions
-        })
+        },)
       })
   }
 
   reload() {
-    axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1}})
+    axios.get(`/question_answer/${this.state.product_id}`, { params: {count: 100, page_num: 1}})
       .then(results => {
         let questionsWithAnswers = [];
         for (let i = 0; i < results.data.length; i++) {
