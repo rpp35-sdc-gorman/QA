@@ -10,6 +10,7 @@ class QAMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      product_id: '',
       questions: [],
       filterTerm: '',
       end: 2,
@@ -23,8 +24,9 @@ class QAMain extends React.Component {
   }
 
   componentDidMount() {
+    let product_id = window.location.href.split('/').pop();
     // get initial QA list from server;
-    axios.get(`/question_answer/71697`, { params: {count: 100, page_num: 1}})
+    axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1}})
       .then(results => {
         let questionsWithAnswers = [];
         for (let i = 0; i < results.data.length; i++) {
@@ -35,6 +37,7 @@ class QAMain extends React.Component {
           hasMoreQuestions = false;
         }
         this.setState({
+          product_id,
           questions: questionsWithAnswers.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
           hasMoreQuestions
         })
@@ -42,7 +45,7 @@ class QAMain extends React.Component {
   }
 
   reload() {
-    axios.get(`/question_answer/71697`, { params: {count: 100, page_num: 1}})
+    axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1}})
       .then(results => {
         let questionsWithAnswers = [];
         for (let i = 0; i < results.data.length; i++) {
@@ -98,7 +101,7 @@ class QAMain extends React.Component {
         <AddQuestion
           toggleAddQuestion={(event) => this.toggleAddQuestion(event)} // closes modal
           productToQuestion={'current product name'} // tmp variable for product name
-          product_id={71697}
+          product_id={this.state.product_id}
           showAddQuestion={this.state.showAddQuestion}
         />
 
