@@ -17,6 +17,7 @@ class Carousel extends React.Component {
       increment: null,
       showBack: true,
       showNext: false,
+      carouselWidth: null,
       cardWidth: 250
     }
 
@@ -24,14 +25,17 @@ class Carousel extends React.Component {
   }
 
   componentDidMount() {
-    let numDisplayedCards = Math.floor(900/this.state.cardWidth);
+    window.addEventListener('resize', this.updateWidth);
+    let carouselWidth = window.innerWidth;
+    let numDisplayedCards = Math.floor(carouselWidth/this.state.cardWidth);
     let showBack = false;
     let showNext = !(React.Children.count(this.props.children) > numDisplayedCards);
     this.setState({
       numDisplayedCards,
+      increment: (1 / numDisplayedCards),
       showBack,
       showNext,
-      increment: (1 / numDisplayedCards)
+      carouselWidth
     })
   }
 
@@ -48,6 +52,21 @@ class Carousel extends React.Component {
       calculatedIndex: nextIndex
     });
     this.props.clickTracker(event);
+  }
+
+  updateWidth = () => {
+    console.log('updating width!');
+    let carouselWidth = window.innerWidth;
+    let numDisplayedCards = Math.floor(carouselWidth/this.state.cardWidth);
+    let showBack = false;
+    let showNext = !(React.Children.count(this.props.children) > numDisplayedCards);
+    this.setState({
+      numDisplayedCards,
+      increment: (1 / numDisplayedCards),
+      showBack,
+      showNext,
+      carouselWidth
+    })
   }
 
   render() {

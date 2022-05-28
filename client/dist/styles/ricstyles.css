@@ -2,8 +2,8 @@
 .carousel {
   display: inline-grid;
   overflow: hidden;
-  width: 950px;
-  grid-template-columns: 25px 900px 25px;
+  width: 100%;
+  grid-template-columns: 2% 96% 2%;
 }
 
 .carousel_inner {
@@ -11,20 +11,6 @@
   grid-column-end: 3;
   white-space: nowrap;
   transition: transform 0.3s;
-  background-color: linear-gradient(to right,
-  rgba(255,255,255,0) 0%,
-  rgba(255,255,255,1) 15%,
-  rgba(255,255,255,1) 25%,
-  rgba(255,255,255,0) 25%,
-  rgba(255,255,255,0) 35%,
-  rgba(255,255,255,1) 35%,
-  rgba(255,255,255,1) 50%,
-  rgba(255,255,255,1) 65%,
-  rgba(255,255,255,0) 65%,
-  rgba(255,255,255,0) 75%,
-  rgba(255,255,255,1) 75%,
-  rgba(255,255,255,1) 85%,
-  rgba(255,255,255,0) 100%);
   z-index: 1;
 }
 
