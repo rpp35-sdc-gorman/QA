@@ -96,7 +96,7 @@
   opacity: 0.5;
 }
 
-.card_favorite:hover {
+.card_compare:hover {
   opacity: 1.0;
   cursor: pointer;
   fill: rgba(244, 203, 0, 0.892)

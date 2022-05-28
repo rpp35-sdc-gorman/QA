@@ -35,7 +35,8 @@ class Carousel extends React.Component {
     })
   }
 
-  updateIndex (nextIndex) {
+  updateIndex (event, nextIndex) {
+    this.props.clickTracker(event);
     let maxDisplayed = React.Children.count(this.props.children) / this.state.numDisplayedCards;
     if (nextIndex >= maxDisplayed) {
       nextIndex = maxDisplayed;
@@ -50,8 +51,8 @@ class Carousel extends React.Component {
   }
 
   render() {
-    let back = <button id='back' onClick={() => { this.updateIndex(this.state.calculatedIndex - this.state.increment)}}>Back</button>;
-    let next = <button id='next' onClick={() => { this.updateIndex(this.state.calculatedIndex + this.state.increment)}}>Next</button>;
+    let back = <button id='back' onClick={(event) => { this.updateIndex(event, this.state.calculatedIndex - this.state.increment)}}>Back</button>;
+    let next = <button id='next' onClick={(event) => { this.updateIndex(event, this.state.calculatedIndex + this.state.increment)}}>Next</button>;
     return (
       <div className='carousel'>
         <div className='carousel_inner' style={{ transform: `translateX(-${(this.state.calculatedIndex - 1) * 100}%)`}}>

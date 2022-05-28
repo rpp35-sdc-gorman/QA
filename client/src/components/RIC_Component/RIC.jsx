@@ -70,6 +70,7 @@ class RIC extends React.Component {
   }
 
   compare(event) {
+    this.props.clickTracker(event);
     let id = Number(event.currentTarget.id);
     let comparedProduct;
     for (var i = 0; i < this.state.relatedProducts.length; i++) {
@@ -81,7 +82,8 @@ class RIC extends React.Component {
     this.setState({ comparedProduct, modal: true });
   }
 
-  close() {
+  close(event) {
+    this.props.clickTracker(event);
     this.setState({ comparedProduct: null, modal: false });
   }
 
@@ -89,12 +91,12 @@ class RIC extends React.Component {
     return (this.state.relatedProducts.length ?
       <div className='RIC'>
         <h4>RELATED PRODUCTS</h4>
-        <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} />
+        <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} clickTracker={this.props.clickTracker} />
         <Modal handleClose={this.close.bind(this)} show={this.state.modal}>
           <Comparison main={this.state.currentProduct} related={this.state.comparedProduct} />
         </Modal>
         <h4>YOUR OUTFITS</h4>
-        <YourOutfits currentProduct={this.state.currentProduct}/>
+        <YourOutfits currentProduct={this.state.currentProduct} clickTracker={this.props.clickTracker} />
       </div> : null
     )
   }
