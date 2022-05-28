@@ -1,14 +1,18 @@
 import React from "react";
 import { unmountComponentAtNode } from "react-dom";
 import { createRoot } from 'react-dom/client';
-import { act } from "react-dom/test-utils";
+import { act, Simulate } from "react-dom/test-utils";
+import axios from 'axios';
 import exampleData from './ExampleData.js';
 
 import SingleQA from '../SingleQA.jsx';
 
 global.IS_REACT_ACT_ENVIRONMENT = true
 
+jest.mock('axios');
+axios.post.mockResolvedValue('successful addAnswer');
 let clickTracker = jest.fn();
+let reload = jest.fn();
 
 var container = null;
 beforeEach(async () => {
@@ -16,7 +20,11 @@ beforeEach(async () => {
   container = document.createElement("div");
   document.body.appendChild(container);
   await act(async () => {
-    createRoot(container).render(<SingleQA question={{...exampleData.question, 'answers': exampleData.answers}} clickTracker={clickTracker}/>);
+    createRoot(container).render(<SingleQA
+      question={{...exampleData.question, 'answers': exampleData.answers}}
+      clickTracker={clickTracker}
+      reload={reload}
+    />);
   });
 });
 
@@ -103,5 +111,27 @@ describe('Integration tests', () => {
       container.querySelector('#closeAddAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
+  })
+
+  it('should add an answer on submitAnswer button click', async () => {
+    // dispatch a click to AddAnswer
+    expect(container.querySelectorAll('#addAnswerButton').length).toBe(1);
+    await act(async () => {
+      container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
+
+    // add question
+    await act(async () => {
+      Simulate.change(container.querySelector('textarea#answer'), { target: { id:"answer", value: "random test answer" } });
+      Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
+      Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
+    })
+
+    await act(async () => {
+      container.querySelector('input#submitAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(reload).toBeCalled();
   })
 })

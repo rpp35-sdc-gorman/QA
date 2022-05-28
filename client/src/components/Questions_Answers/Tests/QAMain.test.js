@@ -44,12 +44,12 @@ describe('Unit tests with less than 2 questions', () => {
 })
 
 describe('Unit tests with more than 2 questions', () => {
-  var questions = exampleData.APIquestion3;
+  var questions3 = exampleData.APIquestion3;
   beforeAll(() => {
-    questions.data.forEach(question => {
+    questions3.data.forEach(question => {
       question.value['answers'] = exampleData.answers;
     })
-    axios.get.mockResolvedValue(questions);
+    axios.get.mockResolvedValue(questions3);
   })
 
   it('should render one question to DOM with a "More Answered Questions" toggle', async () => {
@@ -65,6 +65,7 @@ describe('Unit tests with more than 2 questions', () => {
   it('should load more questions on "More Answered Questions" click, and turn off option to load more questions if all loaded', async () => {
     expect(axios.get).toBeCalled();
     expect(container.querySelector('#questionToggle').textContent).toBe('More Answered Questions');
+    expect(container.querySelectorAll('#singleQA').length).toBe(2);
 
     // dispatch click to Load More Questions
     await act(async () => {
@@ -76,12 +77,12 @@ describe('Unit tests with more than 2 questions', () => {
 })
 
 describe('Integration tests', () => {
-  var questions = exampleData.APIquestion3;
+  var questions3 = exampleData.APIquestion3;
   beforeAll(() => {
-    questions.data.forEach(question => {
+    questions3.data.forEach(question => {
       question.value['answers'] = exampleData.answers;
     })
-    axios.get.mockResolvedValue(questions);
+    axios.get.mockResolvedValue(questions3);
   })
 
   /**  AddQuestion integration tests ***/
@@ -106,7 +107,7 @@ describe('Integration tests', () => {
 
     // Make sure to resolve with a promise
     await act(async () => axios.post.mockResolvedValue('add question success'));
-    // on load GET requests
+    // on load GET request
     expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}});
 
     // dispatch a click to AddQuestion
@@ -128,11 +129,10 @@ describe('Integration tests', () => {
       container.querySelector('#submitQuestion').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    // // should trigger a re-render of questions with a POST to add question then GET request to update
+    // should trigger a re-render of questions with a POST to add question then GET request to update
     expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 71697});
     expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
     // expanding questions should give 3 + 1 questions total, with only 2 showing at first now but would need new mockResolvedValue to test explicitly
-    expect(container.querySelectorAll('#singleQA').length).toBe(2);
   })
 
   /**  Search integration tests ***/
@@ -167,5 +167,62 @@ describe('Integration tests', () => {
     })
     expect(container.querySelectorAll('#singleQA').length).toBe(2);
     expect(container.querySelector('#questionToggle')).toBeNull(); // asserts only 2 questions in list
+  })
+
+  /*** AddAnswer Integration Tests ***/
+  it('should work with AddAnswer to open and close new modal window', async () => {
+    // dispatch a click to AddQuestion
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
+    await act(async () => {
+      await container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
+
+    // dispatch click to close modal
+    await act(async () => {
+      await container.querySelector('#closeAddAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
+  })
+
+  it('should be able to add a answer', async () => {
+    var questions3 = exampleData.APIquestion3;
+    var questions3AddedAnswer = exampleData.APIquestion3;
+    questions3.data.forEach(question => {
+      question.value['answers'] = exampleData.answers;
+    })
+    questions3AddedAnswer.data.forEach(question => {
+      question.value['answers'] = exampleData.answers2;
+    })
+    axios.get.mockResolvedValue(questions3AddedAnswer).mockResolvedValueOnce(questions3);
+    // Make sure to resolve with a promise
+    await act(async () => axios.post.mockResolvedValue('add answer success'));
+    // on load GET request
+    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}});
+
+    // dispatch a click to AddAnswer
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(0);
+    await act(async () => {
+      await container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
+
+    // add question
+    await act(async () => {
+      Simulate.change(container.querySelector('textarea#answer'), { target: { id:"answer", value: "random answer" } });
+      Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
+      Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
+    })
+
+    await act(async () => {
+      container.querySelector('#submitAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    // should trigger a re-render of questions with a POST to add question then GET request to update
+    expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 71697});
+    expect(axios.get).toBeCalledWith("/question_answer/71697", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
+    // expanding questions should give 3 + 1 questions total, with only 2 showing at first now but would need new mockResolvedValue to test explicitly
   })
 })

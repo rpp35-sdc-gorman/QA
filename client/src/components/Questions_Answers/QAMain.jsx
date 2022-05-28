@@ -26,7 +26,6 @@ class QAMain extends React.Component {
     // get initial QA list from server;
     axios.get(`/question_answer/71697`, { params: {count: 100, page_num: 1}})
       .then(results => {
-        // let questionsWithAnswers = _.pluck(results.data, 'value');
         let questionsWithAnswers = [];
         for (let i = 0; i < results.data.length; i++) {
           questionsWithAnswers.push(results.data[i].value);
@@ -44,8 +43,7 @@ class QAMain extends React.Component {
 
   reload() {
     axios.get(`/question_answer/71697`, { params: {count: 100, page_num: 1}})
-      .then(result => {
-        // let questionsWithAnswers = _.pluck(result.data, 'value');
+      .then(results => {
         let questionsWithAnswers = [];
         for (let i = 0; i < results.data.length; i++) {
           questionsWithAnswers.push(results.data[i].value);
@@ -71,7 +69,7 @@ class QAMain extends React.Component {
 
   toggleAddQuestion(event) {
     this.props.clickTracker(event);
-    if (event.target.id === 'submitQuestion') {
+    if (event.target.id === 'modal-form') {
       this.reload();
     }
     let tmp = !this.state.showAddQuestion;

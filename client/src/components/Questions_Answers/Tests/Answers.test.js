@@ -34,17 +34,29 @@ describe('Unit tests', () => {
     expect(container.querySelector('section.panel#load').textContent).toBe('See more answers');
   });
 
-  it('should display all answers once clicked and switch button text to "Collapse answers"', () => {
+  it('should display all answers once clicked and switch button text to "Collapse answers"', async () => {
     // dispatch a click event on question button
     expect(container.querySelectorAll('div.panel.active').length).toBe(2);
     expect(container.querySelector('section#load.panel').textContent).toBe('See more answers');
 
     // dispatch click on see more answers div
-    act(() => {
+    await act(async () => {
       container.querySelector('section#load').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
     expect(container.querySelectorAll('div.panel.active').length).toBe(3);
     expect(container.querySelector('section#load.panel').textContent).toBe('Collapse answers');
   });
+})
+
+describe('Integration with images', () => {
+  it("should open modal when image is clicked", async () => {
+    expect(container.querySelector('.modal.display-block')).toBeNull();
+    // dispatch click on see more answers div
+    await act(async () => {
+      container.querySelector('img').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(container.querySelector('.modal.display-block')).not.toBeNull();
+  })
 })

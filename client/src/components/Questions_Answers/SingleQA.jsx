@@ -34,7 +34,7 @@ class SingleQA extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     // get answers to question
-    if (prevProps.question.answers.length !== this.props.question.answers.length) {
+    if (prevState.allAnswers.length !== this.props.question.answers.length) {
       let allAnswers = [];
       let seller = this.props.question.answers.filter(answer => answer.answerer_name === "Seller").sort((a, b) => b.helpfulness - a.helpfulness);
       if (seller) {
@@ -56,7 +56,7 @@ class SingleQA extends React.Component {
 
   toggleAddAnswer(event) {
     this.props.clickTracker(event);
-    if (event.target.tagName === 'FORM') {
+    if (event.target.id === 'modal-form') {
       this.props.reload();
     }
     let tmp = !this.state.showAddAnswer;
