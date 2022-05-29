@@ -35,13 +35,11 @@ let anotherCurrentProduct = {
 };
 describe('Your Outfits Test', () => {
   let container = null;
+  let clickTracker = jest.fn();
   beforeEach(async () => {
     // setup a DOM element as a render target
     container = document.createElement("div");
     document.body.appendChild(container);
-    await act(() => {
-      createRoot(container).render(<YourOutfits currentProduct={currentProduct}/>);
-    });
   });
   afterEach(() => {
     // cleanup on exiting
@@ -51,10 +49,16 @@ describe('Your Outfits Test', () => {
   });
 
   it('should have a card to add the current product', async() => {
+    await act(() => {
+      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker}/>);
+    });
     expect(container.querySelector('div.card.addition')).not.toBe(null);
   });
 
   it('should have added the current product to your outfit list', async() => {
+    await act(() => {
+      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker}/>);
+    });
     await act(async () => {
       await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
     });
@@ -69,6 +73,9 @@ describe('Your Outfits Test', () => {
   });
 
   it('should should not add the current product if it has already been added', async() => {
+    await act(() => {
+      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker}/>);
+    });
     await act(async () => {
       await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
     });
@@ -79,6 +86,9 @@ describe('Your Outfits Test', () => {
   });
 
   it('should be able to remove an existing outfit', async() => {
+    await act(() => {
+      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker} />);
+    });
     await act(async () => {
       await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
     });
@@ -87,6 +97,17 @@ describe('Your Outfits Test', () => {
     });
     expect(container.querySelectorAll('div.card').length).toEqual(1);
   });
+
+  // it('should should add a different product if it not already been added', async() => {
+  //   await act(() => {
+  //     createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker} />);
+  //   });
+  //   let { rerender } =
+  //   await act(async () => {
+  //     await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  //   });
+  //   expect(container.querySelectorAll('div.card').length).not.toEqual(3);
+  // });
 
   // find a way to navigate to another product to add it in
 })

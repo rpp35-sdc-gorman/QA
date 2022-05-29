@@ -7,6 +7,7 @@ import ProductCards from '../ProductCard.jsx';
 global.IS_REACT_ACT_ENVIRONMENT = true
 describe("Product Card Tests", () => {
   let container = null;
+  let clickTracker = jest.fn();
   let specificProduct = {
     "id": 71703,
     "campus": "hr-rpp",

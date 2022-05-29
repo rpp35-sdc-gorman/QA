@@ -8,8 +8,10 @@ import exampleProducts from './ricTestData.js';
 import ProductCards from '../ProductCard.jsx';
 import Carousel, { CarouselItem } from '../Carousel';
 
+global.IS_REACT_ACT_ENVIRONMENT = true
 describe('Carousel Test', () => {
   let container = null;
+  let clickTracker = jest.fn();
   beforeEach(async () => {
     // setup a DOM element as a render target
     container = document.createElement("div");
@@ -17,7 +19,7 @@ describe('Carousel Test', () => {
     let compare = jest.fn();
     await act(() => {
       createRoot(container).render(
-        <Carousel>
+        <Carousel clickTracker={clickTracker}>
           {exampleProducts.products.data.map((product, index) => {
             return(
               <CarouselItem key={product.id}>
@@ -66,13 +68,28 @@ describe('Carousel Test', () => {
   });
 
   it('should have back button after clicking next once', async () => {
+    await act(async () => {
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 640,
+      });
+      await window.dispatchEvent(new Event('resize'))
+    });
     await act(() => {
       container.querySelector('#next').dispatchEvent(new MouseEvent('click', { bubbles: true }))
     });
     expect(container.querySelectorAll('#back').length).toEqual(1);
   });
-
   it('should hide next button after reaching end of list', async () => {
+    await act(async () => {
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 800,
+      });
+      await window.dispatchEvent(new Event('resize'))
+    });
     await act(async () => {
       await container.querySelector('#next').dispatchEvent(new MouseEvent('click', { bubbles: true }))
     });

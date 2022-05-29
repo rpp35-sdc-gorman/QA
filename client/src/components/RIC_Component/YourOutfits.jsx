@@ -54,7 +54,7 @@ class YourOutfits extends React.Component {
   render() {
     return (
       <div>
-        <Carousel>
+        <Carousel clickTracker={this.props.clickTracker}>
           <CarouselItem>
             <div className="card addition" onClick={(event) => {this.addCurrentProduct(event)}}>
               <div className="card_visual" style={{backgroundColor: 'white'}}></div>
