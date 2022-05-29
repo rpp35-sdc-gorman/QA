@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Check } from 'akar-icons';
 
 class Comparison extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Comparison extends React.Component {
   parseFeatures() {
     let allFeatures = this.props.main.features.concat(this.props.related.features);
     let uniqueFeatures = [... new Set (allFeatures.map(feature => {
-      return feature.feature
+      return feature.value
     }))];
     // let uniqueFeatures = [... new Set(featureNames) ];
     let comparedFeatures = [];
@@ -34,8 +35,8 @@ class Comparison extends React.Component {
       this.groupFeatures(this.props.related.features)
     ];
     for (var i = 0; i < uniqueFeatures.length; i++) {
-      let main = Object.keys(mainFeatures).includes(uniqueFeatures[i]) ? mainFeatures[uniqueFeatures[i]] : '-';
-      let related = Object.keys(relatedFeatures).includes(uniqueFeatures[i]) ? relatedFeatures[uniqueFeatures[i]] : '-';
+      let main = Object.values(mainFeatures).includes(uniqueFeatures[i]) ? <Check size={16}/> : null;
+      let related = Object.values(relatedFeatures).includes(uniqueFeatures[i]) ? <Check size={16}/> : null;
       let comparison = {[this.props.main.name]: main, 'Feature': uniqueFeatures[i], [this.props.related.name]: related};
       comparedFeatures.push(comparison);
     }

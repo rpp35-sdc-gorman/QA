@@ -23,9 +23,9 @@ class App extends React.Component {
     return (
       <div>
         <Overview />
+        <RI />
         <QA />
         <RatingsAndReviews />
-        <RI />
       </div>
     );
   }

@@ -1,9 +1,15 @@
+/* RIC */
+#RIC {
+  padding: 0 2em;
+}
+
 /* CAROUSEL */
 .carousel {
   display: inline-grid;
   overflow: hidden;
   width: 100%;
   grid-template-columns: 2% 96% 2%;
+  margin-left: 1.25%;
 }
 
 .carousel_inner {
@@ -16,9 +22,9 @@
 
 .carousel_item {
   display: inline-flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
-  height: 315px;
+  height: 100%;
   color: white;
   z-index: 0;
 }
@@ -74,6 +80,7 @@
   text-transform: uppercase;
   font-size: small;
   padding-top: 0.25em;
+  align-self: center;
   z-index: 0;
 }
 
@@ -84,6 +91,7 @@
   grid-row-end: 4;
   font-weight: bold;
   font-size: medium;
+  align-self: center;
   z-index: 0;
 }
 
@@ -94,6 +102,7 @@
   grid-row-end: 5;
   font-weight: lighter;
   font-size: smaller;
+  align-self: center;
   z-index: 0;
 }
 
@@ -103,6 +112,7 @@
   grid-row-start: 5;
   grid-row-end: 6;
   z-index: 0;
+  align-self: center;
 }
 
 .card_compare, .card_remove {
@@ -114,6 +124,7 @@
   padding: 0.5em;
   opacity: 0.5;
   z-index: 0;
+
 }
 
 .card_compare:hover {
@@ -137,8 +148,9 @@ div {
   color: black;
 }
 
-h4 {
+h3 {
   font-weight: lighter;
+  margin-left: 4.5%;
 }
 
 table {
@@ -182,3 +194,4 @@ th.right, td.right {
 th.mid, td.mid {
   text-align: center;
 }
+

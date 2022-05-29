@@ -43,6 +43,7 @@ class RIC extends React.Component {
       return response.data
     })
     .then(relatedProducts => {
+      console.log(relatedProducts);
       return this.setDefaultStyle(relatedProducts, 'related');
     })
     .then(relatedProducts => {
@@ -89,13 +90,13 @@ class RIC extends React.Component {
 
   render() {
     return (this.state.relatedProducts.length ?
-      <div className='RIC'>
-        <h4>RELATED PRODUCTS</h4>
+      <div id='RIC'>
+        <h3>RELATED PRODUCTS</h3>
         <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} clickTracker={this.props.clickTracker} />
         <Modal handleClose={this.close.bind(this)} show={this.state.modal}>
           <Comparison main={this.state.currentProduct} related={this.state.comparedProduct} />
         </Modal>
-        <h4>YOUR OUTFITS</h4>
+        <h3>YOUR OUTFITS</h3>
         <YourOutfits currentProduct={this.state.currentProduct} clickTracker={this.props.clickTracker} />
       </div> : null
     )
