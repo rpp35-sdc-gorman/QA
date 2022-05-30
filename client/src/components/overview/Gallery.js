@@ -3,12 +3,13 @@
 import React from 'react'
 import {useState} from 'react'
 import keyId from '../common/keyId'
-import {ChevronLeft, ChevronRight, ChevronDown, ChevronUp} from 'akar-icons'
+import {ChevronLeft, ChevronRight, ChevronDown, ChevronUp, FullScreen} from 'akar-icons'
 
 const Gallery = (props) => {
 
     const [currentImage, setCurrentImage] = useState(0);
     const [currentMiniImage, setCurrentMiniImage] = useState(0);
+
 
     const handlePhotoChange = (operator) => {
       if(operator === '+'){
@@ -71,8 +72,13 @@ const Gallery = (props) => {
       }
     }
 
+    // gallery properties that change with state
+    const GalleryStyles = {
+      'backgroundImage': `url(${props.images[currentImage].url})`
+    }
+
     return(
-      <article className='Gallery'>
+      <article className={props.isFullscreen ? 'Gallery_fullscreen' : 'Gallery'} style={GalleryStyles}>
         <div className='flexColumnCenter'>
         <ChevronUp
             size={16}
@@ -88,13 +94,20 @@ const Gallery = (props) => {
             onClick={() => handleMiniChange('+')}
             />
         </div>
+        <FullScreen
+          id="fullscreen"
+          className="GalleryArrow"
+          strokeWidth='2'
+          size={24}
+          onClick={() => props.handleFullscreen()}
+        />
         <div className="flexRow GalleryMain">
           <button id="prevArrow" className="GalleryArrow"
             onClick={() => handlePhotoChange('-')}
           >
               <ChevronLeft strokeWidth='2' size={36} />
           </button>
-          <img className='Gallery_image' src={props.images ? props.images[currentImage].url : 'https://via.placeholder.com/350'} />
+          {/* <img className='Gallery_image' src={props.images ? props.images[currentImage].url : 'https://via.placeholder.com/350'} /> */}
           <button id="nextArrow" className="GalleryArrow"
             onClick={() => handlePhotoChange('+')}
             >
