@@ -6,7 +6,7 @@ import Gallery from './Gallery';
 import Bubble from './subComponents/styleBubble';
 import Stars from '../common/stars.jsx';
 import OrderForm from './OrderForm';
-
+import keyId from '../common/keyId';
 // sample data - remove this later
 // import {testProductStyles} from '../../../../config';
 
@@ -25,9 +25,10 @@ class StyleSelector extends React.Component{
   }
 
   createBubbles () {
-    return this.props.styles.map((item, index) => {
+    return this.props.styles.map((item) => {
+      const id = keyId();
       return <Bubble
-                key={index}
+                key={keyId()}
                 entity={item}
                 image={item.photos[0].thumbnail_url}
                 handleStyleChange={this.props.handleStyleChange}
