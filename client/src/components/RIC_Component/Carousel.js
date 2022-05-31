@@ -25,7 +25,7 @@ class Carousel extends React.Component {
   }
 
   updateWidth = () => {
-    let carouselWidth = window.innerWidth;
+    let carouselWidth = window.innerWidth * 0.96;
     let numDisplayedCards = Math.floor(carouselWidth/this.state.cardWidth);
     let showBack = false;
     let showNext = !(React.Children.count(this.props.children) > numDisplayedCards);
@@ -70,10 +70,6 @@ class Carousel extends React.Component {
           })}
         </div>
         {!this.state.showNext ? next : null}
-        {/* <div className='indicators'>
-          {this.state.showBack ? back : null}
-          {!this.state.showNext ? next : null}
-        </div> */}
       </div>
     );
   }
