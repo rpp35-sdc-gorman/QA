@@ -131,14 +131,14 @@ describe('Comparison Modal Test', () =>{
       expect(container.querySelectorAll('tbody tr').length).toBe(3);
     });
 
-    it('should have dashes when products do not share common features', async() => {
+    it('should be empty when products do not share common features', async() => {
       await act(() => {
         createRoot(container).render(
           <Modal show={true}>
             <Comparison main={mainProduct} related={comparedProduct_1} />
           </Modal>)
       })
-      expect(container.querySelectorAll('td.right')[0].textContent).toBe('-');
+      expect(container.querySelectorAll('td.right')[0].textContent).toBe('');
     });
   })
 })

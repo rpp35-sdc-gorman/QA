@@ -26,8 +26,8 @@ var ProductCards = (props) => (
     )}
     <div className="card_category">{props.category}</div>
     <div className="card_name">{props.name}</div>
-    <div className="card_price" style={props.sale_price ? {textDecoration: 'line-through', color: 'red'} : null}>{`$${props.default_price}`}</div>
-    {props.sale_price ? <div className="card_price" style={props.sale_price ? {color: 'red'} : null}>{`$${props.sale_price}`}</div> : null}
+    <div className="card_price" style={props.sale_price ? {textDecoration: 'line-through', color: 'red'} : null}>{`$${props.default_price} `}</div>
+    {props.sale_price ? <div className="card_price" style={{color: 'red'}}>{`$${props.sale_price}`}</div> : null}
     <div className="card_rating">
       <Stars size={10} filled={props.star_rating} />
     </div>

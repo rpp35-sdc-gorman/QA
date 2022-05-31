@@ -10,6 +10,7 @@
   width: 100%;
   grid-template-columns: 2% 96% 2%;
   margin-left: 1.25%;
+  padding-bottom: 5%;
 }
 
 .carousel_inner {

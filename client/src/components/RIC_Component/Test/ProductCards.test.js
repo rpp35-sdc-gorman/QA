@@ -48,7 +48,7 @@ describe("Product Card Tests", () => {
     });
     expect(container.querySelectorAll('div.card_category')[0].textContent).toBe(specificProduct.category);
     expect(container.querySelectorAll('div.card_name')[0].textContent).toBe(specificProduct.name);
-    expect(container.querySelectorAll('div.card_price')[0].textContent).toBe(`$${specificProduct.default_price}`);
+    expect(container.querySelectorAll('div.card_price')[0].textContent).toBe(`$${specificProduct.default_price} `);
   });
 
   it("should render image on product card", async () => {
@@ -82,7 +82,7 @@ describe("Product Card Tests", () => {
     expect(container.querySelector('div.rating').textContent).toContain('☆');
   });
 
-  it("should render corret icon for action button", async () => {
+  it("should render star icon for action button", async () => {
     await act(async () => {
       createRoot(container).render(<ProductCards category={specificProduct.category}
         name={specificProduct.name}
@@ -98,7 +98,7 @@ describe("Product Card Tests", () => {
     expect(container.querySelector('svg').getAttribute('class')).toBe('card_compare');
   });
 
-  it("should render corret icon for action button", async () => {
+  it("should render x icon for action button", async () => {
     specificProduct.list = 'yourOutfit';
     await act(async () => {
       createRoot(container).render(<ProductCards category={specificProduct.category}
@@ -113,6 +113,40 @@ describe("Product Card Tests", () => {
     });
     expect(container.querySelector('svg').getAttribute('class')).not.toBe('card_compare');
     expect(container.querySelector('svg').getAttribute('class')).toBe('card_remove');
+  });
+
+  it("should render sales price", async () => {
+    specificProduct.list = 'yourOutfit';
+    await act(async () => {
+      createRoot(container).render(<ProductCards category={specificProduct.category}
+        name={specificProduct.name}
+        default_price={specificProduct.default_price}
+        sale_price={'80.00'}
+        star_rating={specificProduct.star_rating}
+        thumbnail={specificProduct.thumbnail}
+        id={specificProduct.id}
+        list={specificProduct.list}
+        />);
+    });
+    expect(container.querySelectorAll('div.card_price').length).toEqual(2);
+    expect(container.querySelectorAll('div.card_price')[1].innerHTML).toBe('$80.00');
+  });
+
+  it("should not render sales price if null", async () => {
+    specificProduct.list = 'yourOutfit';
+    await act(async () => {
+      createRoot(container).render(<ProductCards category={specificProduct.category}
+        name={specificProduct.name}
+        default_price={specificProduct.default_price}
+        sale_price={null}
+        star_rating={specificProduct.star_rating}
+        thumbnail={specificProduct.thumbnail}
+        id={specificProduct.id}
+        list={specificProduct.list}
+        />);
+    });
+    expect(container.querySelectorAll('div.card_price').length).toEqual(1);
+    expect(container.querySelectorAll('div.card_price')[1]).toBe(undefined);
   });
 
 });
