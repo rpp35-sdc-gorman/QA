@@ -11,7 +11,7 @@ let QuestionVotingReporting = (props) => {
       setVoted(true);
       // request to vote helpful
       setHelpfulness(helpfulness + 1)
-      axios.put(`/question_answer/helpful/question/${props.question_id}`)
+      axios.put(`/question_answer/voting/question/helpful/${props.question_id}`)
         .catch((err) => console.log(err));
     }
   }

@@ -20,8 +20,7 @@ let AnswerVotingReporting = (props) => {
       setVoted(true);
       // request to vote helpful
       setHelpfulness(helpfulness + 1)
-      axios.put(`/question_answer/helpful/answer/${props.answer_id}`)
-        .then(result => props.updateAnswerHelpfulness())
+      axios.put(`/question_answer/voting/answer/helpful/${props.answer_id}`)
         .catch((err) => console.log(err));
     }
   }
@@ -31,7 +30,7 @@ let AnswerVotingReporting = (props) => {
       props.clickTracker(event);
       setReported(true);
       // request to report
-      axios.put(`/question_answer/reported/answer/${props.answer_id}`)
+      axios.put(`/question_answer/voting/answer/report/${props.answer_id}`)
         .catch((err) => console.log(err));
     }
   }

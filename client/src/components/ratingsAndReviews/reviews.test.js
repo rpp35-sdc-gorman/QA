@@ -112,7 +112,7 @@ describe('Reviews', () => {
     expect(container.querySelectorAll('.characteristics').length).toBe(4);
   });
 
-  it('should display 4 reviews after show more reviews clicked', async () => {
+  it('should display 4 reviews after "show more reviews" clicked', async () => {
     await act(() =>
       container
         .querySelector('#showMoreReviews')

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import _ from 'lodash';
 
 var AddAnswer = (props) => {
   const [answer, setAnswer] = useState('')
@@ -24,13 +25,8 @@ var AddAnswer = (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   console.log('updated', photos, props.showAddAnswer);
-  // })
-
   function handleChange(event) {
-    // let value = _.escape(event.target.value);
-    let value = event.target.value;
+    let value = _.escape(event.target.value);
     if (event.target.id === 'answer') {
       setAnswer(value);
     } else if (event.target.id === 'nickname') {
@@ -39,11 +35,14 @@ var AddAnswer = (props) => {
       setEmail(value);
     } else if (event.target.id === 'photos') {
       let files = photos;
-      _.each(document.getElementById('photos').files, (file, key) => {
-        files.push(file.name);
+      _.each(event.target.files, (file, key) => {
+        if (file.type === 'image/png') {
+          files.push(file.name);
+        }
       })
       files = _.uniq(files);
       setPhotos(files);
+      console.log(photos);
     }
   }
 
@@ -66,7 +65,7 @@ var AddAnswer = (props) => {
 
   return (
     props.showAddAnswer ?
-    <div className="modalAnswers" onClick={closeModal}>
+    <div className="modalAnswers">
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Answer</h2>
         <h3>{props.currentProduct}: {props.questionToAnswer.question_body}</h3>
@@ -94,7 +93,7 @@ var AddAnswer = (props) => {
 
         <label> Upload pictures:
           <input id="photos" onChange={handleChange} type="file" multiple/>
-          <ul>
+          <ul id="photo_list">
             {photos.map((photo, i) => (
               <li key={i}>{photo}</li>
             ))}

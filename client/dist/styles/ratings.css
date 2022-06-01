@@ -72,7 +72,7 @@
 }
 
 .modal button#submitNewReview {
-    width: 200px;
+  width: 200px;
 }
 
 .modal button#close {
@@ -117,13 +117,27 @@
 .fl {
   float: left;
 }
+.fr {
+  float: right;
+}
 
 .w-66 {
   width: 66%;
 }
 
+.f1 {
+  font-size: 12px;
+}
 .w4 {
   width: 4em;
+}
+
+.scroll {
+  overflow: scroll;
+}
+
+.vh100 {
+  height: 100vh;
 }
 
 .hover-gray:hover {
