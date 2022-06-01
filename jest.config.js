@@ -3,6 +3,7 @@
 const config = {
   verbose: false,
   testEnvironment: 'jsdom',
+  setupFiles : ["./setup-jest.js"]
 };
 
 module.exports = config;

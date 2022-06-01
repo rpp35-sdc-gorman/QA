@@ -2,6 +2,9 @@ import axios from 'axios';
 import React from 'react';
 import { getAverageRating } from '../common/averageRating.js';
 import Stars from '../common/stars.jsx';
+import { ChevronDown } from 'akar-icons';
+import { characteristicsMapping } from './reviews.jsx';
+import { sendClickTracker } from '../common/ClickTracker.jsx';
 var PercentBar = (props) => {
   return (
     <div className="rating">
@@ -13,17 +16,26 @@ var PercentBar = (props) => {
     </div>
   );
 };
-var Size = (props) => {
-  return <></>;
-};
-var Comfort = (props) => {
-  return <></>;
+var Characteristic = (props) => {
+  return (
+    <div className="rating">
+      <div
+        className="rating-upper"
+        style={{ marginLeft: props.fill + '%', width: 16 }}
+      >
+        <ChevronDown size={16} />
+      </div>
+      <div className="rating-lower bar-lower"></div>
+      <div className="fl f1">{props.labels[0]}</div>
+      <div className="fr f1">{props.labels[1]}</div>
+    </div>
+  );
 };
 
 class Ratings extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { AverageRating: 1.33, meta: {} };
+    this.state = { meta: {} };
   }
 
   componentDidMount() {
@@ -44,7 +56,7 @@ class Ratings extends React.Component {
     const chosen = Object.keys(this.props.filtered).filter(
       (k) => this.props.filtered[k]
     );
-    console.log(this.state.meta);
+
     return (
       <div className="ratingsContainer">
         <h1>
@@ -68,13 +80,32 @@ class Ratings extends React.Component {
               <div
                 key={count}
                 className="hover-gray"
-                onClick={() => this.props.filter(count)}
+                onClick={(e) => {
+                  sendClickTracker(e, 'rating and review');
+                  this.props.filter(count);
+                }}
               >
                 <div className="fl w4">
                   {count + ' Star' + (count === '1' ? '' : 's')}
                 </div>
                 <PercentBar
                   fill={((this.state.meta.ratings[count] || 0) / total) * 100}
+                />
+              </div>
+            ))
+          : null}
+        {this.state.meta.characteristics
+          ? Object.keys(this.state.meta.characteristics).map((name, i) => (
+              <div key={i}>
+                <label htmlFor={name} className="fl w4">
+                  {name}
+                </label>
+                <Characteristic
+                  labels={[
+                    characteristicsMapping[name][0],
+                    characteristicsMapping[name][4],
+                  ]}
+                  fill={(100 * this.state.meta.characteristics[name].value) / 5}
                 />
               </div>
             ))

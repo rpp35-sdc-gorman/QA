@@ -3,6 +3,51 @@ import axios from 'axios';
 import Modal from '../common/modal.jsx';
 import Stars, { SelectableStars } from '../common/stars.jsx';
 import ReviewTile from './reviewTile.jsx';
+import { sendClickTracker } from './../common/ClickTracker.jsx';
+export const characteristicsMapping = {
+  Size: [
+    'A size too small',
+    '½ a size too small',
+    'Perfect',
+    '½ a size too big',
+    'A size too wide',
+  ],
+  Width: [
+    'Too narrow',
+    'Slightly narrow',
+    'Perfect',
+    'Slightly wide',
+    'Too wide',
+  ],
+  Comfort: [
+    'Uncomfortable',
+    'Slightly uncomfortable',
+    'Ok',
+    'Comfortable',
+    'Perfect',
+  ],
+  Quality: [
+    'Poor',
+    'Below average',
+    'What I expected',
+    'Pretty great',
+    'Perfect',
+  ],
+  Length: [
+    'Runs Short',
+    'Runs slightly short',
+    'Perfect',
+    'Runs slightly long',
+    'Runs long',
+  ],
+  Fit: [
+    'Runs tight',
+    'Runs slightly tight',
+    'Perfect',
+    'Runs slightly long',
+    'Runs long',
+  ],
+};
 class Reviews extends React.Component {
   constructor(props) {
     super(props);
@@ -13,50 +58,7 @@ class Reviews extends React.Component {
       4: 'Good',
       5: 'Great',
     };
-    this.characteristicsMapping = {
-      Size: [
-        'A size too small',
-        '½ a size too small',
-        'Perfect',
-        '½ a size too big',
-        'A size too wide',
-      ],
-      Width: [
-        'Too narrow',
-        'Slightly narrow',
-        'Perfect',
-        'Slightly wide',
-        'Too wide',
-      ],
-      Comfort: [
-        'Uncomfortable',
-        'Slightly uncomfortable',
-        'Ok',
-        'Comfortable',
-        'Perfect',
-      ],
-      Quality: [
-        'Poor',
-        'Below average',
-        'What I expected',
-        'Pretty great',
-        'Perfect',
-      ],
-      Length: [
-        'Runs Short',
-        'Runs slightly short',
-        'Perfect',
-        'Runs slightly long',
-        'Runs long',
-      ],
-      Fit: [
-        'Runs tight',
-        'Runs slightly tight',
-        'Perfect',
-        'Runs slightly long',
-        'Runs long',
-      ],
-    };
+
     this.state = {
       reviews: [],
       sort: 'relevance',
@@ -124,8 +126,7 @@ class Reviews extends React.Component {
           recommend,
           summary,
         })
-        .then((data) => data.data)
-        .then((data) => {
+        .then(({ data }) => {
           console.log(data);
           this.setState({ showNewReviewModal: false });
         })
@@ -133,7 +134,8 @@ class Reviews extends React.Component {
     }
   }
 
-  loadMoreReviews() {
+  loadMoreReviews(e) {
+    sendClickTracker(e, 'rating and review');
     this.setState({ page: this.state.page + 1 }, () => {
       axios
         .get('/rating_review/' + this.props.id, {
@@ -194,17 +196,19 @@ class Reviews extends React.Component {
           <option>{'newest'}</option>
           <option>{'helpful'}</option>
         </select>
-        {this.state.reviews.map((review, i) =>
-          this.props.filtered[review.rating] ||
-          '12345'.split('').every((v) => !this.props.filtered[v]) ? (
-            <ReviewTile
-              key={i}
-              helpfulClicked={this.helpfulClicked.bind(this)}
-              review={review}
-              helpful={this.state.helpful[review.review_id]}
-            ></ReviewTile>
-          ) : null
-        )}
+        <div className="vh100 scroll">
+          {this.state.reviews.map((review, i) =>
+            this.props.filtered[review.rating] ||
+            '12345'.split('').every((v) => !this.props.filtered[v]) ? (
+              <ReviewTile
+                key={i}
+                helpfulClicked={this.helpfulClicked.bind(this)}
+                review={review}
+                helpful={this.state.helpful[review.review_id]}
+              ></ReviewTile>
+            ) : null
+          )}
+        </div>
         <Modal
           show={this.state.showNewReviewModal}
           handleClose={() => this.setState({ showNewReviewModal: false })}
@@ -222,13 +226,19 @@ class Reviews extends React.Component {
             <input
               type="radio"
               name="recommend"
-              onChange={() => this.setState({ recommend: true })}
+              onChange={(e) => {
+                sendClickTracker(e, 'rating and review');
+                this.setState({ recommend: true });
+              }}
             />
             yes
             <input
               type="radio"
               name="recommend"
-              onChange={() => this.setState({ recommend: false })}
+              onChange={(e) => {
+                sendClickTracker(e, 'rating and review');
+                this.setState({ recommend: false });
+              }}
             />
             no
           </div>
@@ -240,7 +250,8 @@ class Reviews extends React.Component {
                   <input
                     type="radio"
                     name={value}
-                    onChange={() => {
+                    onChange={(e) => {
+                      sendClickTracker(e, 'rating and review');
                       this.setState({
                         characteristics: {
                           ...this.state.characteristics,
@@ -250,13 +261,14 @@ class Reviews extends React.Component {
                     }}
                   />
                 </div>
-                {this.characteristicsMapping[value][0]}
+                {characteristicsMapping[value][0]}
               </div>
 
               <input
                 type="radio"
                 name={value}
-                onChange={() => {
+                onChange={(e) => {
+                  sendClickTracker(e, 'rating and review');
                   this.setState({
                     characteristics: {
                       ...this.state.characteristics,
@@ -268,7 +280,8 @@ class Reviews extends React.Component {
               <input
                 type="radio"
                 name={value}
-                onChange={() => {
+                onChange={(e) => {
+                  sendClickTracker(e, 'rating and review');
                   this.setState({
                     characteristics: {
                       ...this.state.characteristics,
@@ -280,7 +293,8 @@ class Reviews extends React.Component {
               <input
                 type="radio"
                 name={value}
-                onChange={() => {
+                onChange={(e) => {
+                  sendClickTracker(e, 'rating and review');
                   this.setState({
                     characteristics: {
                       ...this.state.characteristics,
@@ -294,7 +308,8 @@ class Reviews extends React.Component {
                   <input
                     type="radio"
                     name={value}
-                    onChange={() => {
+                    onChange={(e) => {
+                      sendClickTracker(e, 'rating and review');
                       this.setState({
                         characteristics: {
                           ...this.state.characteristics,
@@ -304,7 +319,7 @@ class Reviews extends React.Component {
                     }}
                   />
                 </div>
-                {this.characteristicsMapping[value][4]}
+                {characteristicsMapping[value][4]}
               </div>
             </div>
           ))}
@@ -357,8 +372,9 @@ class Reviews extends React.Component {
           <span id="errorMessage">{this.state.errorMessage}</span>
           <button
             id="submitNewReview"
-            onClick={() => {
-              this.submit();
+            onClick={(e) => {
+              sendClickTracker(e, 'rating and review');
+              this.submit(e);
             }}
           >
             submit review
@@ -366,7 +382,10 @@ class Reviews extends React.Component {
         </Modal>
         <button
           id="addAReview"
-          onClick={() => this.setState({ showNewReviewModal: true })}
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            this.setState({ showNewReviewModal: true });
+          }}
         >
           Add A Review
         </button>
