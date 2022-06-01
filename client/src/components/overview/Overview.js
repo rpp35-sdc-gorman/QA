@@ -21,7 +21,8 @@ class Overview extends React.Component {
       force: 0,
     };
     // remote this later
-    this.testId = '71699';
+    // this.testId = '71699';
+    this.testId = window.location.href.split('/').pop();
     this.handleStyleChange = this.handleStyleChange.bind(this);
   }
 
