@@ -10,12 +10,13 @@ var AddQuestion = (props) => {
   function handleSubmit(event) {
     event.preventDefault();
     // send request to add answer
+    console.log(props.product_id);
     if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email) && question && nickname) {
       axios.post(`/question_answer/addQuestionTo`, {
         body: question,
         name: nickname,
         email,
-        product_id: props.product_id
+        product_id: Number(props.product_id)
       })
       .then((result) => {
         props.toggleAddQuestion(event)
