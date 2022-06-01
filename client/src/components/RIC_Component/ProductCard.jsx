@@ -10,9 +10,9 @@ var ProductCards = (props) => (
         color="white"
         strokeWidth={2}
         size={20}
-        className="card_favorite"
+        className="card_compare"
         id={props.id}
-        onClick={props.favorite}
+        onClick={props.compare}
       />
     ) : (
       <CircleXFill
@@ -26,7 +26,8 @@ var ProductCards = (props) => (
     )}
     <div className="card_category">{props.category}</div>
     <div className="card_name">{props.name}</div>
-    <div className="card_price">${props.default_price}</div>
+    <div className="card_price" style={props.sale_price ? {textDecoration: 'line-through', color: 'red'} : null}>{`$${props.default_price} `}</div>
+    {props.sale_price ? <div className="card_price" style={{color: 'red'}}>{`$${props.sale_price}`}</div> : null}
     <div className="card_rating">
       <Stars size={10} filled={props.star_rating} />
     </div>
