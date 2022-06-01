@@ -20,6 +20,7 @@ router.get('/ric/:product_id', async (req, res, next) => {
   const relatedEndpoint = `products/${currentProductId}/related`;
   await sendRequest(relatedEndpoint)
     .then(relatedProducts => {
+      relatedProducts.data.unshift(Number(currentProductId));
       return relatedProducts.data
     })
     .then(relatedProductIds => {

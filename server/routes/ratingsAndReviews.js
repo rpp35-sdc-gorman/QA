@@ -23,7 +23,7 @@ router.get('/:id/rating', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  console.log(req.query);
+  // console.log(req.query);
   sendRequest(
     `reviews/?product_id=${req.params.id}&sort=${
       req.query.sort || 'relevance'
