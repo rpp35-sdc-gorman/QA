@@ -97,6 +97,11 @@ var AddAnswer = (props) => {
   return (
     props.showAddAnswer ?
     <div className="modalAnswers">
+      <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
+        <img
+          src={displayImage}
+        />
+      </Modal>
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Answer</h2>
         <h3>{props.currentProduct}: {props.questionToAnswer.question_body}</h3>
@@ -125,11 +130,6 @@ var AddAnswer = (props) => {
         <label> Upload pictures:
           <input id="photos" onChange={handleChange} type="file" multiple/>
           <div id="answerImages">
-            <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
-              <img
-                src={displayImage}
-              />
-            </Modal>
             {Array.from(photos).map((photo, i) => (
               <img
                 key={i}
