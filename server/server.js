@@ -27,7 +27,6 @@ app.use(bodyParser.json());
 //   next();
 // })
 
-
 // routes
 app.use('/overview', overviewRouter);
 app.use('/rating_review', ratingRouter);
@@ -37,9 +36,9 @@ app.use('/related_items', relatedRouter);
 // click tracker route
 app.post('/trackClick', (req, res) => {
   sendRequest('interactions', 'POST', req.body)
-    .then(result => res.sendStatus(200))
-    .catch(err => res.status(500).send(err));
-})
+    .then((result) => res.sendStatus(200))
+    .catch((err) => res.status(500).send(err));
+});
 app.listen(port, () => {
   console.log(`Atelier 🥳 listening on port ${port}`);
 });

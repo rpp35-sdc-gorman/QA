@@ -1,4 +1,5 @@
 import React from 'react';
+import { sendClickTracker } from './ClickTracker.jsx';
 
 let Stars = (props) => {
   const stars = (props.filled / 5) * 100;
@@ -33,18 +34,88 @@ export const SelectableStars = (props) => {
         className="rating-upper"
         style={{ width: stars + '%', fontSize: props.size }}
       >
-        <span onClick={() => props.select(1)}>★</span>
-        <span onClick={() => props.select(2)}>★</span>
-        <span onClick={() => props.select(3)}>★</span>
-        <span onClick={() => props.select(4)}>★</span>
-        <span onClick={() => props.select(5)}>★</span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(1);
+          }}
+        >
+          ★
+        </span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(2);
+          }}
+        >
+          ★
+        </span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(3);
+          }}
+        >
+          ★
+        </span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(4);
+          }}
+        >
+          ★
+        </span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(5);
+          }}
+        >
+          ★
+        </span>
       </div>
       <div className="rating-lower" style={{ fontSize: props.size }}>
-        <span onClick={() => props.select(1)}>☆</span>
-        <span onClick={() => props.select(2)}>☆</span>
-        <span onClick={() => props.select(3)}>☆</span>
-        <span onClick={() => props.select(4)}>☆</span>
-        <span onClick={() => props.select(5)}>☆</span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(1);
+          }}
+        >
+          ☆
+        </span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(2);
+          }}
+        >
+          ☆
+        </span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(3);
+          }}
+        >
+          ☆
+        </span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(4);
+          }}
+        >
+          ☆
+        </span>
+        <span
+          onClick={(e) => {
+            sendClickTracker(e, 'rating and review');
+            props.select(5);
+          }}
+        >
+          ☆
+        </span>
       </div>
     </div>
   );
