@@ -19,12 +19,13 @@ class App extends React.Component {
 
   render() {
     const QA = ClickTracker(QAMain, 'Question & Answer');
+    const RI = ClickTracker(RIC, 'Related Items');
     return (
       <div>
         <Overview />
+        <RI />
         <QA />
         <RatingsAndReviews />
-        <RIC />
       </div>
     );
   }

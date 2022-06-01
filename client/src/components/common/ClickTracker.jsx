@@ -1,6 +1,20 @@
 import React from 'react';
 import axios from 'axios';
 
+export const sendClickTracker = function (event, widget) {
+  let tag = event.target.tagName.toLowerCase();
+  let className = event.target.className ? `.${event.target.className}` : '';
+  let id = event.target.id ? `#${event.target.id}` : '';
+  // console.log('from click tracker: ', tag + className + id, widget);
+  axios
+    .post('/trackClick', {
+      element: tag + className + id,
+      widget,
+      time: new Date().toDateString(),
+    })
+    .catch((err) => console.log(err));
+};
+
 // This function takes a component...
 function ClickTracker(WrappedComponent, widget) {
   // ...and returns another component...
@@ -12,21 +26,29 @@ function ClickTracker(WrappedComponent, widget) {
 
     sendClickTracker(event) {
       let tag = event.target.tagName.toLowerCase();
-      let className = event.target.className ? `.${event.target.className}` : '';
+      let className = event.target.className
+        ? `.${event.target.className}`
+        : '';
       let id = event.target.id ? `#${event.target.id}` : '';
       // console.log('from click tracker: ', tag + className + id, widget);
-      axios.post('/trackClick', {
-        element: tag + className + id,
-        widget,
-        time: new Date().toDateString()
-      })
-      .catch(err => console.log(err));
+      axios
+        .post('/trackClick', {
+          element: tag + className + id,
+          widget,
+          time: new Date().toDateString(),
+        })
+        .catch((err) => console.log(err));
     }
 
     render() {
       // ... and renders the wrapped component with the fresh data!
       // Notice that we pass through any additional props
-      return <WrappedComponent clickTracker={(event) => this.sendClickTracker(event)} {...this.props} />;
+      return (
+        <WrappedComponent
+          clickTracker={(event) => this.sendClickTracker(event)}
+          {...this.props}
+        />
+      );
     }
   };
 }
