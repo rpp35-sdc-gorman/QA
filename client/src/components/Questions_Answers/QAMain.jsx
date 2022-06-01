@@ -45,6 +45,7 @@ class QAMain extends React.Component {
   }
 
   reload() {
+    let product_id = window.location.href.split('/').pop();
     axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1}})
       .then(results => {
         let questionsWithAnswers = [];
@@ -56,6 +57,7 @@ class QAMain extends React.Component {
           hasMoreQuestions = false;
         }
         this.setState({
+          product_id,
           questions: questionsWithAnswers.sort((a,b) => b.question_helpfulness - a.question_helpfulness),
           hasMoreQuestions
         })

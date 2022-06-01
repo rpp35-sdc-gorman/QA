@@ -12,9 +12,6 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-app.set('views', `${__dirname}/views`);
-app.set('view engine', 'ejs');
-
 // serve the public folder
 // app.use(compression());
 app.use('*.js', function (req, res, next) {
@@ -33,15 +30,11 @@ app.use('/product', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-<<<<<<< HEAD
-=======
-
 app.get('/product/:id', (req, res) => {
   // sends base inex.html file
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 })
 
->>>>>>> development
 // routes
 app.use('/overview', overviewRouter);
 app.use('/rating_review', ratingRouter);
@@ -51,17 +44,11 @@ app.use('/related_items', relatedRouter);
 // click tracker route
 app.post('/trackClick', (req, res) => {
   sendRequest('interactions', 'POST', req.body)
-<<<<<<< HEAD
-    .then((result) => res.sendStatus(200))
-    .catch((err) => res.status(500).send(err));
-});
-=======
     .then(result => res.sendStatus(200))
     .catch(err => res.status(500).send(err));
 })
 
 
->>>>>>> development
 app.listen(port, () => {
   console.log(`Atelier 🥳 listening on port ${port}`);
 });
