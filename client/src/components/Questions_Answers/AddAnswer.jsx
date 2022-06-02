@@ -42,10 +42,10 @@ var AddAnswer = (props) => {
       let photoPromises = [];
       let photoUrlSet = photos.size ? photos : new Set();
       _.each(event.target.files, (file, key) => {
-        let filename = `${props.nextAnswerId}-${file.name}`;
-        let url = `https://1isgmttqfc.execute-api.us-east-1.amazonaws.com/FECdev/fec-images-bucket/${filename}`;
-        photoUrlSet.add(`https://fec-images-bucket.s3.amazonaws.com/${filename}`)
-        if (file.type === 'image/png') {
+        if (file.type === 'image/jpeg' || file.type === 'image/png') {
+          let filename = `${props.nextAnswerId}-${file.name}`;
+          let url = `https://1isgmttqfc.execute-api.us-east-1.amazonaws.com/FECdev/fec-images-bucket/${filename}`;
+          photoUrlSet.add(`https://fec-images-bucket.s3.amazonaws.com/${filename}`)
           photoPromises.push(
             axios({
               method: 'PUT',
@@ -57,16 +57,15 @@ var AddAnswer = (props) => {
         }
       })
 
-      let updatedPhotos = photos;
+      let updatedPhotos = new Set();
       Promise.allSettled(photoPromises)
-        .then((result) => {
-          console.log(result, photoUrlSet);
+        .then((results) => {
           for (let url of photoUrlSet) {
             updatedPhotos.add(url)
           }
-          setPhotos(updatedPhotos);
-          console.log('hi', Array.from(photos));
-        });
+          return updatedPhotos;
+        })
+        .then(updatedPhotos => setPhotos(updatedPhotos));
     }
   }
 
@@ -90,7 +89,7 @@ var AddAnswer = (props) => {
     setAnswer('');
     setNickname('');
     setEmail('');
-    setPhotos([]);
+    setPhotos(new Set());
     props.toggleAddAnswer(event);
   }
 
@@ -99,6 +98,7 @@ var AddAnswer = (props) => {
     <div className="modalAnswers">
       <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
         <img
+          id={'displayImage'}
           src={displayImage}
         />
       </Modal>
@@ -132,6 +132,7 @@ var AddAnswer = (props) => {
           <div id="answerImages">
             {Array.from(photos).map((photo, i) => (
               <img
+                id='newImage'
                 key={i}
                 src={photo}
                 onClick={(event) => toggleImage(event)}

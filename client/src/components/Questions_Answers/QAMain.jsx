@@ -24,7 +24,7 @@ class QAMain extends React.Component {
   }
 
   componentDidMount() {
-    let product_id = window.location.href.split('/').pop();
+    let product_id = Number(window.location.href.split('/').pop()) || '';
     // get initial QA list from server;
     axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1} })
       .then(results => {
@@ -45,7 +45,7 @@ class QAMain extends React.Component {
   }
 
   reload() {
-    let product_id = window.location.href.split('/').pop();
+    let product_id = window.location.href.split('/').pop() || '';
     axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1}})
       .then(results => {
         let questionsWithAnswers = [];

@@ -12,6 +12,7 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 jest.mock('axios');
 axios.post.mockResolvedValue('posted new answer');
 let toggleAddAnswer = jest.fn();
+let clickTracker = jest.fn();
 
 let container = null;
 beforeEach(() => {
@@ -34,6 +35,7 @@ it("should not be displayed on load with showAddAnswer === false", async () => {
         questionToAnswer={{...exampleData.question, 'answers': exampleData.answers}}
         currentProduct = {'current product name'}
         showAddAnswer={false}
+        clickTracker={clickTracker}
       />);
   });
   expect(container.querySelectorAll('.modalAnswers').length).toEqual(0);
@@ -84,8 +86,8 @@ describe('Unit tests on opened Add Answer modal', () => {
   });
 
   it("should be able to accept multiple image files only for 4th input field", async () => {
-    const file1 = new File(["foo"], "chucknorris.png", { type: "image/png" });
-    const file2 = new File(["foo"], "chucknorris2.png", { type: "image/png" });
+    const file1 = new File(["foo"], "chucknorris.png", { type: "image/jpeg" });
+    const file2 = new File(["foo"], "chucknorris2.png", { type: "image/jpeg" });
     const file3 = new File(["foo"], "word.txt", { type: "text/plain" });
     expect(container.querySelectorAll('.modalAnswers form label')[3].children[0].type).toBe('file');
     expect(container.querySelectorAll('.modalAnswers form label')[3].children[0].hasAttribute('multiple')).toBe(true);
@@ -95,7 +97,26 @@ describe('Unit tests on opened Add Answer modal', () => {
       Simulate.change(container.querySelector('input#photos'), {target: { id: 'photos', files: [file1, file2, file3] }});
     })
 
-    expect(container.querySelectorAll('li').length).toBe(2);
+    expect(container.querySelectorAll('img').length).toBe(2);
+  });
+
+  it("should show thumbnail after image upload", async () => {
+    const file1 = new File(["foo"], "chucknorris.png", { type: "image/jpeg" });
+    // simulate upload file
+    await act(async () => {
+      await Simulate.change(container.querySelector('input#photos'), {target: { id: 'photos', files: [file1] }});
+    })
+
+    expect(container.querySelectorAll('img').length).toBe(1);
+
+    expect(container.querySelector('#newImage').src).toBe('https://fec-images-bucket.s3.amazonaws.com/undefined-chucknorris.png');
+    await act(async () => {
+      await container.querySelector('#newImage').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    })
+
+    // expect(container.querySelectorAll('#displayImage').length).toBe(1);
+    // // expect(container.querySelector('.modal-main').children[0].tagName).toBe('IMG');
+    // // expect(container.querySelector('.modal-main img').src).toBe('chucknorris.png');
   });
 
   it("should be able to filter out duplicate files with same names to only load one", async () => {
@@ -109,7 +130,7 @@ describe('Unit tests on opened Add Answer modal', () => {
       Simulate.change(container.querySelector('input#photos'), {target: { id: 'photos', files: [file1, file2] }});
     })
 
-    expect(container.querySelectorAll('li').length).toBe(1);
+    expect(container.querySelectorAll('img').length).toBe(1);
   });
 
   it("should have field validation in place for invalid email", async () => {
