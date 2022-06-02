@@ -27,18 +27,21 @@ class StyleSelector extends React.Component{
   }
 
   createBubbles () {
-    return this.props.styles.map((item) => {
-      const id = keyId();
-      return <Bubble
-                key={keyId()}
-                entity={item}
-                image={item.photos[0].thumbnail_url}
-                handleStyleChange={this.props.handleStyleChange}
-            />
-    })
+    if (this.props.styles) {
+        return this.props.styles.map((item) => {
+        const id = keyId();
+        return <Bubble
+                  key={keyId()}
+                  entity={item}
+                  image={item.photos[0].thumbnail_url}
+                  handleStyleChange={this.props.handleStyleChange}
+              />
+      })
+    }
   }
 
-  handleFullscreen(){
+  handleFullscreen(e){
+    this.props.ClickTracker(e);
     this.setState({'isFullscreen': !this.state.isFullscreen})
   }
 
@@ -71,6 +74,7 @@ class StyleSelector extends React.Component{
             images={this.props.currentStyle.photos}
             handleFullscreen={this.handleFullscreen}
             isFullscreen={this.state.isFullscreen}
+            ClickTracker={this.props.ClickTracker}
           />
           <section className="Style_Selector">
             <article className="info">
@@ -79,16 +83,19 @@ class StyleSelector extends React.Component{
                 <sub><a>Read All Reviews</a></sub>
               </div>
               <div>
-                <h4>{this.props.info.category}</h4>
-                <h2>{this.props.currentStyle.name}</h2>
+                <h4>{this.props.info ? this.props.info.category : 'miscellaneous'}</h4>
+                <h2>{this.props.info.name || 'Coming Soon'}</h2>
                 <h4>{this.formatPrice(this.props.currentStyle.original_price, this.props.currentStyle.sale_price)}</h4>
               </div>
             </article>
-            <h4>Style > {this.props.currentStyle.name}</h4>
+            <h4>Style > {this.props.currentStyle.name || null}</h4>
             <div className="gridRows">
               {this.state.bubbles}
             </div>
-            <OrderForm inventory={this.props.currentStyle.skus} />
+            <OrderForm
+              inventory={this.props.currentStyle.skus}
+              ClickTracker={this.props.ClickTracker}
+              />
           </section>
         </article>
       )

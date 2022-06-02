@@ -1,6 +1,6 @@
 import React from "react";
-import { unmountComponentAtNode } from "react-dom";
-import { createRoot } from 'react-dom/client';
+import {unmountComponentAtNode } from "react-dom";
+import {createRoot} from 'react-dom/client'
 import { act } from "react-dom/test-utils";
 
 import StyleSelector from '../StyleSelector';
@@ -461,30 +461,30 @@ global.IS_REACT_ACT_ENVIRONMENT = true
 
 
 describe.only("Style Selector Unit Tests", () => {
-  let container = null;
+    let container = null;
+    let root = null;
 
-  beforeEach(async () => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
-  });
-  afterEach(() => {
-    unmountComponentAtNode(document);
-    container.remove();
-    container = null;
-  });
+    beforeEach(async () => {
+        container = document.createElement("div");
+        container.id = 'root'
+        document.body.appendChild(container);
+        root = createRoot(document.querySelector('#root'))
+    });
+    afterEach(() => {
+        unmountComponentAtNode(document);
+        container.remove();
+        container = null;
+    });
 
-  it('Should render to the page', () => {
-    act(() => {
-      createRoot(container).render(<StyleSelector info={testData.info} currentStyle={testData.styles.results[0]} styles={testData.styles} />);
+    it('Should render to the page', () => {
+        act(() => {
+            root.render(<StyleSelector
+                    info={testData.info}
+                    currentStyle={testData.styles.results[0]}
+                    styles={testData.styles.results}
+                    />);
+        })
+        const r = document.querySelector('.Style_Selector')
+        expect(r).not.toBeUndefined();
     })
-    expect(container.querySelector('.Style_Selector')).not.toBe(undefined);
-  })
-
-  it("Should not render if there is not data provided to props", () => {
-    act(() => {
-        createRoot(container).render(<StyleSelector currentStyle={testData.styles.results[0]} styles={testData.styles} />);
-      })
-      expect(container.querySelector('.Style_Selector')).toBe(undefined);
-  })
-
 });

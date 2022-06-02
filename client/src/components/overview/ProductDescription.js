@@ -15,10 +15,12 @@ function ProductDescription (props) {
         <p>{props.info.description}</p>
       </div>
       <ul className="features">
-        {
+        { props.info.features ?
           props.info.features.map(item => {
             return <li className="feature" key={keyId()}><Check size={16}/>{item.value}</li>
           })
+          :
+          null
         }
       </ul>
     </article>

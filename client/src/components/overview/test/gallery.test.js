@@ -42,7 +42,7 @@ describe("Gallery Unit Tests", () => {
       createRoot(container).render(<Gallery images={testPhotos} />);
     })
     expect(container.querySelector('.Gallery')).not.toBeUndefined();
-    expect(container.querySelectorAll('.GalleryArrow').length).toEqual(3);
+    expect(container.querySelectorAll('.GalleryArrow').length).toEqual(5);
     expect(container.querySelectorAll('.Gallery_mini').length).toEqual(2);
   });
   it('Should Render Place holder if there is no data', () => {
@@ -50,7 +50,6 @@ describe("Gallery Unit Tests", () => {
       createRoot(container).render(<Gallery />);
     })
     expect(container.querySelector('.Gallery')).not.toBeUndefined();
-    expect(container.querySelectorAll('.GalleryArrow').length).toEqual(3);
     expect(container.querySelectorAll('.Gallery_mini').length).toEqual(1);
   });
   it('Should change the displayed Image when increment is clicked', () => {
@@ -59,12 +58,12 @@ describe("Gallery Unit Tests", () => {
       createRoot(container).render(<Gallery images={testPhotos} />);
     })
     // snapshot before event
-    const before = container.querySelector('.Gallery').innerHTML
+    const before = container.querySelector('.Gallery').style._values['background-image']
     act(() => {
       const advance = document.getElementById('nextArrow');
       advance.dispatchEvent(new MouseEvent('click', {bubbles: true}))
     })
-    const after = container.querySelector('.Gallery').innerHTML
+    const after = container.querySelector('.Gallery').style._values['background-image']
 
     // eval
     expect(before).not.toBe(after)
@@ -75,14 +74,14 @@ describe("Gallery Unit Tests", () => {
       createRoot(container).render(<Gallery images={testPhotos} />);
     })
     // snapshot before event
-    const before = container.querySelector('.Gallery').innerHTML
+    const before = container.querySelector('.Gallery').style._values['background-image']
     act(() => {
       const prev = document.getElementById('prevArrow');
       prev.dispatchEvent(new MouseEvent('click', {bubbles: true}))
     })
     // snapshot after event
-    const after = container.querySelector('.Gallery').innerHTML
+    const after = container.querySelector('.Gallery').style._values['background-image']
     // eval
-    expect(before).not.toBe(after)
+    expect(before).not.toEqual(after)
   });
 })
