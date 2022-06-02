@@ -24,6 +24,8 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  box-shadow: 5px 6px 15px 3px rgba(0,0,0,0.36);
+  border: 2px solid black;
 }
 .Gallery_fullscreen{
   display: flex;
@@ -35,12 +37,14 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  box-shadow: 5px 6px 15px 3px rgba(0,0,0,0.36);
 }
 .GalleryMain{
   align-items: center;
   display: flex;
   justify-content: space-between;
   width: 100%;
+  height: 100%;
 }
 .Gallery_image{
   height:32em;
@@ -51,14 +55,14 @@
 .Gallery_mini{
   height:4em;
   width: 3em;
-  margin:.2em 0;
+  margin:.5em 0;
   border:1px solid black;
-  border-radius: .25em;
   cursor: pointer;
 }
 .Gallery_selected{
+  padding-bottom: .25em;
+  border:none;
   border-bottom: 5px solid lightseagreen;
-  border-color: lightseagreen;
 }
 .GalleryArrow{
   background-color: transparent;
@@ -75,11 +79,11 @@
 
 /* Gallery Arrow Position */
 #nextArrow{
-  margin-top: 50%;
+  /* margin-top: calc(width / 2); */
 
 }
 #prevArrow{
-  margin-top: 50%;
+  /* margin-top: 50%; */
 }
 /* fullscreen button position */
 #fullscreen{
@@ -95,20 +99,70 @@
   align-items: flex-start;
 }
 
+/* Style Selector */
+.Style_Selector{
+  width: 25em;
+}
 
-/*---- more generic styles -----*/
+.bubble-container{
+  gap:.5em;
+  margin-bottom: 2em;
+}
+
+/* overview-rating */
+.overview-rating{
+  margin-top: 2em;
+ justify-content: flex-start;
+ gap: .5em;
+ align-items: center;
+}
+.overview-rating > a{
+  font-size: 12px;
+  color: rgb(86, 86, 86);
+  text-decoration: none;
+  border-bottom: 1px solid rgb(86, 86, 86);
+}
+.overview-rating > a:hover{
+  color: rgb(86, 86, 86);
+  border-width: 3px;
+}
+
+
+/*---- more generic text styles -----*/
 .description{
   border-right: 2px solid black;
   margin-bottom:2em;
   padding-right:2em;
 }
-
+.description-title{
+  font-size: 17px;
+  font-weight: bold;
+}
 .feature{
   display: flex;
   align-items: center;
   padding:.25em 0;
 }
 
+.category-name{
+  font-size: 26px;
+  font-weight: 200;
+  margin-bottom: 0;
+  margin-top: .5em;
+}
+
+.product-name{
+  font-size: 34px;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.style{
+  font-size: 26px;
+}
+.style-current{
+  font-weight: 200;
+}
 
 /* ----prices--- */
 .price-cross{
@@ -160,11 +214,20 @@
 .dropdown > option{
   text-align: left;
 }
+.dropdown:hover{
+  background-color: rgb(198, 198, 198);
+}
+
+
+#size{
+  width: 78%;
+}
 
 .order-submit-button{
   font-weight: bold;
   height:3.5em;
-  width: 15em;
+  /* width: 15em; */
+  width: 87%;
   text-align: left;
   justify-content: space-between;
   align-items: center;
@@ -182,4 +245,7 @@
 .input-group{
   margin:.5em 0em;
   justify-content: space-between ;
+}
+.input-group > button:hover{
+  background-color: rgb(198, 198, 198);
 }

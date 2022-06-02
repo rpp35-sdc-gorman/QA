@@ -82,6 +82,7 @@ class Overview extends React.Component {
         <Container
           styles={this.state.styles}
           info={this.state.info}
+          rating={this.state.rating}
           currentStyle={this.state.currentStyle}
           handleStyleChange={this.handleStyleChange}
           ClickTracker={this.props.clickTracker}

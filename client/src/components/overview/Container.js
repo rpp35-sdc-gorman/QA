@@ -18,6 +18,7 @@ const Container = (props) => {
               currentStyle={props.currentStyle}
               info={props.info}
               styles={props.styles}
+              rating={props.rating}
               handleStyleChange={props.handleStyleChange}
               ClickTracker={props.ClickTracker}
             />

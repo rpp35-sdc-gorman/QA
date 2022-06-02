@@ -9,7 +9,7 @@ import keyId from '../common/keyId';
 const OrderForm = (props) => {
 
   // sku ID for submission
-  const [sku, setSku] = useState(null);
+  const [sku, setSku] = useState('');
   // max availible  - for verification
   const [quantityLimiter, setQuantityLimiter] = useState(null);
   // quntity user picks
@@ -19,16 +19,13 @@ const OrderForm = (props) => {
   // form error status
   const [error, setError] = useState(null)
 
-
   // create drop down sizing options
   const createOptions = () => {
     let options = [];
-
     for(let item in props.inventory){
       const opt = < option key={keyId()} value={item} >{props.inventory[item].size}</option>
       options.push(opt)
     }
-
     return options
   }
 
@@ -39,7 +36,7 @@ const OrderForm = (props) => {
 
     const opts = []
     if(itemInfo.quantity < 1){
-      opts.push(<option value="null" key={keyId()}>OUT OF STOCK</option>)
+      opts.push(<option value="" key={keyId()}>OUT OF STOCK</option>)
     } else {
       for(let i = 1; i < itemInfo.quantity; i++){
         opts.push(<option key={keyId()} value={i}>{i}</option>)
@@ -93,7 +90,6 @@ const OrderForm = (props) => {
       setError("Please select a size")
       return false
     }
-
     return true
   }
 
@@ -102,12 +98,12 @@ const OrderForm = (props) => {
        {error? <span className="form-error">{error}</span> : null}
       <div className="flexRow input-group">
         <select value={sku} className="dropdown" id="size" onChange={(e) => handleSizeChange(e)}>
-          <option key={keyId()}>Select Size</option>
+          <option key={keyId()} value={''}>Select Size</option>
           {
             createOptions()
           }
         </select>
-        <select className="dropdown" onChange={(e) => handleQuantityChange(e)}>
+        <select className="dropdown" id="quantity" onChange={(e) => handleQuantityChange(e)}>
           {
             quantityOptions || null
           }

@@ -51,12 +51,11 @@ const Gallery = (props) => {
         const cutoff = currentMiniImage + 4
         props.images.forEach((photo, index) => {
           if(index >= currentMiniImage && index <= cutoff){
-            const id = keyId()
+            // const id = keyId()
             const e = <img
-                      key={id}
-                      id={index}
+                      key={index}
                       onClick={(e) => jumpTo(index, e)}
-                      className={currentImage === id ? 'Gallery_selected Gallery_mini' : 'Gallery_mini' }
+                      className={currentImage === index ? 'Gallery_selected Gallery_mini' : 'Gallery_mini' }
                       src={photo.thumbnail_url}
                     />
             output.push(e)

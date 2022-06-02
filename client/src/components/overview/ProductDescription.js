@@ -11,7 +11,7 @@ function ProductDescription (props) {
   return (props.info ?
     <article className='ProductDescription'>
       <div className='description'>
-        <h3>{props.info.slogan}</h3>
+        <h2 className="description-title">{props.info.slogan}</h2>
         <p>{props.info.description}</p>
       </div>
       <ul className="features">
@@ -20,7 +20,7 @@ function ProductDescription (props) {
             return <li className="feature" key={keyId()}><Check size={16}/>{item.value}</li>
           })
           :
-          null
+          <li className="feature" key={keyId()}><Check size={16}/>High Quality</li>
         }
       </ul>
     </article>

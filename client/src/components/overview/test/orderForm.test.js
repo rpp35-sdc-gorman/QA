@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from "react-dom";
+import { unmountComponentAtNode } from "react-dom";
+import {createRoot} from 'react-dom/client'
 import { act, Simulate } from "react-dom/test-utils";
 
 import OrderForm from '../OrderForm';
@@ -50,7 +51,9 @@ describe('Order Form Tests', () => {
 
     beforeEach(() => {
         container = document.createElement('div')
+        container.id='root'
         document.body.appendChild(container)
+        root = createRoot(document.querySelector('#root'))
     })
 
     afterEach(() => {
@@ -61,14 +64,14 @@ describe('Order Form Tests', () => {
 
     it('Should render when given data', () => {
         act(() => {
-            render(<OrderForm inventory={testData.skus} />, container)
+            root.render(<OrderForm inventory={testData.skus} />, container)
         })
         const r = document.querySelector('.OrderForm')
         expect(r).not.toBeUndefined();
     })
     it('Should Be able to display an error message', () => {
         act(() => {
-            render(<OrderForm inventory={testData.sku} />, container)
+            root.render(<OrderForm inventory={testData.skus} ClickTracker={testFunction} />, container)
         })
         act(() => {
             const e = document.querySelector('.order-submit-button')
@@ -76,17 +79,42 @@ describe('Order Form Tests', () => {
         })
         const r = document.querySelector('.form-error').textContent
         expect(r).toBe('Please select a size')
+        expect(testFunction).toHaveBeenCalledTimes(1);
     })
-    it('Should render size selector', () => {
+    it('Should render size selector with a event handler', () => {
         act(() => {
-            render(<OrderForm inventory={testData.sku} />, container)
+            root.render(<OrderForm inventory={testData.skus} ClickTracker={testFunction} />, container)
         })
-        setTimeout(() => {
-            const e = document.querySelector('#size')
-            console.log(e)
-            expect(e.children.length).toBe(1)
-        }, 1)
-
+        const e = document.querySelector('#size')
+        expect(e).not.toBeUndefined();
+        e.value = "2580561";
+        act(() => {
+            Simulate.change(e)
+        })
+        // i guess jest keeps track of how many times I have called that function
+        // and it does not reset on unmount
+        expect(testFunction).toHaveBeenCalledTimes(2);
     })
-
+    it('Should render Quantity Selector with a event handler', () => {
+        act(() => {
+            root.render(<OrderForm inventory={testData.skus} ClickTracker={testFunction} />, container)
+        })
+        const e = document.querySelector('#quantity')
+        expect(e).not.toBeUndefined();
+        act(() => {
+            e.dispatchEvent(new MouseEvent('change', {bubbles:true}))
+        })
+        expect(testFunction).toHaveBeenCalledTimes(3);
+    })
+    it('Should render Favorite with a event handler', () => {
+        act(() => {
+            root.render(<OrderForm inventory={testData.skus} ClickTracker={testFunction} />, container)
+        })
+        const e = document.querySelector('.order-favorite-button')
+        expect(e).not.toBeUndefined();
+        act(() => {
+            e.dispatchEvent(new MouseEvent('click', {bubbles:true}))
+        })
+        expect(testFunction).toHaveBeenCalledTimes(4);
+    })
 })

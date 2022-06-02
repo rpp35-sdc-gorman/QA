@@ -57,4 +57,11 @@ describe("Prouct Description Module", () => {
     })
     expect(container.querySelector('.ProductDescription')).toBe(null);
   })
+  it('Should render out a list of features', () => {
+    act(() => {
+    root.render(<ProductDescription info={testData} />)
+    })
+    const f = container.querySelectorAll('.features')
+    expect(f.children.length).toBe(2);
+  })
 })
