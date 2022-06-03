@@ -11,6 +11,7 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 
 jest.mock('axios');
 axios.post.mockResolvedValue('posted new answer');
+axios.mockResolvedValue('uploaded new image');
 let toggleAddAnswer = jest.fn();
 let clickTracker = jest.fn();
 
@@ -35,7 +36,7 @@ it("should not be displayed on load with showAddAnswer === false", async () => {
         questionToAnswer={{...exampleData.question, 'answers': exampleData.answers}}
         currentProduct = {'current product name'}
         showAddAnswer={false}
-        clickTracker={clickTracker}
+        clickTracker={(event) => clickTracker(event)}
       />);
   });
   expect(container.querySelectorAll('.modalAnswers').length).toEqual(0);
@@ -49,6 +50,7 @@ describe('Unit tests on opened Add Answer modal', () => {
           questionToAnswer={{...exampleData.question, 'answers': exampleData.answers}}
           currentProduct = {'current product name'}
           showAddAnswer={true}
+          clickTracker={(event) => clickTracker(event)}
         />);
     });
   });
@@ -108,15 +110,17 @@ describe('Unit tests on opened Add Answer modal', () => {
     })
 
     expect(container.querySelectorAll('img').length).toBe(1);
-
     expect(container.querySelector('#newImage').src).toBe('https://fec-images-bucket.s3.amazonaws.com/undefined-chucknorris.png');
     await act(async () => {
-      await container.querySelector('#newImage').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      await Simulate.click(container.querySelector('img#newImage'));
     })
 
-    // expect(container.querySelectorAll('#displayImage').length).toBe(1);
-    // // expect(container.querySelector('.modal-main').children[0].tagName).toBe('IMG');
-    // // expect(container.querySelector('.modal-main img').src).toBe('chucknorris.png');
+
+    expect(axios).toBeCalled();
+    expect(clickTracker).toBeCalled();
+    expect(container.querySelectorAll('#displayImage').length).toBe(1);
+    expect(container.querySelector('.modal-main').children[0].tagName).toBe('IMG');
+    expect(container.querySelector('.modal-main img').src).toBe('https://fec-images-bucket.s3.amazonaws.com/undefined-chucknorris.png');
   });
 
   it("should be able to filter out duplicate files with same names to only load one", async () => {

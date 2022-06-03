@@ -57,15 +57,10 @@ var AddAnswer = (props) => {
         }
       })
 
-      let updatedPhotos = new Set();
       Promise.allSettled(photoPromises)
         .then((results) => {
-          for (let url of photoUrlSet) {
-            updatedPhotos.add(url)
-          }
-          return updatedPhotos;
+          setPhotos(photoUrlSet);
         })
-        .then(updatedPhotos => setPhotos(updatedPhotos));
     }
   }
 
