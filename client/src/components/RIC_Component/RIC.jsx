@@ -12,7 +12,8 @@ class RIC extends React.Component {
       currentProduct: {},
       relatedProducts: [],
       comparedProduct: null,
-      modal: false
+      modal: false,
+      error: false
     }
 
     this.currentProductId = window.location.href.split('/').pop();
@@ -29,8 +30,9 @@ class RIC extends React.Component {
     })
     .then(allProducts => {
       let currentProduct = allProducts.slice(0, 1);
+      console.log(currentProduct);
       let relatedProducts = allProducts.slice(1, allProducts.length);
-      return [currentProduct, this.setDefaultStyle(relatedProducts, 'related')];
+      return [this.setDefaultStyle(currentProduct, 'related')[0], this.setDefaultStyle(relatedProducts, 'related')];
     })
     .then(allProducts => {
       this.setState({
@@ -38,7 +40,7 @@ class RIC extends React.Component {
         relatedProducts: allProducts[1]
       });
     })
-    .catch(err => { throw err; });
+    .catch(err => { console.error('Something broke'); });
   }
 
   setDefaultStyle(products, list) {
@@ -50,7 +52,7 @@ class RIC extends React.Component {
           product.list = list;
         }
       })
-      if (product.thumbnail === undefined) {
+      if (product.thumbnail === null || product.thumbnail === undefined) {
         product.thumbnail = product.styles[0].photos[0].thumbnail_url;
         product.sale_price = product.styles[0].sale_price;
         product.list = list;
@@ -77,6 +79,12 @@ class RIC extends React.Component {
     this.setState({ comparedProduct: null, modal: false });
   }
 
+  redirect(event) {
+    this.props.clickTracker(event);
+    let id = event.currentTarget.nextSibling.id;
+    window.location.replace(window.location.origin + `/product/${id}`);
+  }
+
   render() {
     return (this.state.relatedProducts.length ?
       <div id='RIC'>
@@ -84,12 +92,15 @@ class RIC extends React.Component {
         <RelatedProducts products={this.state.relatedProducts}
          compare={this.compare.bind(this)}
          clickTracker={this.props.clickTracker}
+         redirect={this.redirect.bind(this)}
          />
         <Modal handleClose={this.close.bind(this)} show={this.state.modal}>
           <Comparison main={this.state.currentProduct} related={this.state.comparedProduct} />
         </Modal>
         <h3>YOUR OUTFITS</h3>
-        <YourOutfits currentProduct={this.state.currentProduct} clickTracker={this.props.clickTracker} />
+        <YourOutfits currentProduct={this.state.currentProduct}
+        clickTracker={this.props.clickTracker}
+        redirect={this.redirect.bind(this)}/>
       </div> : null
     )
   }

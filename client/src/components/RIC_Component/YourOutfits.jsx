@@ -53,7 +53,7 @@ class YourOutfits extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id='yourOutfits'>
         <Carousel clickTracker={this.props.clickTracker}>
           <CarouselItem>
             <div className="card addition" onClick={(event) => {this.addCurrentProduct(event)}}>
@@ -76,6 +76,7 @@ class YourOutfits extends React.Component {
                   id={product.id}
                   list={product.list}
                   remove={this.removeOutfit.bind(this)}
+                  redirect={this.props.redirect}
                   />
               </CarouselItem>
             )
