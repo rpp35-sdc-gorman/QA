@@ -1,6 +1,4 @@
 const express = require('express');
-var CompressionPlugin = require('compression-webpack-plugin');
-var compression = require('compression');
 const path = require('path');
 const { overviewRouter } = require('./routes/overview');
 const { qAndARouter } = require('./routes/questionsAndAnswers');
@@ -12,8 +10,6 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-// serve the public folder
-// app.use(compression());
 app.use('*.js', function (req, res, next) {
   req.url = req.url + '.br';
   res.set('Content-Encoding', 'br');
