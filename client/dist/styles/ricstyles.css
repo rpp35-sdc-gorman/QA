@@ -1,28 +1,48 @@
+/* RIC */
+#RIC {
+  padding: 0 2em;
+}
+
 /* CAROUSEL */
 .carousel {
+  display: inline-grid;
   overflow: hidden;
-  width: 900px;
+  width: 100%;
+  grid-template-columns: 2% 96% 2%;
+  margin-left: 1.25%;
+  padding-bottom: 5%;
 }
 
 .carousel_inner {
+  grid-column-start: 2;
+  grid-column-end: 3;
   white-space: nowrap;
   transition: transform 0.3s;
+  z-index: 1;
 }
 
 .carousel_item {
   display: inline-flex;
-  justify-content: left;
-  height: 315px;
-  color: white;
-}
-
-.indicators {
-  display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: white;
+  z-index: 0;
 }
 
-.indicators > button {
-  margin: 5px;
+.back {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  border: none;
+  background-color: white;
+}
+
+
+.next {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  border: none;
+  background-color: white;
 }
 
 /* CARD GRID */
@@ -35,6 +55,7 @@
   grid-template-columns: 5% 85% 10%;
   grid-template-rows: 75% 6.25% 6.25% 6.25% 6.25%;
   justify-self: start;
+  z-index: 0;
 }
 
 .card_visual {
@@ -49,6 +70,7 @@
   object-fit: cover;
   object-position: center center;
   background-color: rgb(210, 210, 210);
+  z-index: 0;
 }
 
 .card_category {
@@ -59,6 +81,8 @@
   text-transform: uppercase;
   font-size: small;
   padding-top: 0.25em;
+  align-self: center;
+  z-index: 0;
 }
 
 .card_name {
@@ -68,6 +92,8 @@
   grid-row-end: 4;
   font-weight: bold;
   font-size: medium;
+  align-self: center;
+  z-index: 0;
 }
 
 .card_price {
@@ -77,6 +103,8 @@
   grid-row-end: 5;
   font-weight: lighter;
   font-size: smaller;
+  align-self: center;
+  z-index: 0;
 }
 
 .card_rating {
@@ -84,9 +112,11 @@
   grid-column-end: 4;
   grid-row-start: 5;
   grid-row-end: 6;
+  z-index: 0;
+  align-self: center;
 }
 
-.card_favorite, .card_remove {
+.card_compare, .card_remove {
   grid-column-start: 3;
   grid-column-end: 4;
   grid-row-start: 1;
@@ -94,9 +124,11 @@
   align-self: start;
   padding: 0.5em;
   opacity: 0.5;
+  z-index: 0;
+
 }
 
-.card_favorite:hover {
+.card_compare:hover {
   opacity: 1.0;
   cursor: pointer;
   fill: rgba(244, 203, 0, 0.892)
@@ -117,14 +149,19 @@ div {
   color: black;
 }
 
-h4 {
+h3 {
   font-weight: lighter;
+  margin-left: 4.5%;
 }
 
 table {
   table-layout: fixed;
   width: 80%;
   vertical-align: middle;
+}
+
+button {
+  z-index: 2;
 }
 
 /* Modal Bits */
@@ -158,3 +195,4 @@ th.right, td.right {
 th.mid, td.mid {
   text-align: center;
 }
+

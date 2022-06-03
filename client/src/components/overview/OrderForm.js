@@ -4,6 +4,7 @@ import React from 'react';
 import {useState} from 'react';
 import {Star, Plus} from 'akar-icons';
 import sendRequest from '../../../../server/lib/sendRequest';
+import keyId from '../common/keyId';
 
 const OrderForm = (props) => {
 
@@ -14,7 +15,7 @@ const OrderForm = (props) => {
   // quntity user picks
   const [quantity, setQuantity] = useState(null);
   // drop down options
-  const [ quantityOptions, setQuantityOptions ] = useState([<option>1</option>])
+  const [ quantityOptions, setQuantityOptions ] = useState([<option key={12341239847}>1</option>])
   // form error status
   const [error, setError] = useState(null)
 
@@ -24,7 +25,7 @@ const OrderForm = (props) => {
     let options = [];
 
     for(let item in props.inventory){
-      const opt = < option key={item} value={item} >{props.inventory[item].size}</option>
+      const opt = < option key={keyId()} value={item} >{props.inventory[item].size}</option>
       options.push(opt)
     }
 
@@ -38,10 +39,10 @@ const OrderForm = (props) => {
 
     const opts = []
     if(itemInfo.quantity < 1){
-      opts.push(<option value="null">OUT OF STOCK</option>)
+      opts.push(<option value="null" key={keyId()}>OUT OF STOCK</option>)
     } else {
       for(let i = 1; i < itemInfo.quantity; i++){
-        opts.push(<option key={i} value={i}>{i}</option>)
+        opts.push(<option key={keyId()} value={i}>{i}</option>)
       }
     }
     setQuantityOptions(opts);
@@ -97,7 +98,7 @@ const OrderForm = (props) => {
        {error? <span className="form-error">{error}</span> : null}
       <div className="flexRow input-group">
         <select className="dropdown" onChange={(e) => handleSizeChange(e)}>
-          <option>Select Size</option>
+          <option key={keyId()}>Select Size</option>
           {
             createOptions()
           }

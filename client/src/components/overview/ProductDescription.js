@@ -1,6 +1,7 @@
 
 import React from 'react';
 import {Check} from 'akar-icons';
+import keyId from '../common/keyId';
 
 //static display - shouldn't need much work as long as data is correct
 function ProductDescription (props) {
@@ -16,7 +17,7 @@ function ProductDescription (props) {
       <ul className="features">
         {
           props.info.features.map(item => {
-            return <li className="feature"><Check size={16}/>{item.value}</li>
+            return <li className="feature" key={keyId()}><Check size={16}/>{item.value}</li>
           })
         }
       </ul>

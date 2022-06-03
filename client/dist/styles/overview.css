@@ -9,14 +9,38 @@
 
 }
 
+
 /* Gallery */
+
+/* background of this is now the main gallery image */
 .Gallery{
   display: flex;
   align-items: flex-start;
   padding:1em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  height: 40em;
+  width: 65vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.Gallery_fullscreen{
+  display: flex;
+  align-items: flex-start;
+  padding:1em;
+  margin-bottom: 1em;
+  height: 40em;
+  width:100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .GalleryMain{
   align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 .Gallery_image{
   height:32em;
@@ -49,6 +73,19 @@
   background-color: grey;
 }
 
+/* Gallery Arrow Position */
+#nextArrow{
+  margin-top: 50%;
+
+}
+#prevArrow{
+  margin-top: 50%;
+}
+/* fullscreen button position */
+#fullscreen{
+  position: relative;
+  left: calc(100% - 5em);
+}
 
 /* Product Description */
 .ProductDescription {

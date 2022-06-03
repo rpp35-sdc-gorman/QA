@@ -4,7 +4,7 @@ import Carousel, { CarouselItem } from './Carousel';
 
 var RelatedProducts = (props) => (
   <div>
-    <Carousel>
+    <Carousel clickTracker={props.clickTracker}>
       {props.products.map((product, index) => {
         return(
           <CarouselItem key={product.id}>
