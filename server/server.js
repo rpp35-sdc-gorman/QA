@@ -25,23 +25,19 @@ app.use('*.js', function (req, res, next) {
 
 // default product page
 app.get('/', (req, res) => {
-  res.redirect('/product/71697')
-})
+  res.redirect('/product/71697');
+});
 
 // makes files in dist folder available
 app.use('/product', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-<<<<<<< HEAD
-=======
-
 app.get('/product/:id', (req, res) => {
   // sends base inex.html file
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-})
+});
 
->>>>>>> development
 // routes
 app.use('/overview', overviewRouter);
 app.use('/rating_review', ratingRouter);
@@ -51,17 +47,10 @@ app.use('/related_items', relatedRouter);
 // click tracker route
 app.post('/trackClick', (req, res) => {
   sendRequest('interactions', 'POST', req.body)
-<<<<<<< HEAD
     .then((result) => res.sendStatus(200))
     .catch((err) => res.status(500).send(err));
 });
-=======
-    .then(result => res.sendStatus(200))
-    .catch(err => res.status(500).send(err));
-})
 
-
->>>>>>> development
 app.listen(port, () => {
   console.log(`Atelier 🥳 listening on port ${port}`);
 });

@@ -127,7 +127,6 @@ class Reviews extends React.Component {
           summary,
         })
         .then(({ data }) => {
-          console.log(data);
           this.setState({ showNewReviewModal: false });
         })
         .catch((err) => console.error(err));
@@ -224,6 +223,7 @@ class Reviews extends React.Component {
           <div>
             Do you recommend this product?
             <input
+              id="recommend1"
               type="radio"
               name="recommend"
               onChange={(e) => {
@@ -233,6 +233,7 @@ class Reviews extends React.Component {
             />
             yes
             <input
+              id="recommend2"
               type="radio"
               name="recommend"
               onChange={(e) => {
@@ -248,6 +249,7 @@ class Reviews extends React.Component {
               <div className="dib">
                 <div>
                   <input
+                    id={value + 1}
                     type="radio"
                     name={value}
                     onChange={(e) => {
@@ -326,6 +328,7 @@ class Reviews extends React.Component {
           <div>
             <label htmlFor="summary">Summary</label>
             <textarea
+              id="reviewSummary"
               name="summary"
               placeholder="Example: Best purchase ever!"
               onChange={(e) => {
@@ -337,7 +340,7 @@ class Reviews extends React.Component {
             <label htmlFor="body">Body</label>
             <textarea
               name="body"
-              id=""
+              id="reviewBody"
               cols="30"
               rows="10"
               placeholder="Why did you like the product or not?"
@@ -354,6 +357,7 @@ class Reviews extends React.Component {
           <div>
             <label htmlFor="email">Email</label>
             <input
+              id="reviewEmail"
               type="email"
               name="email"
               placeholder="Example: jackson11@email.com"
@@ -363,6 +367,7 @@ class Reviews extends React.Component {
           <div>
             <label htmlFor="name">Nickname</label>
             <input
+              id="reviewName"
               type="text"
               name="name"
               placeholder="Example: jackson11!"
