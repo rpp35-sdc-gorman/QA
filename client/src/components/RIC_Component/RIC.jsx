@@ -30,9 +30,8 @@ class RIC extends React.Component {
     })
     .then(allProducts => {
       let currentProduct = allProducts.slice(0, 1);
-      console.log(currentProduct);
       let relatedProducts = allProducts.slice(1, allProducts.length);
-      return [this.setDefaultStyle(currentProduct, 'related')[0], this.setDefaultStyle(relatedProducts, 'related')];
+      return [this.setDefaultStyle(currentProduct, 'outfit')[0], this.setDefaultStyle(relatedProducts, 'related')];
     })
     .then(allProducts => {
       this.setState({

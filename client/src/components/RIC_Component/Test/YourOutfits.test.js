@@ -3,36 +3,37 @@ import { unmountComponentAtNode } from "react-dom";
 import { createRoot } from 'react-dom/client';
 import { act } from "react-dom/test-utils";
 import exampleProducts from './ricTestData.js';
+import moreExampleProducts from './moreTestData.js';
 
 import YourOutfits from '../YourOutfits.jsx';
 
+class LocalStorageMock {
+  constructor() {
+    this.store = {};
+  }
+
+  clear() {
+    this.store = {};
+  }
+
+  getItem(key) {
+    return this.store[key] || null;
+  }
+
+  setItem(key, value) {
+    this.store[key] = String(value);
+  }
+
+  removeItem(key) {
+    delete this.store[key];
+  }
+}
+
+global.localStorage = new LocalStorageMock;
+
 global.IS_REACT_ACT_ENVIRONMENT = true;
-let currentProduct = {
-  "id": 71698,
-  "campus": "hr-rpp",
-  "name": "Bright Future Sunglasses",
-  "slogan": "You've got to wear shades",
-  "description": "Where you're going you might not need roads, but you definitely need some shades. Give those baby blues a rest and let the future shine bright on these timeless lenses.",
-  "category": "Accessories",
-  "default_price": "69.00",
-  "star_rating": 3.75,
-  "thumbnail": null,
-  "sale_price": null,
-  "list": "outfit"
-};
-let anotherCurrentProduct = {
-    "id": 71704,
-    "campus": "hr-rpp",
-    "name": "YEasy 350",
-    "slogan": "Just jumped over jumpman",
-    "description": "These stretchy knit shoes show off asymmetrical lacing and a big sculpted rubber midsole. In a nod to adidas soccer heritage.",
-    "category": "Kicks",
-    "default_price": "450.00",
-    "star_rating": null,
-    "thumbnail": "https://images.unsplash.com/photo-1505248254168-1de4e1abfa78?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
-    "sale_price": null,
-    "list": "outfit"
-};
+let currentProduct = moreExampleProducts.products.data[0];
+let anotherCurrentProduct = exampleProducts.products.data[0];
 describe('Your Outfits Test', () => {
   let container = null;
   let clickTracker = jest.fn();
@@ -98,16 +99,19 @@ describe('Your Outfits Test', () => {
     expect(container.querySelectorAll('div.card').length).toEqual(1);
   });
 
-  // it('should should add a different product if it not already been added', async() => {
-  //   await act(() => {
-  //     createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker} />);
-  //   });
-  //   let { rerender } =
-  //   await act(async () => {
-  //     await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
-  //   });
-  //   expect(container.querySelectorAll('div.card').length).not.toEqual(3);
-  // });
-
-  // find a way to navigate to another product to add it in
+  it('should should add a different product if it not already been added', async() => {
+    anotherCurrentProduct.list = 'outfit';
+    global.localStorage.setItem('Outfit', JSON.stringify([anotherCurrentProduct]));
+    await act(() => {
+      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker} />);
+    });
+    await act(async () => {
+      await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    });
+    expect(container.querySelectorAll('div.card').length).toEqual(3);
+    await act(async () => {
+      await container.querySelector('.card_remove').dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    });
+    expect(container.querySelectorAll('div.card').length).toEqual(2);
+  });
 })

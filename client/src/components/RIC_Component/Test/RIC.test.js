@@ -9,18 +9,26 @@ import RIC from '../RIC.jsx';
 
 global.IS_REACT_ACT_ENVIRONMENT = true
 jest.mock('axios');
+let location;
+const mockLocation = new URL('http://localhost:3000/product/71698');
 let container = null;
 let clickTracker = jest.fn();
 beforeEach(async () => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  location = window.location;
+  mockLocation.replace = jest.fn();
+  delete window.location;
+  window.location = mockLocation;
 });
 afterEach(() => {
   // cleanup on exiting
   unmountComponentAtNode(document);
   container.remove();
   container = null;
+  jest.clearAllMocks();
+  window.location = location;
 });
 
 describe('RIC Parent Test', () =>{
@@ -71,17 +79,14 @@ describe('RIC Parent Test', () =>{
     expect(container.querySelector('#comparison')).toBe(null);
     expect(container.querySelector('table')).toBe(null);
   });
-  it('should redirect to a new page', async () => {
+  it('should call redirect function to redirect to a new page', async () => {
     axios.get.mockResolvedValue(exampleProducts.products);
-    let current, next;
     await act(async () => {
       await createRoot(container).render(<RIC clickTracker={clickTracker}/>)
-      current = global.window.location.href;
     })
     await act(async () => {
       await container.querySelector('.card_visual').dispatchEvent(new MouseEvent('click', { bubbles: true }));
-      next = global.window.location.href;
     })
-    expect(current).not.toBe(next);
+    expect(window.location.replace).toHaveBeenCalled();
   });
 })
