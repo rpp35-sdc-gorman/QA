@@ -100,6 +100,7 @@ class QAMain extends React.Component {
 
     return (
       <div id="QAMain">
+        <h3>Question & Answer</h3>
         <AddQuestion
           toggleAddQuestion={(event) => this.toggleAddQuestion(event)} // closes modal
           productToQuestion={'current product name'} // tmp variable for product name
