@@ -29,6 +29,8 @@ const testData = {
   }
 }
 
+global.IS_REACT_ACT_ENVIRONMENT = true
+
 describe("Prouct Description Module", () => {
     let container = null;
     let root = null

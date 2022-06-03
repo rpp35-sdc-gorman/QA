@@ -6,6 +6,7 @@ import axios from 'axios'
 
 import Gallery from '../Gallery';
 
+global.IS_REACT_ACT_ENVIRONMENT = true
 
 const testPhotos = [
   {

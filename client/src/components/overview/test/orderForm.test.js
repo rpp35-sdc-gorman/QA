@@ -43,6 +43,8 @@ const invalidData = {
     }
 }
 
+global.IS_REACT_ACT_ENVIRONMENT = true
+
 const testFunction = jest.fn()
 
 describe('Order Form Tests', () => {
