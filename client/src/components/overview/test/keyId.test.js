@@ -1,5 +1,8 @@
 import keyId from '../../common/keyId';
 
+
+global.IS_REACT_ACT_ENVIRONMENT = true
+
 describe('KeyId Tests', () => {
   it('Should return a string', () => {
     const r = keyId()

@@ -9,7 +9,7 @@ import keyId from '../common/keyId';
 const OrderForm = (props) => {
 
   // sku ID for submission
-  const [sku, setSku] = useState(null);
+  const [sku, setSku] = useState('');
   // max availible  - for verification
   const [quantityLimiter, setQuantityLimiter] = useState(null);
   // quntity user picks
@@ -19,16 +19,13 @@ const OrderForm = (props) => {
   // form error status
   const [error, setError] = useState(null)
 
-
   // create drop down sizing options
   const createOptions = () => {
     let options = [];
-
     for(let item in props.inventory){
       const opt = < option key={keyId()} value={item} >{props.inventory[item].size}</option>
       options.push(opt)
     }
-
     return options
   }
 
@@ -39,7 +36,7 @@ const OrderForm = (props) => {
 
     const opts = []
     if(itemInfo.quantity < 1){
-      opts.push(<option value="null" key={keyId()}>OUT OF STOCK</option>)
+      opts.push(<option value="" key={keyId()}>OUT OF STOCK</option>)
     } else {
       for(let i = 1; i < itemInfo.quantity; i++){
         opts.push(<option key={keyId()} value={i}>{i}</option>)
@@ -52,18 +49,21 @@ const OrderForm = (props) => {
 
   // user state change size
   const handleSizeChange = (e) => {
+    props.ClickTracker(e)
     setSku(e.target.value);
     createInventory(e.target.value);
   }
 
   // user state change qunatity
   const handleQuantityChange = (e) => {
+    props.ClickTracker(e)
     setQuantity(e.target.value)
   }
 
   // user submit event
   const handleSubmit = (e) => {
     e.preventDefault();
+    props.ClickTracker(e)
     if(verifyUserInput()){
       const formData = {'sku_id': sku}
       const path='cart'
@@ -73,7 +73,8 @@ const OrderForm = (props) => {
 
   // user favorited event
   const handleFavorite = (e) => {
-
+    props.ClickTracker(e)
+    // this function is going to from from realted items I think
   }
 
   // make sure user has filled in some data with not impossible values
@@ -89,7 +90,6 @@ const OrderForm = (props) => {
       setError("Please select a size")
       return false
     }
-
     return true
   }
 
@@ -97,13 +97,13 @@ const OrderForm = (props) => {
     <form className="OrderForm">
        {error? <span className="form-error">{error}</span> : null}
       <div className="flexRow input-group">
-        <select className="dropdown" onChange={(e) => handleSizeChange(e)}>
-          <option key={keyId()}>Select Size</option>
+        <select value={sku} className="dropdown" id="size" onChange={(e) => handleSizeChange(e)}>
+          <option key={keyId()} value={''}>Select Size</option>
           {
             createOptions()
           }
         </select>
-        <select className="dropdown" onChange={(e) => handleQuantityChange(e)}>
+        <select className="dropdown" id="quantity" onChange={(e) => handleQuantityChange(e)}>
           {
             quantityOptions || null
           }
@@ -115,7 +115,7 @@ const OrderForm = (props) => {
           :
           null
         }
-        <button className="order-favorite-button">
+        <button className="order-favorite-button" onClick={(e) => {handleFavorite(e)}}>
           <Star size={32} />
         </button>
       </div>

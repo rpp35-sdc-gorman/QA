@@ -8,8 +8,6 @@ import Stars from '../common/stars.jsx';
 
 // recieving list of styles and selected style from props
 const Container = (props) => {
-
-
   // query the api for the specific styles and pass that to style selector
   // this will be in charge of overlaying a loading screen when there is no data
     return(
@@ -20,7 +18,9 @@ const Container = (props) => {
               currentStyle={props.currentStyle}
               info={props.info}
               styles={props.styles}
+              rating={props.rating}
               handleStyleChange={props.handleStyleChange}
+              ClickTracker={props.ClickTracker}
             />
           </section>
           :

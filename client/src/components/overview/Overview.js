@@ -8,6 +8,7 @@ import ProductDescription from './ProductDescription';
 import sendRequest from '../../../../server/lib/sendRequest';
 import axios from 'axios';
 
+
 class Overview extends React.Component {
   constructor(props) {
     super();
@@ -29,14 +30,18 @@ class Overview extends React.Component {
   getData(endpoint) {
     axios({
       method: 'GET',
-      url: `http://localhost:3000/overview/parser/${endpoint}`,
-    }).then((res) => {
+      url: `/overview/parser/${endpoint}`,
+    })
+    .then((res) => {
       this.setState({
         info: res.data.info,
         styles: res.data.styles.results,
         rating: res.data.rating,
       });
-    });
+    })
+    .catch(err => {
+      console.log('Error Contacting Endpoint:', err)
+    })
   }
 
   // fetch one Id statically for now
@@ -64,7 +69,8 @@ class Overview extends React.Component {
     });
   }
 
-  handleStyleChange(id) {
+  handleStyleChange(id, e) {
+    this.props.clickTracker(e)
     // use this style id to set the current style to one that matches that id
     // should be in the current set of styles
     this.state.styles.forEach((item) => {
@@ -80,8 +86,10 @@ class Overview extends React.Component {
         <Container
           styles={this.state.styles}
           info={this.state.info}
+          rating={this.state.rating}
           currentStyle={this.state.currentStyle}
           handleStyleChange={this.handleStyleChange}
+          ClickTracker={this.props.clickTracker}
         />
         <ProductDescription info={this.state.info} />
       </section>
