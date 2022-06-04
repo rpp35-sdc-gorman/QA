@@ -99,7 +99,8 @@ class RIC extends React.Component {
         <h3>YOUR OUTFITS</h3>
         <YourOutfits currentProduct={this.state.currentProduct}
         clickTracker={this.props.clickTracker}
-        redirect={this.redirect.bind(this)}/>
+        redirect={this.redirect.bind(this)}
+        added={this.props.added}/>
       </div> : null
     )
   }
