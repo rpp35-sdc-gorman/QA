@@ -10,7 +10,7 @@ class YourOutfits extends React.Component {
       yourOutfits: []
     }
 
-    this.addCurrentProduct = this.addCurrentProduct.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
   componentDidMount() {
@@ -18,13 +18,23 @@ class YourOutfits extends React.Component {
     this.setState({ yourOutfits });
   }
 
-  addCurrentProduct(event) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.added !== this.props.added) {
+      this.addCurrentProduct();
+    }
+  }
+
+  handleAdd(event) {
+    this.props.clickTracker(event);
+    this.addCurrentProduct();
+  }
+
+  addCurrentProduct() {
     if (!this.checkExistingOutfit(this.props.currentProduct.id)) {
       this.setState({
         yourOutfits: [...this.state.yourOutfits, this.props.currentProduct]
       }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
     }
-    this.props.clickTracker(event);
   }
 
   checkExistingOutfit(id) {
@@ -53,10 +63,10 @@ class YourOutfits extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id='yourOutfits'>
         <Carousel clickTracker={this.props.clickTracker}>
           <CarouselItem>
-            <div className="card addition" onClick={(event) => {this.addCurrentProduct(event)}}>
+            <div className="card addition" onClick={(event) => {this.handleAdd(event)}}>
               <div className="card_visual" style={{backgroundColor: 'white'}}></div>
               <div className="card_category" style={{fontSize: 'large'}}>+ ADD TO OUTFIT</div>
               <div className="card_name"></div>
@@ -76,6 +86,7 @@ class YourOutfits extends React.Component {
                   id={product.id}
                   list={product.list}
                   remove={this.removeOutfit.bind(this)}
+                  redirect={this.props.redirect}
                   />
               </CarouselItem>
             )

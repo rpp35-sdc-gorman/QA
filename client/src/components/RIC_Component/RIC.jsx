@@ -5,51 +5,41 @@ import YourOutfits from './YourOutfits.jsx';
 import Modal from '../common/modal.jsx';
 import Comparison from './Comparison.jsx';
 
-// currently, implementing without react hooks, but will refactor using react hooks later
 class RIC extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentProductId: 71699,
       currentProduct: {},
       relatedProducts: [],
       comparedProduct: null,
-      modal: false
+      modal: false,
+      error: false
     }
+
+    this.currentProductId = window.location.href.split('/').pop();
   }
 
   async componentDidMount() {
     await this.getRelatedItems();
-    await this.getCurrentProduct();
-  }
-
-  getCurrentProduct() {
-    axios.get(`/related_items/ric/main/${this.state.currentProductId}`)
-    .then(response => {
-      return response.data
-    })
-    .then(currentProduct => {
-      return this.setDefaultStyle([currentProduct], 'outfit');
-    })
-    .then(currentProduct => {
-      this.setState({ currentProduct: currentProduct[0] });
-    })
-    .catch(err => {throw err });
   }
 
   getRelatedItems() {
-    axios.get(`/related_items/ric/${this.state.currentProductId}`)
+    axios.get(`/related_items/ric/${this.currentProductId}`)
     .then(response => {
       return response.data
     })
-    .then(relatedProducts => {
-      console.log(relatedProducts);
-      return this.setDefaultStyle(relatedProducts, 'related');
+    .then(allProducts => {
+      let currentProduct = allProducts.slice(0, 1);
+      let relatedProducts = allProducts.slice(1, allProducts.length);
+      return [this.setDefaultStyle(currentProduct, 'outfit')[0], this.setDefaultStyle(relatedProducts, 'related')];
     })
-    .then(relatedProducts => {
-      this.setState({ relatedProducts });
+    .then(allProducts => {
+      this.setState({
+        currentProduct: allProducts[0],
+        relatedProducts: allProducts[1]
+      });
     })
-    .catch(err => { throw err; });
+    .catch(err => { console.error('Something broke'); });
   }
 
   setDefaultStyle(products, list) {
@@ -61,7 +51,7 @@ class RIC extends React.Component {
           product.list = list;
         }
       })
-      if (product.thumbnail === undefined) {
+      if (product.thumbnail === null || product.thumbnail === undefined) {
         product.thumbnail = product.styles[0].photos[0].thumbnail_url;
         product.sale_price = product.styles[0].sale_price;
         product.list = list;
@@ -88,16 +78,29 @@ class RIC extends React.Component {
     this.setState({ comparedProduct: null, modal: false });
   }
 
+  redirect(event) {
+    this.props.clickTracker(event);
+    let id = event.currentTarget.nextSibling.id;
+    window.location.replace(window.location.origin + `/product/${id}`);
+  }
+
   render() {
     return (this.state.relatedProducts.length ?
       <div id='RIC'>
         <h3>RELATED PRODUCTS</h3>
-        <RelatedProducts products={this.state.relatedProducts} compare={this.compare.bind(this)} clickTracker={this.props.clickTracker} />
+        <RelatedProducts products={this.state.relatedProducts}
+         compare={this.compare.bind(this)}
+         clickTracker={this.props.clickTracker}
+         redirect={this.redirect.bind(this)}
+         />
         <Modal handleClose={this.close.bind(this)} show={this.state.modal}>
           <Comparison main={this.state.currentProduct} related={this.state.comparedProduct} />
         </Modal>
         <h3>YOUR OUTFITS</h3>
-        <YourOutfits currentProduct={this.state.currentProduct} clickTracker={this.props.clickTracker} />
+        <YourOutfits currentProduct={this.state.currentProduct}
+        clickTracker={this.props.clickTracker}
+        redirect={this.redirect.bind(this)}
+        added={this.props.added}/>
       </div> : null
     )
   }
