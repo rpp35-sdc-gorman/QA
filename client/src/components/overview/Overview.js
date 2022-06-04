@@ -30,14 +30,18 @@ class Overview extends React.Component {
   getData(endpoint) {
     axios({
       method: 'GET',
-      url: `http://localhost:3000/overview/parser/${endpoint}`,
-    }).then((res) => {
+      url: `/overview/parser/${endpoint}`,
+    })
+    .then((res) => {
       this.setState({
         info: res.data.info,
         styles: res.data.styles.results,
         rating: res.data.rating,
       });
-    });
+    })
+    .catch(err => {
+      console.log('Error Contacting Endpoint:', err)
+    })
   }
 
   // fetch one Id statically for now
