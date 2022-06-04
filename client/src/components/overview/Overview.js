@@ -90,6 +90,8 @@ class Overview extends React.Component {
           currentStyle={this.state.currentStyle}
           handleStyleChange={this.handleStyleChange}
           ClickTracker={this.props.clickTracker}
+          addOutfit={this.props.addOutfit}
+          isAdded={this.props.isAdded}
         />
         <ProductDescription info={this.state.info} />
       </section>

@@ -114,7 +114,10 @@ class StyleSelector extends React.Component{
             <OrderForm
               inventory={this.props.currentStyle.skus}
               ClickTracker={this.props.ClickTracker}
-              />
+              info={this.props.info}
+              addOutfit={this.props.addOutfit}
+              isAdded={this.props.isAdded}
+            />
           </section>
         </article>
       )
