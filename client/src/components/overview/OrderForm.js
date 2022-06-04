@@ -73,7 +73,9 @@ const OrderForm = (props) => {
 
   // user favorited event
   const handleFavorite = (e) => {
+    e.preventDefault()
     props.ClickTracker(e)
+    props.addOutfit(props.info.id)
     // this function is going to from from realted items I think
   }
 
@@ -116,7 +118,7 @@ const OrderForm = (props) => {
           null
         }
         <button className="order-favorite-button" onClick={(e) => {handleFavorite(e)}}>
-          <Star size={32} />
+          <Star size={32} style={ props.isAdded ?{fill: 'yellow'} : null } />
         </button>
       </div>
     </form>
