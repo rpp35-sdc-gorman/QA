@@ -120,9 +120,9 @@ describe('Integration tests', () => {
 
     // add question
     await act(async () => {
-      Simulate.change(container.querySelector('textarea#question'), { target: { id:"question", value: "random question" } });
-      Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
-      Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
+      await Simulate.change(container.querySelector('textarea#question'), { target: { id:"question", value: "random question" } });
+      await Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
+      await Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
     })
 
     await act(async () => {
@@ -130,7 +130,7 @@ describe('Integration tests', () => {
     });
 
     // should trigger a re-render of questions with a POST to add question then GET request to update
-    expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": ''});
+    expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": 0});
     expect(axios.get).toBeCalledWith("/question_answer/", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
     // expanding questions should give 3 + 1 questions total, with only 2 showing at first now but would need new mockResolvedValue to test explicitly
   })
@@ -138,7 +138,7 @@ describe('Integration tests', () => {
   /**  Search integration tests ***/
   it('should not filter if search term is less than 3 chars long', async () => {
     await act(async () => {
-      Simulate.change(container.querySelector('input'), {target: {value: 'wh'}})
+      await Simulate.change(container.querySelector('input'), {target: {value: 'wh'}})
     })
     expect(container.querySelectorAll('#singleQA').length).toBe(2);
 
@@ -211,17 +211,17 @@ describe('Integration tests', () => {
 
     // add question
     await act(async () => {
-      Simulate.change(container.querySelector('textarea#answer'), { target: { id:"answer", value: "random answer" } });
-      Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
-      Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
+      await Simulate.change(container.querySelector('textarea#answer'), { target: { id:"answer", value: "random answer" } });
+      await Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
+      await Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
     })
 
     await act(async () => {
-      container.querySelector('#submitAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      await container.querySelector('#submitAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
     // should trigger a re-render of questions with a POST to add question then GET request to update
-    expect(axios.post).toBeCalledWith(`/question_answer/addQuestionTo`, {"body": "random question", "name": "jon", "email": "a1@test.ca", "product_id": ''});
+    expect(axios.post).toBeCalledWith(`/question_answer/addAnswerTo/38`, {"body": "random answer", "name": "jon", "email": "a1@test.ca", "photos": []});
     expect(axios.get).toBeCalledWith("/question_answer/", {"params": {"count": 100, "page_num": 1}}); // would normally update questions list
     // expanding questions should give 3 + 1 questions total, with only 2 showing at first now but would need new mockResolvedValue to test explicitly
   })
