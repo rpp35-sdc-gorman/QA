@@ -29,10 +29,10 @@ class App extends React.Component {
     const OVR = ClickTracker(Overview, 'Overview')
     return (
       <div>
-        <Overview />
-        <RI added={this.state.addProduct} />
         <OVR />
-        <RI />
+        <RI added={this.state.addProduct} />
+        <QA />
+        <RatingsAndReviews />
       </div>
     );
   }
