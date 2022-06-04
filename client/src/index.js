@@ -17,6 +17,7 @@ class App extends React.Component {
     this.state = {
       addProduct: false
     };
+    this.addProduct = this.addProduct.bind(this);
   }
 
   addProduct() {
@@ -29,7 +30,7 @@ class App extends React.Component {
     const OVR = ClickTracker(Overview, 'Overview')
     return (
       <div>
-        <OVR />
+        <OVR addOutfit={this.addProduct} isAdded={this.state.addProduct}/>
         <RI added={this.state.addProduct} />
         <QA />
         <RatingsAndReviews />

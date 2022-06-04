@@ -21,10 +21,14 @@ const Container = (props) => {
               rating={props.rating}
               handleStyleChange={props.handleStyleChange}
               ClickTracker={props.ClickTracker}
+              addOutfit={props.addOutfit}
+              isAdded={props.isAdded}
             />
           </section>
           :
-          null
+          <article>
+            <h1>Something went wrong 🥲</h1>
+          </article>
         }
       </article>
     )
