@@ -75,7 +75,7 @@ const OrderForm = (props) => {
   const handleFavorite = (e) => {
     e.preventDefault()
     props.ClickTracker(e)
-    props.addOutfit(props.info.id)
+    props.addOutfit()
     // this function is going to from from realted items I think
   }
 
