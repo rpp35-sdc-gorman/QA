@@ -7,5 +7,9 @@ export const getAverageRating = (product) => {
     totalResponses += Number(ratings[star]);
   }
   let finalScore = Math.ceil(4 * (score / totalResponses)) / 4;
-  return finalScore;
+  if (!finalScore) {
+    return 0
+  } else {
+    return finalScore;
+  }
 };
