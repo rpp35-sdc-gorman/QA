@@ -21,7 +21,8 @@ class App extends React.Component {
   }
 
   addProduct() {
-    this.setState({ addProduct: !this.state.addProduct })
+    let opposite = !this.state.addProduct;
+    this.setState({ addProduct: opposite })
   }
 
   render() {
@@ -32,8 +33,8 @@ class App extends React.Component {
       <div>
         <OVR addOutfit={this.addProduct} isAdded={this.state.addProduct}/>
         <RI added={this.state.addProduct} />
-        <QA />
-        <RatingsAndReviews />
+        {/* <QA /> */}
+        {/* <RatingsAndReviews /> */}
       </div>
     );
   }
