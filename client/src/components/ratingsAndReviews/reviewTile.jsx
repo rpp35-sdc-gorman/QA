@@ -5,7 +5,7 @@ const ReviewTile = (props) => {
   return (
     <div className="reviewTile">
       <Stars filled={props.review.rating} size={24}></Stars>
-      <div className="reviewTileUsername">
+      <div className="reviewTileUsername fr">
         {props.review.reviewer_name}
         {'  '}
         {new Date(props.review.date).toDateString()}
@@ -25,12 +25,28 @@ const ReviewTile = (props) => {
             ? axios
                 .put(`/rating_review/reviews/${props.review.review_id}/helpful`)
                 .then(() => props.helpfulClicked(props.review.review_id))
+                .catch(console.error)
             : null;
         }}
       >
         yes
       </span>{' '}
-      ({props.review.helpfulness}) | <span>report</span>
+      ({props.review.helpfulness}) |{' '}
+      <span
+        className={!props.review.reported ? `underline` : 'reported'}
+        onClick={() => {
+          !props.review.reported
+            ? axios
+                .put(`/rating_review/reviews/${props.review.review_id}/report`)
+                .then(() => {
+                  props.reportClicked(props.review.review_id);
+                })
+                .catch((err) => console.error(err))
+            : null;
+        }}
+      >
+        report{props.review.reported ? 'ed' : null}
+      </span>
     </div>
   );
 };

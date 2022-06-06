@@ -133,6 +133,18 @@ class Reviews extends React.Component {
     }
   }
 
+  setCharacteristic(value, number) {
+    return (e) => {
+      sendClickTracker(e, 'rating and review');
+      this.setState({
+        characteristics: {
+          ...this.state.characteristics,
+          [this.state.meta.characteristics[value].id]: number,
+        },
+      });
+    };
+  }
+
   loadMoreReviews(e) {
     sendClickTracker(e, 'rating and review');
     this.setState({ page: this.state.page + 1 }, () => {
@@ -173,6 +185,16 @@ class Reviews extends React.Component {
     });
   }
 
+  reportClicked(review_ID) {
+    const review = this.state.reviews.filter(
+      ({ review_id }) => review_ID === review_id
+    )[0];
+    review.reported = true;
+    this.setState({
+      reviews: this.state.reviews,
+    });
+  }
+
   render() {
     return (
       <div className="fl w-66">
@@ -202,6 +224,7 @@ class Reviews extends React.Component {
               <ReviewTile
                 key={i}
                 helpfulClicked={this.helpfulClicked.bind(this)}
+                reportClicked={this.reportClicked.bind(this)}
                 review={review}
                 helpful={this.state.helpful[review.review_id]}
               ></ReviewTile>
@@ -252,15 +275,7 @@ class Reviews extends React.Component {
                     id={value + 1}
                     type="radio"
                     name={value}
-                    onChange={(e) => {
-                      sendClickTracker(e, 'rating and review');
-                      this.setState({
-                        characteristics: {
-                          ...this.state.characteristics,
-                          [this.state.meta.characteristics[value].id]: 1,
-                        },
-                      });
-                    }}
+                    onChange={this.setCharacteristic(value, 1).bind(this)}
                   />
                 </div>
                 {characteristicsMapping[value][0]}
@@ -269,56 +284,24 @@ class Reviews extends React.Component {
               <input
                 type="radio"
                 name={value}
-                onChange={(e) => {
-                  sendClickTracker(e, 'rating and review');
-                  this.setState({
-                    characteristics: {
-                      ...this.state.characteristics,
-                      [this.state.meta.characteristics[value].id]: 2,
-                    },
-                  });
-                }}
+                onChange={this.setCharacteristic(value, 2).bind(this)}
               />
               <input
                 type="radio"
                 name={value}
-                onChange={(e) => {
-                  sendClickTracker(e, 'rating and review');
-                  this.setState({
-                    characteristics: {
-                      ...this.state.characteristics,
-                      [this.state.meta.characteristics[value].id]: 3,
-                    },
-                  });
-                }}
+                onChange={this.setCharacteristic(value, 3).bind(this)}
               />
               <input
                 type="radio"
                 name={value}
-                onChange={(e) => {
-                  sendClickTracker(e, 'rating and review');
-                  this.setState({
-                    characteristics: {
-                      ...this.state.characteristics,
-                      [this.state.meta.characteristics[value].id]: 4,
-                    },
-                  });
-                }}
+                onChange={this.setCharacteristic(value, 4).bind(this)}
               />
               <div className="dib">
                 <div>
                   <input
                     type="radio"
                     name={value}
-                    onChange={(e) => {
-                      sendClickTracker(e, 'rating and review');
-                      this.setState({
-                        characteristics: {
-                          ...this.state.characteristics,
-                          [this.state.meta.characteristics[value].id]: 5,
-                        },
-                      });
-                    }}
+                    onChange={this.setCharacteristic(value, 5).bind(this)}
                   />
                 </div>
                 {characteristicsMapping[value][4]}

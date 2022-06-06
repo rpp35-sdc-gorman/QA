@@ -78,6 +78,7 @@ describe('Reviews', () => {
     mock.onGet('/rating_review/' + 71697).reply(200, reviews);
     mock.onPost('/rating_review/' + 71697).reply(201);
     mock.onPost('/trackClick').reply(201);
+    mock.onPut(/rating_review\/reviews\/d+\/helpful/).reply(201);
     mock
       .onGet('/rating_review/' + 71697, {
         params: { sort: 'relevance', page: 2 },
@@ -203,5 +204,10 @@ describe('Reviews', () => {
         .dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
     expect(mock.history.post.length).toBe(9);
+  });
+  it('should fire an onclick handler for helpfulness clicked', () => {
+    container
+      .querySelectorAll('.underline')[0]
+      .dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
 });

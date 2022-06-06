@@ -11,6 +11,14 @@ router.put('/reviews/:id/helpful', (req, res, next) => {
       next(err);
     });
 });
+router.put('/reviews/:id/report', (req, res, next) => {
+  sendRequest(`reviews/${req.params.id}/report`, 'put')
+    .then(({ data }) => res.send(data))
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    });
+});
 
 router.get('/:id/rating', (req, res, next) => {
   sendRequest(`reviews/meta?product_id=${req.params.id}`, 'get')
