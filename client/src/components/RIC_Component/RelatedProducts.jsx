@@ -3,7 +3,7 @@ import ProductCards from './ProductCard.jsx';
 import Carousel, { CarouselItem } from './Carousel';
 
 var RelatedProducts = (props) => (
-  <div>
+  <div id='relatedProducts'>
     <Carousel clickTracker={props.clickTracker}>
       {props.products.map((product, index) => {
         return(
@@ -17,6 +17,7 @@ var RelatedProducts = (props) => (
               id={product.id}
               list={product.list}
               compare={props.compare}
+              redirect={props.redirect}
               index={index}
               />
           </CarouselItem>
