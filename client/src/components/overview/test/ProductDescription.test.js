@@ -29,12 +29,17 @@ const testData = {
   }
 }
 
+global.IS_REACT_ACT_ENVIRONMENT = true
+
 describe("Prouct Description Module", () => {
-  let container = null;
+    let container = null;
+    let root = null
 
   beforeEach(async () => {
     container = document.createElement("div");
+    container.id = 'root';
     document.body.appendChild(container);
+    root = createRoot(document.getElementById('root'))
   });
   afterEach(() => {
     unmountComponentAtNode(document);
@@ -43,14 +48,22 @@ describe("Prouct Description Module", () => {
   });
   it('Should Render the Product Description when given data', () => {
     act(() => {
-      createRoot(container).render(<ProductDescription info={testData} />)
+      root.render(<ProductDescription info={testData} />)
     })
-    expect(container.querySelector('.ProductDescription')).not.toBe(undefined);
+    const r = document.querySelector('.ProductDescription')
+    expect(r).not.toBe(undefined);
   })
   it('Should render nothing if there is not data provided', () => {
     act(() => {
-      createRoot(container).render(<ProductDescription />)
+      root.render(<ProductDescription />)
     })
-    expect(container.querySelector('.ProductDescription')).toBe(undefined);
+    expect(container.querySelector('.ProductDescription')).toBe(null);
+  })
+  it('Should render out a list of features', () => {
+    act(() => {
+    root.render(<ProductDescription info={testData} />)
+    })
+    const f = container.querySelectorAll('.features')
+    expect(f.children.length).toBe(2);
   })
 })

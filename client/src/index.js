@@ -17,21 +17,24 @@ class App extends React.Component {
     this.state = {
       addProduct: false
     };
+    this.addProduct = this.addProduct.bind(this);
   }
 
   addProduct() {
-    this.setState({ addProduct: !this.state.addProduct })
+    let opposite = !this.state.addProduct;
+    this.setState({ addProduct: opposite })
   }
 
   render() {
     const QA = ClickTracker(QAMain, 'Question & Answer');
     const RI = ClickTracker(RIC, 'Related Items');
+    const OVR = ClickTracker(Overview, 'Overview')
     return (
       <div>
-        <Overview />
+        <OVR addOutfit={this.addProduct} isAdded={this.state.addProduct}/>
         <RI added={this.state.addProduct} />
-        <QA />
-        <RatingsAndReviews />
+        {/* <QA /> */}
+        {/* <RatingsAndReviews /> */}
       </div>
     );
   }
