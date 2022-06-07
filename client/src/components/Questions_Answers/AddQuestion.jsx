@@ -15,7 +15,7 @@ var AddQuestion = (props) => {
         body: question,
         name: nickname,
         email,
-        product_id: props.product_id
+        product_id: Number(props.product_id)
       })
       .then((result) => {
         props.toggleAddQuestion(event)

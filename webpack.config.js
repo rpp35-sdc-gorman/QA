@@ -1,10 +1,20 @@
 var path = require('path');
 var CompressionPlugin = require('compression-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 var SRC_DIR = path.join(__dirname, '/client/src');
 var DIST_DIR = path.join(__dirname, '/client/dist');
 
 module.exports = {
   mode: 'development',
+  optimization: {
+    usedExports: true,
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        test: /\.(js|jsx)$/,
+      }),
+    ],
+  },
   entry: `${SRC_DIR}/index.js`,
   devtool: 'eval-source-map',
   output: {

@@ -10,6 +10,8 @@ import keyId from '../common/keyId';
 // sample data - remove this later
 // import {testProductStyles} from '../../../../config';
 
+import { getAverageRating } from '../common/averageRating';
+import axios from 'axios'
 
 class StyleSelector extends React.Component{
   constructor(props){
@@ -17,28 +19,33 @@ class StyleSelector extends React.Component{
     this.state = {
       // currentStyle: null
       bubbles: '',
-      isFullscreen: false
+      isFullscreen: false,
+      rating: null
     }
     this.handleFullscreen = this.handleFullscreen.bind(this)
   }
 
   componentDidMount(){
     this.setState({bubbles: this.createBubbles()})
+    this.getRating();
   }
 
   createBubbles () {
-    return this.props.styles.map((item) => {
-      const id = keyId();
-      return <Bubble
-                key={keyId()}
-                entity={item}
-                image={item.photos[0].thumbnail_url}
-                handleStyleChange={this.props.handleStyleChange}
-            />
-    })
+    if (this.props.styles) {
+        return this.props.styles.map((item) => {
+        const id = keyId();
+        return <Bubble
+                  key={keyId()}
+                  entity={item}
+                  image={item.photos[0].thumbnail_url}
+                  handleStyleChange={this.props.handleStyleChange}
+              />
+      })
+    }
   }
 
-  handleFullscreen(){
+  handleFullscreen(e){
+    this.props.ClickTracker(e);
     this.setState({'isFullscreen': !this.state.isFullscreen})
   }
 
@@ -63,6 +70,17 @@ class StyleSelector extends React.Component{
     }
   }
 
+  getRating () {
+    axios.get(`/rating_review/${this.props.info.id}/rating`)
+      .then(data => {
+        const rating = getAverageRating(data.data)
+        this.setState({'rating': rating})
+      })
+      .catch(err => {
+        console.error('Problem getting rating', err)
+      })
+  }
+
   render(){
     if(!this.state.isFullscreen){
       return(
@@ -71,24 +89,35 @@ class StyleSelector extends React.Component{
             images={this.props.currentStyle.photos}
             handleFullscreen={this.handleFullscreen}
             isFullscreen={this.state.isFullscreen}
+            ClickTracker={this.props.ClickTracker}
           />
           <section className="Style_Selector">
             <article className="info">
-              <div className='flexRow'>
-                <Stars  />
-                <sub><a>Read All Reviews</a></sub>
+              <div className='flexRow overview-rating'>
+                {this.state.rating ?
+                  <Stars filled={this.state.rating} />
+                  :
+                  <Stars filled={3} />
+                }
+                <a href="#reviews">Read All Reviews</a>
               </div>
               <div>
-                <h4>{this.props.info.category}</h4>
-                <h2>{this.props.currentStyle.name}</h2>
+                <h4 className="category-name" >{this.props.info ? this.props.info.category : 'miscellaneous'}</h4>
+                <h2 className="product-name" >{this.props.info.name || 'Coming Soon'}</h2>
                 <h4>{this.formatPrice(this.props.currentStyle.original_price, this.props.currentStyle.sale_price)}</h4>
               </div>
             </article>
-            <h4>Style > {this.props.currentStyle.name}</h4>
-            <div className="gridRows">
+            <h4 className="style">Style > <span className='style-current'>{this.props.currentStyle.name || null}</span></h4>
+            <div className="gridRows bubble-container">
               {this.state.bubbles}
             </div>
-            <OrderForm inventory={this.props.currentStyle.skus} />
+            <OrderForm
+              inventory={this.props.currentStyle.skus}
+              ClickTracker={this.props.ClickTracker}
+              info={this.props.info}
+              addOutfit={this.props.addOutfit}
+              isAdded={this.props.isAdded}
+            />
           </section>
         </article>
       )
@@ -100,6 +129,7 @@ class StyleSelector extends React.Component{
             images={this.props.currentStyle.photos}
             handleFullscreen={this.handleFullscreen}
             isFullscreen={this.state.isFullscreen}
+            ClickTracker={this.props.ClickTracker}
           />
         </article>
       )

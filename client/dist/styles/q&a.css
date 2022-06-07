@@ -90,8 +90,10 @@ p#answer_body {
   justify-content: flex-start;
 }
 
-#answerImages * {
+#answerImages img {
   padding-right: 1em;
+  max-height: 10vh;
+  max-width: 10vh;
 }
 
 .rightBorder {

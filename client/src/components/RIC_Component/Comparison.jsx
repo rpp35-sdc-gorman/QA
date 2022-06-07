@@ -28,7 +28,10 @@ class Comparison extends React.Component {
     let uniqueFeatures = [... new Set (allFeatures.map(feature => {
       return feature.value
     }))];
-    // let uniqueFeatures = [... new Set(featureNames) ];
+    let nullExists = uniqueFeatures.indexOf(null);
+    if (nullExists !== -1) {
+      uniqueFeatures.splice(nullExists, 1);
+    }
     let comparedFeatures = [];
     let [mainFeatures, relatedFeatures] = [
       this.groupFeatures(this.props.main.features),

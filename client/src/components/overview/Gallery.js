@@ -11,7 +11,8 @@ const Gallery = (props) => {
     const [currentMiniImage, setCurrentMiniImage] = useState(0);
 
 
-    const handlePhotoChange = (operator) => {
+    const handlePhotoChange = (operator, e) => {
+      props.ClickTracker(e)
       if(operator === '+'){
         if(currentImage < props.images.length - 1){
           setCurrentImage(currentImage + 1);
@@ -30,8 +31,8 @@ const Gallery = (props) => {
     }
 
     // advance mini gallery group
-    const handleMiniChange = (operator) => {
-      console.log(props.images.length)
+    const handleMiniChange = (operator,e) => {
+      props.ClickTracker(e)
       if(operator === '-' && currentMiniImage > 0){
         setCurrentMiniImage(currentMiniImage - 1)
       } else if ( operator === '+' && currentMiniImage < (props.images.length - 5) ){
@@ -39,22 +40,22 @@ const Gallery = (props) => {
       }
     }
 
-    const jumpTo = (index) => {
+    const jumpTo = (index, e) => {
+      props.ClickTracker(e)
       setCurrentImage(index)
     }
 
     const createMiniGallery = () => {
-      if(props.images){
+      if(props.images && props.images[0].thumbnail_url){
         const output = [];
         const cutoff = currentMiniImage + 4
         props.images.forEach((photo, index) => {
           if(index >= currentMiniImage && index <= cutoff){
-            const id = keyId()
+            // const id = keyId()
             const e = <img
-                      key={id}
-                      id={index}
-                      onClick={() => jumpTo(index)}
-                      className={currentImage === id ? 'Gallery_selected Gallery_mini' : 'Gallery_mini' }
+                      key={index}
+                      onClick={(e) => jumpTo(index, e)}
+                      className={currentImage === index ? 'Gallery_selected Gallery_mini' : 'Gallery_mini' }
                       src={photo.thumbnail_url}
                     />
             output.push(e)
@@ -68,13 +69,14 @@ const Gallery = (props) => {
           className={'Gallery_selected Gallery_mini'}
           src={'https://via.placeholder.com/150'}
         />
-        setMiniSet([item])
+        return [item]
       }
     }
 
     // gallery properties that change with state
     const GalleryStyles = {
-      'backgroundImage': `url(${props.images[currentImage].url})`
+      // if image is null or undfined load fallback image
+      'backgroundImage': `url(${props.images ? props.images[currentImage].url : 'https://via.placeholder.com/1200'})`
     }
 
     return(
@@ -83,7 +85,7 @@ const Gallery = (props) => {
         <ChevronUp
             size={16}
             className="GalleryArrow"
-            onClick={() => handleMiniChange('-')}
+            onClick={(e) => handleMiniChange('-', e)}
             />
           {
             createMiniGallery()
@@ -91,7 +93,7 @@ const Gallery = (props) => {
           <ChevronDown
             size={16}
             className="GalleryArrow"
-            onClick={() => handleMiniChange('+')}
+            onClick={(e) => handleMiniChange('+', e)}
             />
         </div>
         <FullScreen
@@ -99,17 +101,17 @@ const Gallery = (props) => {
           className="GalleryArrow"
           strokeWidth='2'
           size={24}
-          onClick={() => props.handleFullscreen()}
+          onClick={(e) => props.handleFullscreen(e)}
         />
         <div className="flexRow GalleryMain">
           <button id="prevArrow" className="GalleryArrow"
-            onClick={() => handlePhotoChange('-')}
+            onClick={(e) => handlePhotoChange('-', e)}
           >
               <ChevronLeft strokeWidth='2' size={36} />
           </button>
           {/* <img className='Gallery_image' src={props.images ? props.images[currentImage].url : 'https://via.placeholder.com/350'} /> */}
           <button id="nextArrow" className="GalleryArrow"
-            onClick={() => handlePhotoChange('+')}
+            onClick={(e) => handlePhotoChange('+', e)}
             >
               <ChevronRight strokeWidth='2' size={36} />
           </button>

@@ -1,12 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import Modal from '../common/modal.jsx';
 import _ from 'lodash';
 
 var AddAnswer = (props) => {
   const [answer, setAnswer] = useState('')
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
-  const [photos, setPhotos] = useState([])
+  const [photos, setPhotos] = useState(new Set())
+
+  const [showImage, setShowImage] = useState(false);
+  const [displayImage, setDisplayImage] = useState('');
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -16,10 +20,11 @@ var AddAnswer = (props) => {
         body: answer,
         name: nickname,
         email,
-        photos
+        photos: Array.from(photos)
       })
       .then((result) => props.toggleAddAnswer(event))
       .catch(err => console.log(err));
+
     } else {
       setEmail(false);
     }
@@ -34,16 +39,36 @@ var AddAnswer = (props) => {
     } else if (event.target.id === 'email') {
       setEmail(value);
     } else if (event.target.id === 'photos') {
-      let files = photos;
+      let photoPromises = [];
+      let photoUrlSet = photos.size ? photos : new Set();
       _.each(event.target.files, (file, key) => {
-        if (file.type === 'image/png') {
-          files.push(file.name);
+        if (file.type === 'image/jpeg' || file.type === 'image/png') {
+          let filename = `${props.nextAnswerId}-${file.name}`;
+          let url = `https://1isgmttqfc.execute-api.us-east-1.amazonaws.com/FECdev/fec-images-bucket/${filename}`;
+          photoUrlSet.add(`https://fec-images-bucket.s3.amazonaws.com/${filename}`)
+          photoPromises.push(
+            axios({
+              method: 'PUT',
+              url,
+              data: file,
+              headers: {'Content-Type': 'image/jpeg' }
+            })
+          );
         }
       })
-      files = _.uniq(files);
-      setPhotos(files);
-      console.log(photos);
+
+      Promise.allSettled(photoPromises)
+        .then((results) => {
+          setPhotos(photoUrlSet);
+        })
     }
+  }
+
+  function toggleImage(event) {
+    event.preventDefault();
+    props.clickTracker(event);
+    setDisplayImage(event.target.src);
+    setShowImage(!showImage);
   }
 
   function setCustomValidity(text, e) {
@@ -59,13 +84,19 @@ var AddAnswer = (props) => {
     setAnswer('');
     setNickname('');
     setEmail('');
-    setPhotos([]);
+    setPhotos(new Set());
     props.toggleAddAnswer(event);
   }
 
   return (
     props.showAddAnswer ?
     <div className="modalAnswers">
+      <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
+        <img
+          id={'displayImage'}
+          src={displayImage}
+        />
+      </Modal>
       <form onSubmit={handleSubmit} id="modal-form">
         <h2>Submit your Answer</h2>
         <h3>{props.currentProduct}: {props.questionToAnswer.question_body}</h3>
@@ -93,11 +124,16 @@ var AddAnswer = (props) => {
 
         <label> Upload pictures:
           <input id="photos" onChange={handleChange} type="file" multiple/>
-          <ul id="photo_list">
-            {photos.map((photo, i) => (
-              <li key={i}>{photo}</li>
+          <div id="answerImages">
+            {Array.from(photos).map((photo, i) => (
+              <img
+                id='newImage'
+                key={i}
+                src={photo}
+                onClick={(event) => toggleImage(event)}
+              />
             ))}
-          </ul>
+          </div>
         </label>
         <input id="submitAnswer" type="submit" value="Submit" style={{width: '80px', marginTop: '5px'}}/>
         <button id="closeAddAnswer" onClick={closeModal}>X</button>

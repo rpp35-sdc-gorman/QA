@@ -14,16 +14,25 @@ const root = createRoot(container);
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      addProduct: false,
+    };
+    this.addProduct = this.addProduct.bind(this);
+  }
+
+  addProduct() {
+    let opposite = !this.state.addProduct;
+    this.setState({ addProduct: opposite });
   }
 
   render() {
     const QA = ClickTracker(QAMain, 'Question & Answer');
     const RI = ClickTracker(RIC, 'Related Items');
+    const OVR = ClickTracker(Overview, 'Overview');
     return (
       <div>
-        <Overview />
-        <RI />
+        <OVR addOutfit={this.addProduct} isAdded={this.state.addProduct} />
+        <RI added={this.state.addProduct} />
         <QA />
         <RatingsAndReviews />
       </div>

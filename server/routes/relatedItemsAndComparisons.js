@@ -20,6 +20,7 @@ router.get('/ric/:product_id', async (req, res, next) => {
   const relatedEndpoint = `products/${currentProductId}/related`;
   await sendRequest(relatedEndpoint)
     .then(relatedProducts => {
+      relatedProducts.data.unshift(Number(currentProductId));
       return relatedProducts.data
     })
     .then(relatedProductIds => {
@@ -53,38 +54,9 @@ router.get('/ric/:product_id', async (req, res, next) => {
       let products = promiseArr.map(promise => { return promise.value });
       res.status(200).json(products);
     })
-    .catch(err => { next(err); })
-});
-
-router.get('/ric/main/:product_id', async (req, res, next) => {
-  // GET RELATED PRODUCT IDS
-  const currentProductId = req.params.product_id;
-  const currentProductEndpoint = `products/${currentProductId}`;
-  await sendRequest(currentProductEndpoint)
-    .then(currentProduct => {
-      return currentProduct.data
+    .catch(err => {
+      res.status(500).send('Error');
     })
-    // GET RELATED PRODUCT RATINGS
-    .then(async (product) => {
-      const ratingsEndpoint = `reviews/meta/?product_id=${product.id}`;
-      return await sendRequest(ratingsEndpoint)
-        .then(response => {
-          let rating = getAverageRating(response.data);
-          product.star_rating = rating;
-          return product
-        })
-    })
-    // GET RELATED PRODUCT STYLES AND SEND
-    .then(async (product) => {
-      const endpoint = `products/${product.id}/styles`;
-      await sendRequest(endpoint)
-        .then(response => {
-          product.styles = response.data.results;
-          res.status(200).json(product);
-        })
-        .catch(err => { next(err); })
-    })
-    .catch(err => { next(err); })
 });
 
 module.exports  = {relatedRouter: router}

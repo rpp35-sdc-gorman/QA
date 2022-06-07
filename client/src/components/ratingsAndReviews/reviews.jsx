@@ -48,6 +48,18 @@ export const characteristicsMapping = {
     'Runs long',
   ],
 };
+
+var randomString = function (len) {
+  var text = '';
+  var possible = 'abcdefghijklmnopqrstuvwxyz1234567890';
+
+  for (var i = 0; i < len; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
+};
+
 class Reviews extends React.Component {
   constructor(props) {
     super(props);
@@ -69,7 +81,7 @@ class Reviews extends React.Component {
       recommend: null,
       name: '',
       email: '',
-      photos: '',
+      photos: new Set(),
       page: 1,
       helpful: {},
       characteristics: {},
@@ -111,8 +123,16 @@ class Reviews extends React.Component {
         errorMessage: 'You must enter the following: ' + missing.join(', '),
       });
     }
-    const { characteristics, body, email, name, rating, recommend, summary } =
-      this.state;
+    const {
+      characteristics,
+      body,
+      email,
+      name,
+      rating,
+      recommend,
+      summary,
+      photos,
+    } = this.state;
 
     if (canSubmit && missing.length === 0) {
       axios
@@ -124,6 +144,7 @@ class Reviews extends React.Component {
           name,
           rating,
           recommend,
+          photos: Array.from(photos),
           summary,
         })
         .then(({ data }) => {
@@ -184,7 +205,14 @@ class Reviews extends React.Component {
       reviews: this.state.reviews,
     });
   }
-
+  toggleImage(event) {
+    event.preventDefault();
+    sendClickTracker(event, 'ratings and reviews');
+    this.setState({
+      displayImage: event.target.src,
+      showImage: !this.state.showImage,
+    });
+  }
   reportClicked(review_ID) {
     const review = this.state.reviews.filter(
       ({ review_id }) => review_ID === review_id
@@ -337,6 +365,57 @@ class Reviews extends React.Component {
                   50 - this.state.body.length
                 }`}
           </div>
+          <label>
+            {' '}
+            Upload pictures:
+            <input
+              id="photos"
+              onChange={(event) => {
+                let photoPromises = [];
+                let photoUrlSet = this.state.photos.size
+                  ? this.state.photos
+                  : new Set();
+                _.each(event.target.files, (file, key) => {
+                  if (file.type === 'image/jpeg' || file.type === 'image/png') {
+                    let filename = `${randomString(10)}-${file.name}`;
+                    let url = `https://1isgmttqfc.execute-api.us-east-1.amazonaws.com/FECdev/fec-images-bucket/${filename}`;
+                    photoUrlSet.add(
+                      `https://fec-images-bucket.s3.amazonaws.com/${filename}`
+                    );
+                    photoPromises.push(
+                      axios({
+                        method: 'PUT',
+                        url,
+                        data: file,
+                        headers: { 'Content-Type': 'image/jpeg' },
+                      })
+                    );
+                  }
+                });
+                Promise.allSettled(photoPromises).then((results) => {
+                  this.setState({ photos: photoUrlSet });
+                });
+              }}
+              type="file"
+              multiple
+            />
+            <div id="answerImages">
+              {Array.from(this.state.photos).map((photo, i) => (
+                <img
+                  id="newImage"
+                  key={i}
+                  src={photo}
+                  onClick={(event) => this.toggleImage(event)}
+                />
+              ))}
+            </div>
+          </label>
+          <Modal
+            handleClose={(event) => this.toggleImage(event)}
+            show={this.state.showImage}
+          >
+            <img id="displayImage" src={this.state.displayImage} />
+          </Modal>
           <div>
             <label htmlFor="email">Email</label>
             <input

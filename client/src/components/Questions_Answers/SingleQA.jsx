@@ -15,6 +15,7 @@ class SingleQA extends React.Component {
       showAnswers: true,
       showAddAnswer: false,
       questionToAnswer: null,
+      nextAnswerId: null,
     }
 
     this.toggleAddAnswer = this.toggleAddAnswer.bind(this);
@@ -27,8 +28,11 @@ class SingleQA extends React.Component {
     if (seller) {
       allAnswers = allAnswers.concat(seller);
     }
+    allAnswers = allAnswers.concat(this.props.question.answers.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness));
+    let nextAnswerId = Math.max(...allAnswers.map(answer => answer.answer_id))
     this.setState((state) =>  ({
-      allAnswers: allAnswers.concat(this.props.question.answers.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness)),
+      allAnswers,
+      nextAnswerId
     }))
   }
 
@@ -40,8 +44,11 @@ class SingleQA extends React.Component {
       if (seller) {
         allAnswers = allAnswers.concat(seller);
       }
+      allAnswers = allAnswers.concat(this.props.question.answers.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness));
+      let nextAnswerId = Math.max(...allAnswers.map(answer => answer.answer_id))
       this.setState((state) =>  ({
-        allAnswers: allAnswers.concat(this.props.question.answers.filter(answer => answer.answerer_name !== "Seller").sort((a, b) => b.helpfulness - a.helpfulness)),
+        allAnswers,
+        nextAnswerId
       }))
     }
   }
@@ -72,6 +79,8 @@ class SingleQA extends React.Component {
             questionToAnswer={this.props.question}
             currentProduct = {this.props.currentProduct}
             showAddAnswer={this.state.showAddAnswer}
+            nextAnswerId={this.state.nextAnswerId}
+            clickTracker={this.props.clickTracker}
           />
         <div id="question">
           <button className="accordion" onClick={(event) => this.toggleAccordion(event)}>
