@@ -23,25 +23,27 @@ const ReviewTile = (props) => {
       <div className="recommend">
         {props.review.recommend ? '√ I recommend this product' : null}
       </div>
-      {props.review.photos.map(({ url }, i) => (
-        <>
-          <Modal
-            key={i}
-            handleClose={() => {
-              setShowImage({ ...showImage, [i]: !showImage[i] });
-            }}
-            show={showImage[i]}
-          >
-            <img key={url} src={url}></img>
-          </Modal>
-          <img
-            onClick={() => setShowImage({ ...showImage, [i]: !showImage[i] })}
-            key={url}
-            src={url}
-            style={{ width: 50, height: 50, display: 'block' }}
-          ></img>
-        </>
-      ))}
+      <div id="answerImages">
+        {props.review.photos.map(({ url }, i) => (
+          <>
+            <Modal
+              key={i}
+              handleClose={() => {
+                setShowImage({ ...showImage, [i]: !showImage[i] });
+              }}
+              show={showImage[i]}
+            >
+              <img key={url} src={url}></img>
+            </Modal>
+            <img
+              onClick={() => setShowImage({ ...showImage, [i]: !showImage[i] })}
+              key={url}
+              src={url}
+              style={{ width: 50, height: 50, display: 'block' }}
+            ></img>
+          </>
+        ))}
+      </div>
       helpful?{' '}
       <span
         className={!props.helpful ? `underline` : null}

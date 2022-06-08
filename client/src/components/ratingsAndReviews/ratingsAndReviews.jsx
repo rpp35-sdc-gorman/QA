@@ -31,7 +31,7 @@ class RatingsAndReviews extends React.Component {
           filtered={this.state}
         ></Ratings>
         <div className="reviewsContainer" id="reviews">
-          <Reviews id={71697} filtered={this.state}></Reviews>
+          <Reviews id={id} filtered={this.state}></Reviews>
         </div>
       </div>
     );
