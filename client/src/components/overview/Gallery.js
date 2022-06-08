@@ -76,7 +76,7 @@ const Gallery = (props) => {
     // gallery properties that change with state
     const GalleryStyles = {
       // if image is null or undfined load fallback image
-      'backgroundImage': `url(${props.images ? props.images[currentImage].url : 'https://via.placeholder.com/1200'})`
+      'backgroundImage': `url(${props.images ? props.images[currentImage].url : 'https://www.texassampling.com/wp-content/uploads/2020/05/placeholder-product-image.jpg'})`
     }
 
     return(

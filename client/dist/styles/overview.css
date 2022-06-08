@@ -97,6 +97,7 @@
   font-size: smaller;
   display: flex;
   align-items: flex-start;
+  max-width: 900px;
 }
 
 /* Style Selector */
@@ -181,14 +182,21 @@
   height:4.5em;
   width: 4.5em;
   display: grid;
+  border: 3px solid transparent;
+  overflow: hidden;
   place-items: center;
-  border:none;
   cursor: pointer;
 }
 .bubble > img{
   padding: 0;
-  height:4em;
-  width: 4em;
+  height:5em;
+  width: 5em;
+}
+.bubble:hover{
+  border-color: grey;
+}
+.bubble:active{
+  border-color: black;
 }
 
 /* Order Form */

@@ -20,13 +20,14 @@ class Overview extends React.Component {
       didError: false,
       error: null,
       force: 0,
+      loading: true
     };
-    // remote this later
-    // this.testId = '71699';
-    this.testId = window.location.href.split('/').pop();
+    this.currentId = window.location.href.split('/').pop();
     this.handleStyleChange = this.handleStyleChange.bind(this);
   }
 
+  // There will need to be another request made to get the product category, slogen, description, ect...
+  //  GET /products/:product_id
   getData(endpoint) {
     axios({
       method: 'GET',
@@ -37,36 +38,50 @@ class Overview extends React.Component {
         info: res.data.info,
         styles: res.data.styles.results,
         rating: res.data.rating,
+        loading: false
       });
     })
     .catch(err => {
+      this.setState({
+        didError: true,
+        loading: false
+      })
       console.log('Error Contacting Endpoint:', err)
     })
+
+
   }
 
   // fetch one Id statically for now
   componentDidMount() {
-    this.getData(this.testId);
-    // this.setState({products: testProducts})
+    this.getData(this.currentId);
   }
 
-  // There will need to be another request made to get the product category, slogen, description, ect...
-  //  GET /products/:product_id
 
   componentDidUpdate(prevProps, PrevState) {
     if (PrevState.styles !== this.state.styles) {
       // set current Prodct to be the first product in the list
-      this.setState({ currentProduct: this.getDefault() });
+      this.setState({ currentProduct: this.getDefault(this.state.styles) });
     }
   }
 
-  getDefault() {
+  getDefault(data) {
     const key = 'default?';
-    Array.from(this.state.styles).forEach((item) => {
-      if (item[key]) {
-        this.setState({ currentStyle: item });
-      }
-    });
+    let set = false
+    if(Array.isArray(data) && data.length > 0){
+      // data provided is an array and has at least one thing in it
+      Array.from(data).forEach((item) => {
+        if (item[key]) {
+          this.setState({ currentStyle: item });
+          set = true
+        }
+      });
+    }
+    if (Array.isArray(data) && data.length > 0 && set === false) {
+      // data provided is an array but a default value was not found to be true
+      // just set the default to be the first value in the array
+      this.setState({currentStyle: data[0]})
+    }
   }
 
   handleStyleChange(id, e) {
@@ -92,6 +107,8 @@ class Overview extends React.Component {
           ClickTracker={this.props.clickTracker}
           addOutfit={this.props.addOutfit}
           isAdded={this.props.isAdded}
+          isLoading={this.state.loading}
+          didError={this.state.didError}
         />
         <ProductDescription info={this.state.info} />
       </section>
