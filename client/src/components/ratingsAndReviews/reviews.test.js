@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { act } from 'react-dom/test-utils';
+import { act, Simulate } from 'react-dom/test-utils';
 import axios from 'axios';
 import Reviews from './reviews.jsx';
 import MockAdapter from 'axios-mock-adapter';
@@ -72,11 +72,13 @@ const ratings = {
 
 describe('Reviews', () => {
   let mock;
-  let root = null;
   let container = null;
   beforeEach(async () => {
     mock = new MockAdapter(axios);
     mock.onGet('/rating_review/' + 71697).reply(200, reviews);
+    mock.onPost('/rating_review/' + 71697).reply(201);
+    mock.onPost('/trackClick').reply(201);
+    mock.onPut(/rating_review\/reviews\/d+\/helpful/).reply(201);
     mock
       .onGet('/rating_review/' + 71697, {
         params: { sort: 'relevance', page: 2 },
@@ -87,7 +89,12 @@ describe('Reviews', () => {
     container = document.createElement('div');
     document.body.appendChild(container);
     await act(() => {
-      root = createRoot(container).render(<Reviews id={71697} />);
+      createRoot(container).render(
+        <Reviews
+          id={71697}
+          filtered={{ 1: false, 2: false, 3: false, 4: false, 5: false }}
+        />
+      );
     });
   });
   afterEach(() => {
@@ -136,6 +143,71 @@ describe('Reviews', () => {
     expect(
       container.querySelector('#errorMessage').innerHTML.includes('recommend')
     ).toBe(true);
-    expect(mock.history.post.length).toBe(0);
+    expect(mock.history.post.length).toBe(2);
+  });
+
+  it('should submit if all properties are present', async () => {
+    await act(() => {
+      container
+        .querySelector('#addAReview')
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    await act(() => {
+      container
+        .querySelector('span#stars')
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      container
+        .querySelector('input#recommend1')
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      container
+        .querySelector('#Fit1')
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      container
+        .querySelector('#Length1')
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      container
+        .querySelector('#Comfort1')
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      container
+        .querySelector('#Quality1')
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+      Simulate.change(container.querySelector('#reviewName'), {
+        target: {
+          id: 'reviewName',
+          value: 'name',
+        },
+      });
+      Simulate.change(container.querySelector('#reviewEmail'), {
+        target: {
+          id: 'reviewEmail',
+          value: 'email@email.com',
+        },
+      });
+      Simulate.change(container.querySelector('#reviewBody'), {
+        target: {
+          id: 'reviewBody',
+          value:
+            'this is a valid value for the body of this submission. check it out!',
+        },
+      });
+      Simulate.change(container.querySelector('#reviewSummary'), {
+        target: {
+          id: 'reviewSummary',
+          value: 'check it out!',
+        },
+      });
+    });
+    await act(() => {
+      container
+        .querySelector('#submitNewReview')
+        .dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(mock.history.post.length).toBe(9);
+  });
+  it('should fire an onclick handler for helpfulness clicked', () => {
+    container
+      .querySelectorAll('.underline')[0]
+      .dispatchEvent(new MouseEvent('click', { bubbles: true }));
   });
 });

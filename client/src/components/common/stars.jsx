@@ -101,6 +101,7 @@ export const SelectableStars = (props) => {
           ☆
         </span>
         <span
+          id="stars"
           onClick={(e) => {
             sendClickTracker(e, 'rating and review');
             props.select(4);
