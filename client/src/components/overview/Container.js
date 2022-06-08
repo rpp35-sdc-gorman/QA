@@ -10,7 +10,6 @@ import Stars from '../common/stars.jsx';
 const Container = (props) => {
   // query the api for the specific styles and pass that to style selector
   // this will be in charge of overlaying a loading screen when there is no data
-
   const stateChecker = () => {
     // stuff is loading
     if(props.isLoading && !props.didError){

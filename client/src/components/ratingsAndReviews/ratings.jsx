@@ -79,6 +79,7 @@ class Ratings extends React.Component {
           ? '12345'.split('').map((count) => (
               <div
                 key={count}
+                id={'ratings' + count}
                 className="hover-gray"
                 onClick={(e) => {
                   sendClickTracker(e, 'rating and review');

@@ -50,9 +50,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new CompressionPlugin({
-      test: /\.js(\?.*)?$/i,
-      algorithm: "brotliCompress"
-    }),
+    // new CompressionPlugin({
+    //   test: /\.js(\?.*)?$/i,
+    //   algorithm: "brotliCompress"
+    // }),
+    new CompressionPlugin()
   ]
 };
