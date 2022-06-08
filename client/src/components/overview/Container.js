@@ -21,7 +21,7 @@ const Container = (props) => {
     } else if (!props.isLoading && !props.didError) {
       // loading completed success
       return(
-        <article>
+        <article id="overview_container">
           { props.currentStyle ?
             <section className='flexColumn'>
               <StyleSelector
