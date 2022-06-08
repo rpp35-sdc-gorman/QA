@@ -8,7 +8,7 @@ export default function Bubble (props) {
 
   return(
       <button className="bubble" onClick={(e) => props.handleStyleChange(props.entity.style_id, e)}>
-        <img className="bubble" src={props.image || placeholder} />
+        <img className="" src={props.image || placeholder} />
       </button>
   )
 }
