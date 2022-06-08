@@ -79,7 +79,6 @@ const Gallery = (props) => {
       let imageUrl = fallbackImage;
 
       if (props.images[currentImage] && props.images[currentImage].url) {
-        console.log('setting url to', props.images[currentImage])
         imageUrl = props.images[currentImage].url
       }
 
