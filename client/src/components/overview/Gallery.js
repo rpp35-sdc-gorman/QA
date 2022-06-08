@@ -112,13 +112,13 @@ const Gallery = (props) => {
           onClick={(e) => props.handleFullscreen(e)}
         />
         <div className="flexRow GalleryMain">
-          <button id="prevArrow" className="GalleryArrow"
+          <button id="prevArrow" className="GalleryArrow" aria-label="prevArrow"
             onClick={(e) => handlePhotoChange('-', e)}
           >
               <ChevronLeft strokeWidth='2' size={36} />
           </button>
           {/* <img className='Gallery_image' src={props.images ? props.images[currentImage].url : 'https://via.placeholder.com/350'} /> */}
-          <button id="nextArrow" className="GalleryArrow"
+          <button id="nextArrow" className="GalleryArrow" aria-label="nextArrow"
             onClick={(e) => handlePhotoChange('+', e)}
             >
               <ChevronRight strokeWidth='2' size={36} />
