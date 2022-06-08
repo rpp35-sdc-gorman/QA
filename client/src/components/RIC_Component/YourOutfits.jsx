@@ -18,8 +18,8 @@ class YourOutfits extends React.Component {
     this.setState({ yourOutfits });
   }
 
-  componentDidUpdate() {
-    if (this.props.added) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.added && (prevState.yourOutfits.length === this.state.yourOutfits.length)) {
       this.addCurrentProduct();
     }
   }
