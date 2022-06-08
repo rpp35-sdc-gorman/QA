@@ -101,6 +101,7 @@
   font-size: smaller;
   display: flex;
   align-items: flex-start;
+  max-width: 900px;
 }
 
 /* Style Selector */
@@ -185,20 +186,18 @@
   height:4.5em;
   width: 4.5em;
   display: grid;
-  border:3px solid transparent;
-  place-items: center;
+  border: 3px solid transparent;
   overflow: hidden;
+  place-items: center;
   cursor: pointer;
 }
 .bubble > img{
   padding: 0;
   height:5em;
   width: 5em;
-  border-color: grey;
-  border-width: 3px;
 }
 .bubble:hover{
-  border-color:grey;
+  border-color: grey;
 }
 .bubble:active{
   border-color: black;

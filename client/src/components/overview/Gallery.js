@@ -67,20 +67,29 @@ const Gallery = (props) => {
         const item = <img
           key={'12938'}
           className={'Gallery_selected Gallery_mini'}
-          src={'https://via.placeholder.com/150'}
+          src={'https://www.texassampling.com/wp-content/uploads/2020/05/placeholder-product-image.jpg'}
         />
         return [item]
       }
     }
 
     // gallery properties that change with state
-    const GalleryStyles = {
+    const GalleryStyles = () => {
+      const fallbackImage = 'https://www.texassampling.com/wp-content/uploads/2020/05/placeholder-product-image.jpg';
+      let imageUrl = fallbackImage;
+
+      if (props.images[currentImage] && props.images[currentImage].url) {
+        console.log('setting url to', props.images[currentImage])
+        imageUrl = props.images[currentImage].url
+      }
+
+      const style = {backgroundImage: `url(${imageUrl})`}
       // if image is null or undfined load fallback image
-      'backgroundImage': `url(${props.images ? props.images[currentImage].url : 'https://via.placeholder.com/1200'})`
+      return ( style )
     }
 
     return(
-      <article className={props.isFullscreen ? 'Gallery_fullscreen' : 'Gallery'} style={GalleryStyles}>
+      <article className={props.isFullscreen ? 'Gallery_fullscreen' : 'Gallery'} style={GalleryStyles()}>
         <div className='flexColumnCenter'>
         <ChevronUp
             size={16}

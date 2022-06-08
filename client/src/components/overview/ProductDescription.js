@@ -17,7 +17,9 @@ function ProductDescription (props) {
       <ul className="features">
         { props.info.features ?
           props.info.features.map(item => {
-            return <li className="feature" key={keyId()}><Check size={16}/>{item.value}</li>
+            if(item.value){
+              return <li className="feature" key={keyId()}><Check size={16}/>{item.value}</li>
+            }
           })
           :
           <li className="feature" key={keyId()}><Check size={16}/>High Quality</li>

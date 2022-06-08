@@ -17,13 +17,8 @@ class Overview extends React.Component {
       // rating: null,
       // info: null,
       currentStyle: null,
-      didError: false,
-      error: null,
       force: 0,
     };
-    // remote this later
-    // this.testId = '71699';
-    // this.testId = window.location.href.split('/').pop();
     this.handleStyleChange = this.handleStyleChange.bind(this);
   }
 
@@ -47,29 +42,33 @@ class Overview extends React.Component {
   // // fetch one Id statically for now
   componentDidMount() {
     // this.getData(this.testId);
-    this.getDefault();
+    this.getDefault(this.props.styles);
   }
 
-  // There will need to be another request made to get the product category, slogen, description, ect...
-  //  GET /products/:product_id
 
   componentDidUpdate(prevProps, PrevState) {
     if (prevProps.styles !== this.props.styles) {
       // set current Prodct to be the first product in the list
-      this.setState({ currentProduct: this.getDefault() });
+      this.setState({ currentProduct: this.getDefault(this.props.styles) });
     }
   }
 
-  getDefault() {
+  getDefault(data) {
     const key = 'default?';
-    if(this.props.styles){
-      Array.from(this.props.styles).forEach((item) => {
+    let set = false
+    if(Array.isArray(data) && data.length > 0){
+      // data provided is an array and has at least one thing in it
+      Array.from(data).forEach((item) => {
         if (item[key]) {
           this.setState({ currentStyle: item });
+          set = true
         }
       });
-    } else {
-      this.setState({currentProduct: null})
+    }
+    if (Array.isArray(data) && data.length > 0 && set === false) {
+      // data provided is an array but a default value was not found to be true
+      // just set the default to be the first value in the array
+      this.setState({currentStyle: data[0]})
     }
   }
 
@@ -96,6 +95,8 @@ class Overview extends React.Component {
           ClickTracker={this.props.clickTracker}
           addOutfit={this.props.addOutfit}
           isAdded={this.props.isAdded}
+          isLoading={this.props.loading}
+          didError={this.props.didError}
         />
         <ProductDescription info={this.props.info} />
       </section>
