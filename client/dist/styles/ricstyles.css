@@ -1,6 +1,6 @@
 /* RIC */
 #RIC {
-  padding: 0 2em;
+  padding: 0 10vw;
 }
 
 /* CAROUSEL */
@@ -9,7 +9,6 @@
   overflow: hidden;
   width: 100%;
   grid-template-columns: 2% 96% 2%;
-  margin-left: 1.25%;
   padding-bottom: 5%;
 }
 
@@ -23,7 +22,7 @@
 
 .carousel_item {
   display: inline-flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 100%;
   color: white;
@@ -31,18 +30,22 @@
 }
 
 .back {
-  grid-column-start: 1;
-  grid-column-end: 2;
+  /* grid-column-start: 1;
+  grid-column-end: 2; */
   border: none;
   background-color: white;
+  min-width: 20px;
+  padding: 0px;
 }
 
 
 .next {
-  grid-column-start: 3;
-  grid-column-end: 4;
+  /* grid-column-start: 3;
+  grid-column-end: 4; */
   border: none;
   background-color: white;
+  min-width: 20px;
+  padding: 0px;
 }
 
 /* CARD GRID */
@@ -151,7 +154,6 @@ div {
 
 h3 {
   font-weight: lighter;
-  margin-left: 4.5%;
 }
 
 table {

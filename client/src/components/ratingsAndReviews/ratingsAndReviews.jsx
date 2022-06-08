@@ -17,7 +17,7 @@ class RatingsAndReviews extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="ratings_reviews">
         <Ratings
           id={71697}
           filter={(count) => {

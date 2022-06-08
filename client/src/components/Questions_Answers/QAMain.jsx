@@ -103,7 +103,7 @@ class QAMain extends React.Component {
         <h3>QUESTION & ANSWER</h3>
         <AddQuestion
           toggleAddQuestion={(event) => this.toggleAddQuestion(event)} // closes modal
-          productToQuestion={'current product name'} // tmp variable for product name
+          productToQuestion={document.querySelector('.product-name') ? document.querySelector('.product-name').innerHTML:''} // tmp variable for product name
           product_id={this.state.product_id}
           showAddQuestion={this.state.showAddQuestion}
         />
@@ -111,7 +111,7 @@ class QAMain extends React.Component {
         <Search setFilter={(filterTerm) => this.setFilter(filterTerm)}/>
         <div id="QABody">
           {(this.state.questions.length) ? this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).slice(0, this.state.end).map(question =>
-            <SingleQA key={question.question_id} question={question} currentProduct={'current product name'} clickTracker={this.props.clickTracker} reload={this.reload.bind(this)}/>
+            <SingleQA key={question.question_id} question={question} currentProduct={document.querySelector('.product-name') ? document.querySelector('.product-name').innerHTML :''} clickTracker={this.props.clickTracker} reload={this.reload.bind(this)}/>
           ) : <></>}
         </div>
         <div id={"questionButtons"}>

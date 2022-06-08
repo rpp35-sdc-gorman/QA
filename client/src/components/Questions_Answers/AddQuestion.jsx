@@ -57,8 +57,8 @@ var AddQuestion = (props) => {
     props.showAddQuestion ?
     <div className="modalQuestions">
       <form onSubmit={handleSubmit} id="modal-form">
-        <h2>Submit your Question</h2>
-        <h3>{props.productToQuestion}</h3>
+        <h2>Add your Question</h2>
+        <h3>About the {props.productToQuestion}</h3>
         <label>Your Question:
           <textarea  id="question" value={question} onChange={handleChange} maxLength={1000} required
             onInvalid={(e) => setCustomValidity('You must enter the following', e)}

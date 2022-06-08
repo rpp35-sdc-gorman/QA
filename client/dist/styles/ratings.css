@@ -1,3 +1,18 @@
+#ratings_reviews {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0 10vw;
+}
+
+#ratings_reviews .ratingsContainer {
+  width: 33%;
+}
+
+#ratings_reviews .reviewsContainer {
+  width: 67%;
+}
+
 .rating {
   display: inline-block;
   unicode-bidi: bidi-override;
@@ -110,10 +125,11 @@
   text-decoration: underline;
 }
 
-.ratingsContainer {
+/* .ratingsContainer {
   width: 30%;
   float: left;
-}
+} */
+
 .fl {
   float: left;
 }
@@ -121,8 +137,8 @@
   float: right;
 }
 
-.w-66 {
-  width: 66%;
+.w-100 {
+  width: 100%;
 }
 
 .f1 {
@@ -133,11 +149,11 @@
 }
 
 .scroll {
-  overflow: scroll;
+  overflow: auto;
 }
 
 .vh100 {
-  height: 100vh;
+  max-height: 100vh;
 }
 
 .hover-gray:hover {

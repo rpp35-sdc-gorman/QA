@@ -1,8 +1,13 @@
 /* Overview rooty styles */
 .Overview{
   max-width: 100%;
+  padding: 0 10vw;
   display: grid;
   place-items: center;
+}
+
+#overview_container {
+  width: 100%;
 }
 
 .ProductInfo{
@@ -20,7 +25,7 @@
   margin-right: 1em;
   margin-bottom: 1em;
   height: 40em;
-  width: 65vh;
+  width: 60%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -93,7 +98,6 @@
 
 /* Product Description */
 .ProductDescription {
-  padding:0 5em;
   font-size: smaller;
   display: flex;
   align-items: flex-start;
@@ -101,7 +105,7 @@
 
 /* Style Selector */
 .Style_Selector{
-  width: 25em;
+  width: 40%;
 }
 
 .bubble-container{
