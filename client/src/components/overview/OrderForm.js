@@ -56,8 +56,8 @@ const OrderForm = (props) => {
 
   // user state change qunatity
   const handleQuantityChange = (e) => {
-    props.ClickTracker(e)
-    setQuantity(e.target.value)
+    props.ClickTracker(e);
+    setQuantity(e.target.value);
   }
 
   // user submit event
@@ -69,14 +69,14 @@ const OrderForm = (props) => {
       const path='cart'
       sendRequest(path, 'POST', formData);
     }
+    location.reload();
   }
 
   // user favorited event
   const handleFavorite = (e) => {
-    e.preventDefault()
-    props.ClickTracker(e)
-    props.addOutfit()
-    // this function is going to from from realted items I think
+    e.preventDefault();
+    props.addOutfit();
+    // props.ClickTracker(e)
   }
 
   // make sure user has filled in some data with not impossible values
@@ -96,10 +96,15 @@ const OrderForm = (props) => {
   }
 
   return(
-    <form className="OrderForm">
+    <article className="OrderForm" onSubmit={event.preventDefault()}>
        {error? <span className="form-error">{error}</span> : null}
       <div className="flexRow input-group">
-        <select value={sku} className="dropdown" id="size" onChange={(e) => handleSizeChange(e)}>
+        <select
+          value={sku}
+          className="dropdown"
+          id="size" onChange={(e) => handleSizeChange(e)}
+          aria-label="Select Size"
+          >
           <option key={keyId()} value={''}>Select Size</option>
           {
             createOptions()
@@ -113,15 +118,17 @@ const OrderForm = (props) => {
       </div>
       <div className="flexRow input-group">
         { quantityLimiter !== 0 ?
-          <button onClick={(e) => handleSubmit(e)} className="flexRow order-submit-button"><span>ADD TO BAG</span> <Plus size="16" /></button>
+          <button aria-label="Add to Bag" onClick={(e) => handleSubmit(e)} className="flexRow order-submit-button">
+            <span>ADD TO BAG</span> <Plus size="16" />
+          </button>
           :
           null
         }
-        <button className="order-favorite-button" onClick={(e) => {handleFavorite(e)}}>
+        <button aria-label="Add to My Outifts" className="order-favorite-button" onClick={ (e) => handleFavorite(e) }>
           <Star size={32} style={ props.isAdded ?{fill: 'yellow'} : null } />
         </button>
       </div>
-    </form>
+    </article>
   )
 
 }
