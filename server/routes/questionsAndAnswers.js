@@ -24,7 +24,7 @@ router.get('/:product_id', (req, res, next) => {
     .then(questionsWithAnswers => {
       res.send(questionsWithAnswers)
     })
-    .catch(err => res.sendStatus(500))
+    .catch(err => next(err))
 })
 
 router.put('/voting/:qa/:action/:id', (req, res, next) => {

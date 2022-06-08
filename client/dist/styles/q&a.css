@@ -31,7 +31,12 @@
 }
 
 #QAMain {
-  padding: 0 2em;
+  padding: 0 10vw;
+}
+
+#QAMain h3 {
+  margin: 0px;
+  margin-bottom: 10px;
 }
 
 #QABody {
@@ -205,8 +210,8 @@ form#modal-form > * textarea {
 }
 
 #QAsearch {
-  display: flex;
   position: relative;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
@@ -214,10 +219,24 @@ form#modal-form > * textarea {
 
 #QAsearch input {
   height: 3em;
-  width: 100%;
+  width: 100vw;
 }
 
 #QAsearch i {
   position: absolute;
   right: 1em;
+}
+
+#questionButtons {
+  display: flex;
+  flex-direction: row;
+}
+
+#questionToggle {
+  max-width: 20vw;
+}
+
+#addQuestionButton {
+  margin-left: 5px;
+  max-width: 20vw;
 }

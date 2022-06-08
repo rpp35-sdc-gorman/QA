@@ -11,7 +11,7 @@ const Container = (props) => {
   // query the api for the specific styles and pass that to style selector
   // this will be in charge of overlaying a loading screen when there is no data
     return(
-      <article>
+      <article id='overview_container'>
         { props.currentStyle ?
           <section className='flexColumn'>
             <StyleSelector

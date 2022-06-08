@@ -11,8 +11,8 @@ const app = express();
 const port = 3000;
 
 app.use('*.js', function (req, res, next) {
-  req.url = req.url + '.br';
-  res.set('Content-Encoding', 'br');
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
   next();
 });
 

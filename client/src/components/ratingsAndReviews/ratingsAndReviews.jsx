@@ -22,7 +22,7 @@ class RatingsAndReviews extends React.Component {
     const id = paths[paths.length - 1];
 
     return (
-      <div>
+      <div id="ratings_reviews">
         <Ratings
           id={id}
           filter={(count) => {

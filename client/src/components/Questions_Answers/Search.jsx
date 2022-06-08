@@ -9,7 +9,7 @@ var Search = (props) => {
   }
   return (
     <div id="QAsearch">
-      <input placeholder="Have a question? Search for answers…" value={filterTerm} onChange={handleChange} />
+      <input type="text" placeholder="Have a question? Search for answers…" value={filterTerm} onChange={handleChange} />
       <i className="fa fa-search"></i>
     </div>
   )

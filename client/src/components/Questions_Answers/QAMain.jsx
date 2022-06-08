@@ -100,10 +100,10 @@ class QAMain extends React.Component {
 
     return (
       <div id="QAMain">
-        <h3>Question & Answer</h3>
+        <h3>QUESTION & ANSWER</h3>
         <AddQuestion
           toggleAddQuestion={(event) => this.toggleAddQuestion(event)} // closes modal
-          productToQuestion={'current product name'} // tmp variable for product name
+          productToQuestion={document.querySelector('.product-name') ? document.querySelector('.product-name').innerHTML:''} // tmp variable for product name
           product_id={this.state.product_id}
           showAddQuestion={this.state.showAddQuestion}
         />
@@ -111,11 +111,13 @@ class QAMain extends React.Component {
         <Search setFilter={(filterTerm) => this.setFilter(filterTerm)}/>
         <div id="QABody">
           {(this.state.questions.length) ? this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).slice(0, this.state.end).map(question =>
-            <SingleQA key={question.question_id} question={question} currentProduct={'current product name'} clickTracker={this.props.clickTracker} reload={this.reload.bind(this)}/>
+            <SingleQA key={question.question_id} question={question} currentProduct={document.querySelector('.product-name') ? document.querySelector('.product-name').innerHTML :''} clickTracker={this.props.clickTracker} reload={this.reload.bind(this)}/>
           ) : <></>}
         </div>
-        {(this.state.hasMoreQuestions && this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).length > 2) ? loadMoreQuestions : <></>}
-        <button id="addQuestionButton" onClick={(event) => this.toggleAddQuestion(event)}>Add Question</button>
+        <div id={"questionButtons"}>
+          {(this.state.hasMoreQuestions && this.state.questions.filter(question => question.question_body.toLowerCase().includes(this.state.filterTerm)).length > 2) ? loadMoreQuestions : <></>}
+          <button id="addQuestionButton" onClick={(event) => this.toggleAddQuestion(event)}>Add Question</button>
+        </div>
       </div>
     )
   }

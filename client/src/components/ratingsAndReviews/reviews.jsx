@@ -225,7 +225,7 @@ class Reviews extends React.Component {
 
   render() {
     return (
-      <div className="fl w-66">
+      <div className="fl w100">
         {this.state.reviews.length} reviews, sorted by{' '}
         <select
           onChange={(e) =>
