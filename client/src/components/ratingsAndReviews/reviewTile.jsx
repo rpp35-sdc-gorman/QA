@@ -39,7 +39,6 @@ const ReviewTile = (props) => {
               onClick={() => setShowImage({ ...showImage, [i]: !showImage[i] })}
               key={url}
               src={url}
-              style={{ width: 50, height: 50, display: 'block' }}
             ></img>
           </>
         ))}
