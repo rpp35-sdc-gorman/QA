@@ -245,10 +245,30 @@ class Reviews extends React.Component {
           <option>{'newest'}</option>
           <option>{'helpful'}</option>
         </select>
+        <div id="QAsearch">
+          <input
+            type="text"
+            name="keyword Search"
+            id="keywordSearch"
+            placeholder="Search Reviews by Keyword"
+            onChange={(e) => {
+              if (e.target.value.length >= 3) {
+                this.setState({ search: e.target.value });
+              } else {
+                this.setState({ search: undefined });
+              }
+            }}
+          />
+          <i className="fa fa-search"></i>
+        </div>
         <div className="vh100 scroll">
-          {this.state.reviews.map((review, i) =>
-            this.props.filtered[review.rating] ||
-            '12345'.split('').every((v) => !this.props.filtered[v]) ? (
+          {this.state.reviews.map((review, i) => {
+            const filtered =
+              ((this.props.filtered[review.rating] ||
+                '12345'.split('').every((v) => !this.props.filtered[v])) &&
+                !this.state.search) ||
+              review.body.includes(this.state.search);
+            return filtered ? (
               <ReviewTile
                 key={i}
                 helpfulClicked={this.helpfulClicked.bind(this)}
@@ -256,8 +276,8 @@ class Reviews extends React.Component {
                 review={review}
                 helpful={this.state.helpful[review.review_id]}
               ></ReviewTile>
-            ) : null
-          )}
+            ) : null;
+          })}
         </div>
         <Modal
           show={this.state.showNewReviewModal}
