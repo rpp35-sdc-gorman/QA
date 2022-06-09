@@ -8,32 +8,26 @@ class YourOutfits extends React.Component {
     super(props);
     this.state = {
       yourOutfits: [],
+      removed: null,
       added: null
     }
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
   componentDidMount() {
     let yourOutfits = JSON.parse(localStorage.getItem('Outfit')|| '[]');
-    this.setState({ yourOutfits, added: this.props.added });
+    this.setState({ yourOutfits });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.added === false && (prevState.yourOutfits.length !== this.state.yourOutfits.length)) {
-      let id = this.props.currentProduct.id;
-      let currentOutfits = this.state.yourOutfits;
-      let updatedOutfits = [];
-      for (var i = 0; i < currentOutfits.length; i++) {
-        if (currentOutfits[i].id !== id) {
-          updatedOutfits.push(currentOutfits[i]);
-        }
-      }
-      this.setState({
-        yourOutfits: updatedOutfits,
-        added: false
-      }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
+    console.log(prevState.yourOutfits, this.state.yourOutfits);
+    if (this.props.added === false
+      && (prevState.yourOutfits.length !== this.state.yourOutfits.length)
+      && (this.state.removed === this.props.currentProduct.id)) {
+      this.removeOutfit(this.props.currentProduct.id);
     }
-    if (this.props.added && (prevState.yourOutfits.length === this.state.yourOutfits.length)) {
+    if (this.props.added && (this.state.yourOutfits.length === 0 || (prevState.yourOutfits.length !== this.state.yourOutfits.length))) {
       this.addCurrentProduct();
     } else {
       return;
@@ -50,7 +44,7 @@ class YourOutfits extends React.Component {
     if (!this.checkExistingOutfit(this.props.currentProduct.id)) {
       this.setState({
         yourOutfits: [...this.state.yourOutfits, this.props.currentProduct],
-        added: !this.state.added
+        added: true
       }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
     }
   }
@@ -64,8 +58,13 @@ class YourOutfits extends React.Component {
     return false;
   }
 
-  removeOutfit(event) {
+  handleRemove(event) {
+    this.props.clickTracker(event);
     let id = Number(event.currentTarget.id);
+    this.removeOutfit(id);
+  }
+
+  removeOutfit(id) {
     let currentOutfits = this.state.yourOutfits;
     let updatedOutfits = [];
     for (var i = 0; i < currentOutfits.length; i++) {
@@ -74,9 +73,15 @@ class YourOutfits extends React.Component {
       }
     }
     this.setState({
-      yourOutfits: updatedOutfits
-    }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
-    this.props.clickTracker(event);
+      yourOutfits: updatedOutfits,
+      removed: id,
+      added: false
+    }, () => {
+      localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits));
+      if (this.props.added === true) {
+        this.props.addProduct();
+      }
+   });
   }
 
   render() {
@@ -103,7 +108,7 @@ class YourOutfits extends React.Component {
                   thumbnail={product.thumbnail}
                   id={product.id}
                   list={product.list}
-                  remove={this.removeOutfit.bind(this)}
+                  remove={this.handleRemove}
                   redirect={this.props.redirect}
                   />
               </CarouselItem>

@@ -10,7 +10,7 @@ class Coupler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addProduct: false,
+      addProduct: null,
       productId: window.location.href.split('/').pop(),
       info: null,
       styles: null,
@@ -59,11 +59,17 @@ class Coupler extends React.Component {
     })
     .then(allProducts => {
       this.setState({
-        // info: allProducts[0],
-        // styles: allProducts[0].styles,
-        // rating: allProducts[0].star_rating,
+        addProduct: null,
         currentRelatedProduct: allProducts[0],
         relatedProducts: allProducts[1]
+      }, () => {
+        let outfits = JSON.parse(localStorage.getItem('Outfit'));
+        for (const outfit of outfits) {
+          if (outfit.id === Number(this.state.productId)) {
+            this.addProduct();
+            break;
+          }
+        }
       });
     })
     .catch(err => { console.error('Something broke'); });
@@ -89,13 +95,15 @@ class Coupler extends React.Component {
   }
 
 
-  componentDidMount(){
-    this.getData(this.state.productId)
-    this.getRelatedItems(this.state.productId);
+  async componentDidMount(){
+    await this.getData(this.state.productId)
+    await this.getRelatedItems(this.state.productId);
+
   }
 
   addProduct() {
     let opposite = !this.state.addProduct;
+    localStorage.setItem('Add Product', opposite);
     this.setState({ addProduct: opposite })
   }
 

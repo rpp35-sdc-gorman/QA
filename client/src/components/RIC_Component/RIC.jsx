@@ -9,8 +9,8 @@ class RIC extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // currentProduct: {},
-      // relatedProducts: [],
+      currentProduct: {},
+      relatedProducts: [],
       comparedProduct: null,
       modal: false,
       error: false,
@@ -20,9 +20,12 @@ class RIC extends React.Component {
     // this.currentProductId = window.location.href.split('/').pop();
   }
 
-  // async componentDidMount() {
-  //   await this.getRelatedItems();
-  // }
+  componentDidMount() {
+    this.setState({
+      currentProduct: this.props.currentProduct,
+      relatedProducts: this.props.relatedProducts
+    });
+  }
 
   componentDidUpdate(prevProps, prevState){
     if(prevProps.currentProduct !== this.props.currentProduct){
