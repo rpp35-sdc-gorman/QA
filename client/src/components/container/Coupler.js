@@ -92,7 +92,6 @@ class Coupler extends React.Component {
     this.setState({ addProduct: opposite })
   }
 
-
   render() {
     const RI = ClickTracker(RIC, 'Related Items');
     const OVR = ClickTracker(Overview, 'Overview');
@@ -108,6 +107,7 @@ class Coupler extends React.Component {
         />
         <RI
           added={this.state.addProduct}
+          addProduct={this.addProduct}
           currentProduct={this.state.currentRelatedProduct}
           relatedProducts={this.state.relatedProducts}
           currentProductId={this.state.productId}
