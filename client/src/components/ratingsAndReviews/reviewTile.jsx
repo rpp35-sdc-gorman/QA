@@ -23,7 +23,7 @@ const ReviewTile = (props) => {
       <div className="recommend">
         {props.review.recommend ? '√ I recommend this product' : null}
       </div>
-      <div id="answerImages">
+      <div id="reviewImages">
         {props.review.photos.map(({ url }, i) => (
           <>
             <Modal
@@ -36,6 +36,7 @@ const ReviewTile = (props) => {
               <img key={url} src={url}></img>
             </Modal>
             <img
+              id="thumbnail"
               onClick={() => setShowImage({ ...showImage, [i]: !showImage[i] })}
               key={url}
               src={url}
