@@ -15,18 +15,23 @@ class RatingsAndReviews extends React.Component {
     };
   }
 
+  componentDidMount() {}
+
   render() {
+    const paths = window.location.pathname.split('/');
+    const id = paths[paths.length - 1];
+
     return (
-      <div>
+      <div id="ratings_reviews">
         <Ratings
-          id={71697}
+          id={id}
           filter={(count) => {
             this.setState({ [count]: !this.state[count] });
           }}
           filtered={this.state}
         ></Ratings>
         <div className="reviewsContainer" id="reviews">
-          <Reviews id={71697} filtered={this.state}></Reviews>
+          <Reviews id={id} filtered={this.state}></Reviews>
         </div>
       </div>
     );

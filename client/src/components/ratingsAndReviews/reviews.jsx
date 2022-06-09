@@ -48,6 +48,18 @@ export const characteristicsMapping = {
     'Runs long',
   ],
 };
+
+var randomString = function (len) {
+  var text = '';
+  var possible = 'abcdefghijklmnopqrstuvwxyz1234567890';
+
+  for (var i = 0; i < len; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
+};
+
 class Reviews extends React.Component {
   constructor(props) {
     super(props);
@@ -69,7 +81,7 @@ class Reviews extends React.Component {
       recommend: null,
       name: '',
       email: '',
-      photos: '',
+      photos: new Set(),
       page: 1,
       helpful: {},
       characteristics: {},
@@ -111,8 +123,16 @@ class Reviews extends React.Component {
         errorMessage: 'You must enter the following: ' + missing.join(', '),
       });
     }
-    const { characteristics, body, email, name, rating, recommend, summary } =
-      this.state;
+    const {
+      characteristics,
+      body,
+      email,
+      name,
+      rating,
+      recommend,
+      summary,
+      photos,
+    } = this.state;
 
     if (canSubmit && missing.length === 0) {
       axios
@@ -124,14 +144,26 @@ class Reviews extends React.Component {
           name,
           rating,
           recommend,
+          photos: Array.from(photos),
           summary,
         })
         .then(({ data }) => {
-          console.log(data);
           this.setState({ showNewReviewModal: false });
         })
         .catch((err) => console.error(err));
     }
+  }
+
+  setCharacteristic(value, number) {
+    return (e) => {
+      sendClickTracker(e, 'rating and review');
+      this.setState({
+        characteristics: {
+          ...this.state.characteristics,
+          [this.state.meta.characteristics[value].id]: number,
+        },
+      });
+    };
   }
 
   loadMoreReviews(e) {
@@ -173,10 +205,27 @@ class Reviews extends React.Component {
       reviews: this.state.reviews,
     });
   }
+  toggleImage(event) {
+    event.preventDefault();
+    sendClickTracker(event, 'ratings and reviews');
+    this.setState({
+      displayImage: event.target.src,
+      showImage: !this.state.showImage,
+    });
+  }
+  reportClicked(review_ID) {
+    const review = this.state.reviews.filter(
+      ({ review_id }) => review_ID === review_id
+    )[0];
+    review.reported = true;
+    this.setState({
+      reviews: this.state.reviews,
+    });
+  }
 
   render() {
     return (
-      <div className="fl w-66">
+      <div className="fl w100">
         {this.state.reviews.length} reviews, sorted by{' '}
         <select
           onChange={(e) =>
@@ -196,18 +245,39 @@ class Reviews extends React.Component {
           <option>{'newest'}</option>
           <option>{'helpful'}</option>
         </select>
+        <div id="QAsearch">
+          <input
+            type="text"
+            name="keyword Search"
+            id="keywordSearch"
+            placeholder="Search Reviews by Keyword"
+            onChange={(e) => {
+              if (e.target.value.length >= 3) {
+                this.setState({ search: e.target.value });
+              } else {
+                this.setState({ search: undefined });
+              }
+            }}
+          />
+          <i className="fa fa-search"></i>
+        </div>
         <div className="vh100 scroll">
-          {this.state.reviews.map((review, i) =>
-            this.props.filtered[review.rating] ||
-            '12345'.split('').every((v) => !this.props.filtered[v]) ? (
+          {this.state.reviews.map((review, i) => {
+            const filtered =
+              ((this.props.filtered[review.rating] ||
+                '12345'.split('').every((v) => !this.props.filtered[v])) &&
+                !this.state.search) ||
+              review.body.includes(this.state.search);
+            return filtered ? (
               <ReviewTile
                 key={i}
                 helpfulClicked={this.helpfulClicked.bind(this)}
+                reportClicked={this.reportClicked.bind(this)}
                 review={review}
                 helpful={this.state.helpful[review.review_id]}
               ></ReviewTile>
-            ) : null
-          )}
+            ) : null;
+          })}
         </div>
         <Modal
           show={this.state.showNewReviewModal}
@@ -224,6 +294,7 @@ class Reviews extends React.Component {
           <div>
             Do you recommend this product?
             <input
+              id="recommend1"
               type="radio"
               name="recommend"
               onChange={(e) => {
@@ -233,6 +304,7 @@ class Reviews extends React.Component {
             />
             yes
             <input
+              id="recommend2"
               type="radio"
               name="recommend"
               onChange={(e) => {
@@ -248,17 +320,10 @@ class Reviews extends React.Component {
               <div className="dib">
                 <div>
                   <input
+                    id={value + 1}
                     type="radio"
                     name={value}
-                    onChange={(e) => {
-                      sendClickTracker(e, 'rating and review');
-                      this.setState({
-                        characteristics: {
-                          ...this.state.characteristics,
-                          [this.state.meta.characteristics[value].id]: 1,
-                        },
-                      });
-                    }}
+                    onChange={this.setCharacteristic(value, 1).bind(this)}
                   />
                 </div>
                 {characteristicsMapping[value][0]}
@@ -267,56 +332,24 @@ class Reviews extends React.Component {
               <input
                 type="radio"
                 name={value}
-                onChange={(e) => {
-                  sendClickTracker(e, 'rating and review');
-                  this.setState({
-                    characteristics: {
-                      ...this.state.characteristics,
-                      [this.state.meta.characteristics[value].id]: 2,
-                    },
-                  });
-                }}
+                onChange={this.setCharacteristic(value, 2).bind(this)}
               />
               <input
                 type="radio"
                 name={value}
-                onChange={(e) => {
-                  sendClickTracker(e, 'rating and review');
-                  this.setState({
-                    characteristics: {
-                      ...this.state.characteristics,
-                      [this.state.meta.characteristics[value].id]: 3,
-                    },
-                  });
-                }}
+                onChange={this.setCharacteristic(value, 3).bind(this)}
               />
               <input
                 type="radio"
                 name={value}
-                onChange={(e) => {
-                  sendClickTracker(e, 'rating and review');
-                  this.setState({
-                    characteristics: {
-                      ...this.state.characteristics,
-                      [this.state.meta.characteristics[value].id]: 4,
-                    },
-                  });
-                }}
+                onChange={this.setCharacteristic(value, 4).bind(this)}
               />
               <div className="dib">
                 <div>
                   <input
                     type="radio"
                     name={value}
-                    onChange={(e) => {
-                      sendClickTracker(e, 'rating and review');
-                      this.setState({
-                        characteristics: {
-                          ...this.state.characteristics,
-                          [this.state.meta.characteristics[value].id]: 5,
-                        },
-                      });
-                    }}
+                    onChange={this.setCharacteristic(value, 5).bind(this)}
                   />
                 </div>
                 {characteristicsMapping[value][4]}
@@ -326,6 +359,7 @@ class Reviews extends React.Component {
           <div>
             <label htmlFor="summary">Summary</label>
             <textarea
+              id="reviewSummary"
               name="summary"
               placeholder="Example: Best purchase ever!"
               onChange={(e) => {
@@ -337,7 +371,7 @@ class Reviews extends React.Component {
             <label htmlFor="body">Body</label>
             <textarea
               name="body"
-              id=""
+              id="reviewBody"
               cols="30"
               rows="10"
               placeholder="Why did you like the product or not?"
@@ -351,9 +385,61 @@ class Reviews extends React.Component {
                   50 - this.state.body.length
                 }`}
           </div>
+          <label>
+            {' '}
+            Upload pictures:
+            <input
+              id="photos"
+              onChange={(event) => {
+                let photoPromises = [];
+                let photoUrlSet = this.state.photos.size
+                  ? this.state.photos
+                  : new Set();
+                _.each(event.target.files, (file, key) => {
+                  if (file.type === 'image/jpeg' || file.type === 'image/png') {
+                    let filename = `${randomString(10)}-${file.name}`;
+                    let url = `https://1isgmttqfc.execute-api.us-east-1.amazonaws.com/FECdev/fec-images-bucket/${filename}`;
+                    photoUrlSet.add(
+                      `https://fec-images-bucket.s3.amazonaws.com/${filename}`
+                    );
+                    photoPromises.push(
+                      axios({
+                        method: 'PUT',
+                        url,
+                        data: file,
+                        headers: { 'Content-Type': 'image/jpeg' },
+                      })
+                    );
+                  }
+                });
+                Promise.allSettled(photoPromises).then((results) => {
+                  this.setState({ photos: photoUrlSet });
+                });
+              }}
+              type="file"
+              multiple
+            />
+            <div id="answerImages">
+              {Array.from(this.state.photos).map((photo, i) => (
+                <img
+                  id="newImage"
+                  key={i}
+                  src={photo}
+                  onClick={(event) => this.toggleImage(event)}
+                />
+              ))}
+            </div>
+          </label>
+          <Modal
+            handleClose={(event) => this.toggleImage(event)}
+            show={this.state.showImage}
+          >
+            <img id="displayImage" src={this.state.displayImage} />
+          </Modal>
           <div>
             <label htmlFor="email">Email</label>
             <input
+              id="reviewEmail"
               type="email"
               name="email"
               placeholder="Example: jackson11@email.com"
@@ -363,6 +449,7 @@ class Reviews extends React.Component {
           <div>
             <label htmlFor="name">Nickname</label>
             <input
+              id="reviewName"
               type="text"
               name="name"
               placeholder="Example: jackson11!"

@@ -114,24 +114,29 @@ describe('Integration tests', () => {
   })
 
   it('should add an answer on submitAnswer button click', async () => {
-    // dispatch a click to AddAnswer
+    // assertions for what's on screen
     expect(container.querySelectorAll('#addAnswerButton').length).toBe(1);
+    expect(container.querySelector('.modalAnswers')).toBeNull();
+    // dispatch a click to AddAnswer
     await act(async () => {
       container.querySelector('#addAnswerButton').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(container.querySelectorAll('.modalAnswers').length).toBe(1);
 
-    // add question
-    await act(async () => {
+    // simulate changes to AddAnswer form
+    await act(() => {
       Simulate.change(container.querySelector('textarea#answer'), { target: { id:"answer", value: "random test answer" } });
       Simulate.change(container.querySelector('input#nickname'), { target: { id:"nickname", value: "jon" } });
       Simulate.change(container.querySelector('input#email'), { target: { id:"email", value: "a1@test.ca" } });
     })
 
+    // simulate click to button to submit answer
     await act(async () => {
       container.querySelector('input#submitAnswer').dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
+    // assertions
+    expect(axios.post).toBeCalledWith("/question_answer/addAnswerTo/37", {"body": "random test answer", "email": "a1@test.ca", "name": "jon", "photos": []})
     expect(reload).toBeCalled();
   })
 })

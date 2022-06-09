@@ -16,7 +16,9 @@ class Coupler extends React.Component {
       styles: null,
       rating: null,
       currentRelatedProduct: null,
-      relatedProducts: null
+      relatedProducts: null,
+      overviewLoading: true,
+      overviewDidError: false
     };
     this.addProduct = this.addProduct.bind(this);
   }
@@ -32,9 +34,14 @@ class Coupler extends React.Component {
         info: res.data.info,
         styles: res.data.styles.results,
         rating: res.data.rating,
+        loading: false
       });
     })
     .catch(err => {
+      this.setState({
+        overviewDidError: true,
+        loading: false
+      })
       console.log('Error Contacting Endpoint:', err)
     })
   }
@@ -104,6 +111,8 @@ class Coupler extends React.Component {
           productId={this.state.productId}
           addOutfit={this.addProduct}
           isAdded={this.state.addProduct}
+          isLoading={this.state.overviewLoading}
+          didError={this.state.overviewDidError}
         />
         <RI
           added={this.state.addProduct}

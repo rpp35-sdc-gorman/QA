@@ -3,4 +3,6 @@ config.js
 bundle.js
 bundle.js.br
 bundle.js.LICENSE.txt
+bundle.js.gz
+bundle.js.LICENSE.txt.gz
 coverage

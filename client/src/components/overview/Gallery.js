@@ -67,20 +67,28 @@ const Gallery = (props) => {
         const item = <img
           key={'12938'}
           className={'Gallery_selected Gallery_mini'}
-          src={'https://via.placeholder.com/150'}
+          src={'https://www.texassampling.com/wp-content/uploads/2020/05/placeholder-product-image.jpg'}
         />
         return [item]
       }
     }
 
     // gallery properties that change with state
-    const GalleryStyles = {
+    const GalleryStyles = () => {
+      const fallbackImage = 'https://www.texassampling.com/wp-content/uploads/2020/05/placeholder-product-image.jpg';
+      let imageUrl = fallbackImage;
+
+      if (props.images[currentImage] && props.images[currentImage].url) {
+        imageUrl = props.images[currentImage].url
+      }
+
+      const style = {backgroundImage: `url(${imageUrl})`}
       // if image is null or undfined load fallback image
-      'backgroundImage': `url(${props.images ? props.images[currentImage].url : 'https://via.placeholder.com/1200'})`
+      return ( style )
     }
 
     return(
-      <article className={props.isFullscreen ? 'Gallery_fullscreen' : 'Gallery'} style={GalleryStyles}>
+      <article className={props.isFullscreen ? 'Gallery_fullscreen' : 'Gallery'} style={GalleryStyles()}>
         <div className='flexColumnCenter'>
         <ChevronUp
             size={16}
@@ -104,13 +112,13 @@ const Gallery = (props) => {
           onClick={(e) => props.handleFullscreen(e)}
         />
         <div className="flexRow GalleryMain">
-          <button id="prevArrow" className="GalleryArrow"
+          <button id="prevArrow" className="GalleryArrow" aria-label="prevArrow"
             onClick={(e) => handlePhotoChange('-', e)}
           >
               <ChevronLeft strokeWidth='2' size={36} />
           </button>
           {/* <img className='Gallery_image' src={props.images ? props.images[currentImage].url : 'https://via.placeholder.com/350'} /> */}
-          <button id="nextArrow" className="GalleryArrow"
+          <button id="nextArrow" className="GalleryArrow" aria-label="nextArrow"
             onClick={(e) => handlePhotoChange('+', e)}
             >
               <ChevronRight strokeWidth='2' size={36} />
