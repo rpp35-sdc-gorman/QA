@@ -27,7 +27,6 @@ class YourOutfits extends React.Component {
       this.removeOutfit(this.props.currentProduct.id);
     }
     if (this.props.added && (this.state.yourOutfits.length === 0 || (prevState.yourOutfits.length === this.state.yourOutfits.length))) {
-      console.log('adding');
       this.addCurrentProduct();
     } else {
       return;
