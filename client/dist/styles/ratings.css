@@ -159,3 +159,15 @@
 .hover-gray:hover {
   background-color: darkgray;
 }
+
+#reviewImages {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+#reviewImages img#thumbnail {
+  padding-right: 1em;
+  max-height: 10vh;
+  max-width: 10vh;
+}
