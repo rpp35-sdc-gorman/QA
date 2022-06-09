@@ -21,7 +21,7 @@ router.get('/ric/:product_id', async (req, res, next) => {
   await sendRequest(relatedEndpoint)
     .then(relatedProducts => {
       relatedProducts.data.unshift(Number(currentProductId));
-      return relatedProducts.data
+      return [...new Set(relatedProducts.data)]
     })
     .then(relatedProductIds => {
       return Promise.allSettled(relatedProductIds.map(async (id) => {
