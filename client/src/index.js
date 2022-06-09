@@ -6,6 +6,7 @@ import axios from 'axios';
 import Coupler from './components/container/Coupler';
 import QAMain from './components/Questions_Answers/QAMain.jsx';
 import RatingsAndReviews from './components/ratingsAndReviews/ratingsAndReviews.jsx';
+import Banner from './components/Banner.jsx';
 // import RIC from './components/RIC_Component/RIC.jsx';
 
 import ClickTracker from './components/common/ClickTracker.jsx';
@@ -23,6 +24,7 @@ class App extends React.Component {
     const QA = ClickTracker(QAMain, 'Question & Answer');
     return (
       <div>
+        <Banner />
         <Coupler />
         <QA />
         <RatingsAndReviews />
