@@ -21,9 +21,9 @@ class YourOutfits extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // console.log(prevState.yourOutfits, this.state.yourOutfits);
     if (this.props.added === false
-      && (prevState.yourOutfits.length !== this.state.yourOutfits.length)
-      && (this.state.removed === this.props.currentProduct.id)) {
+      && (prevState.yourOutfits.length !== this.state.yourOutfits.length)) {
       this.removeOutfit(this.props.currentProduct.id);
     }
     if (this.props.added && (this.state.yourOutfits.length === 0 || (prevState.yourOutfits.length !== this.state.yourOutfits.length))) {
@@ -61,6 +61,9 @@ class YourOutfits extends React.Component {
     this.props.clickTracker(event);
     let id = Number(event.currentTarget.id);
     this.removeOutfit(id);
+    if (id === this.props.currentProduct.id) {
+      this.props.addProduct();
+    }
   }
 
   removeOutfit(id) {
@@ -77,20 +80,18 @@ class YourOutfits extends React.Component {
       added: false
     }, () => {
       localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits));
-      if (this.props.added === true) {
-        this.props.addProduct();
-      }
    });
   }
 
   render() {
+    let addOrRemove = this.checkExistingOutfit(this.props.currentProduct.id) ? '- REMOVE FROM OUTFITS' : '+ ADD TO OUTFIT';
     return (
       <div id='yourOutfits'>
         <Carousel clickTracker={this.props.clickTracker}>
           <CarouselItem>
             <div className="card addition" onClick={(event) => {this.handleAdd(event)}}>
               <div className="card_visual" style={{backgroundColor: 'white'}}></div>
-              <div className="card_category" style={{fontSize: 'large'}}>+ ADD TO OUTFIT</div>
+              <div className="card_category" style={{fontSize: 'large'}}>{addOrRemove}</div>
               <div className="card_name"></div>
               <div className="card_price"></div>
               <div className="card_rating"></div>

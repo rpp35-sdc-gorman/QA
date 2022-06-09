@@ -63,7 +63,7 @@ class Coupler extends React.Component {
         currentRelatedProduct: allProducts[0],
         relatedProducts: allProducts[1]
       }, () => {
-        let outfits = JSON.parse(localStorage.getItem('Outfit'));
+        let outfits = JSON.parse(localStorage.getItem('Outfit')) || [];
         for (const outfit of outfits) {
           if (outfit.id === Number(this.state.productId)) {
             this.addProduct();
