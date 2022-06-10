@@ -2,7 +2,7 @@ var path = require('path');
 var CompressionPlugin = require('compression-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 var SRC_DIR = path.join(__dirname, '/client/src');
-var DIST_DIR = path.join(__dirname, '/client/dist');
+var DIST_DIR = path.join(__dirname, '/client/dist/bundle');
 
 module.exports = {
   mode: 'development',

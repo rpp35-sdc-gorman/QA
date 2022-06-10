@@ -400,7 +400,7 @@ class Reviews extends React.Component {
                     let filename = `${randomString(10)}-${file.name}`;
                     let url = `https://1isgmttqfc.execute-api.us-east-1.amazonaws.com/FECdev/fec-images-bucket/${filename}`;
                     photoUrlSet.add(
-                      `https://fec-images-bucket.s3.amazonaws.com/${filename}`
+                      `https://ik.imagekit.io/hjgl70u0q/${filename}`
                     );
                     photoPromises.push(
                       axios({
@@ -426,6 +426,7 @@ class Reviews extends React.Component {
                   key={i}
                   src={photo}
                   onClick={(event) => this.toggleImage(event)}
+                  loading='lazy'
                 />
               ))}
             </div>
@@ -434,7 +435,11 @@ class Reviews extends React.Component {
             handleClose={(event) => this.toggleImage(event)}
             show={this.state.showImage}
           >
-            <img id="displayImage" src={this.state.displayImage} />
+            <img 
+              id="displayImage" 
+              src={this.state.displayImage}
+              loading='lazy'
+            />
           </Modal>
           <div>
             <label htmlFor="email">Email</label>

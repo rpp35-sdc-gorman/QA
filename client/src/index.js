@@ -25,17 +25,13 @@ class App extends React.Component {
     const QA = ClickTracker(QAMain, 'Question & Answer');
     return (
       <div>
-        <React.Suspense fallback={<div>Loading...</div>}>
-          <Banner />
-        </React.Suspense>
-        <React.Suspense fallback={<div>Loading...</div>}>
-          <Coupler />
-        </React.Suspense>
-        <React.Suspense fallback={<div>Loading...</div>}>
-          <QA />
-        </React.Suspense>
-        <React.Suspense fallback={<div>Loading...</div>}>
-          <RatingsAndReviews />
+        <React.Suspense fallback={<div style={{padding: '0vw 10vw'}}>Loading...</div>}>
+          <section>
+            <Banner />
+            <Coupler />
+            <QA />
+            <RatingsAndReviews />
+          </section>
         </React.Suspense>
       </div>
     );
