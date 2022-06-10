@@ -6,3 +6,4 @@ bundle.js.LICENSE.txt
 bundle.js.gz
 bundle.js.LICENSE.txt.gz
 coverage
+*bundle*
