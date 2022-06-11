@@ -28,7 +28,6 @@ class Carousel extends React.Component {
     let carousel = document.querySelector('.carousel');
     let carouselWidth = carousel.clientWidth * 0.96;
     let numDisplayedCards = Math.floor(carouselWidth / this.state.cardWidth);
-    console.log(numDisplayedCards);
     let showBack = false;
     let showNext = !(React.Children.count(this.props.children) > numDisplayedCards);
     this.setState({

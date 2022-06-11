@@ -21,7 +21,6 @@ class YourOutfits extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log(prevState.yourOutfits, this.state.yourOutfits);
     if (this.props.added === false
       && (prevState.yourOutfits.length !== this.state.yourOutfits.length)) {
       this.removeOutfit(this.props.currentProduct.id);
