@@ -16,7 +16,6 @@ Includes standard retail features such as style selection, related item browsing
 - &gt;70% test coverage
 
 ## Usage
-gifs go here
 ![FEC_Demo](https://user-images.githubusercontent.com/66839046/173204790-d06725f9-8a1d-4808-9ef0-894fde83b75c.gif)
 
 
