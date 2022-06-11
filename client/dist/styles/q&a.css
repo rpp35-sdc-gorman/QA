@@ -232,11 +232,18 @@ form#modal-form > * textarea {
   flex-direction: row;
 }
 
-#questionToggle {
-  max-width: 20vw;
+#questionToggle, #addQuestionButton {
+  border: solid 1px black;
+  padding: 1em;
+  max-width: 25vw;
+  background:#eee;
+  font-size: 0.9em;
 }
 
 #addQuestionButton {
-  margin-left: 5px;
-  max-width: 20vw;
+  margin-left: 1em;
+}
+
+#questionToggle:hover, #addQuestionButton:hover {
+  background:#ccc
 }

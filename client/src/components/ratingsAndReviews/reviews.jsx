@@ -422,6 +422,7 @@ class Reviews extends React.Component {
             <div id="answerImages">
               {Array.from(this.state.photos).map((photo, i) => (
                 <img
+                  alt="new review image thumbnail"
                   id="newImage"
                   key={i}
                   src={photo}
@@ -435,8 +436,9 @@ class Reviews extends React.Component {
             handleClose={(event) => this.toggleImage(event)}
             show={this.state.showImage}
           >
-            <img 
-              id="displayImage" 
+            <img
+              alt="new review image expanded modal"
+              id="displayImage"
               src={this.state.displayImage}
               loading='lazy'
             />
