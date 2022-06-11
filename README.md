@@ -17,7 +17,8 @@ Includes standard retail features such as style selection, related item browsing
 
 ## Usage
 ![FEC_Demo](https://user-images.githubusercontent.com/66839046/173204790-d06725f9-8a1d-4808-9ef0-894fde83b75c.gif)
-![Uploading ezgif-4-fe485d340a.gif…]()
+![FEC Demo 2](https://user-images.githubusercontent.com/41318167/173206509-4d7cb3d3-ae40-4593-931e-17636f8c8a4a.gif)
+
 
 ## Technologies
 <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
