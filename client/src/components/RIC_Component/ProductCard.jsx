@@ -5,7 +5,7 @@ let fallback = 'https://www.texassampling.com/wp-content/uploads/2020/05/placeho
 
 var ProductCards = (props) => (
   <div className="card">
-    <img alt="product image" className="card_visual" src={props.thumbnail || fallback} onClick={props.redirect} loading='lazy'/>
+    <img className="card_visual" src={props.thumbnail || fallback} onClick={props.redirect} loading='lazy'/>
     {props.list === 'related' ? (
       <Star
         color="white"

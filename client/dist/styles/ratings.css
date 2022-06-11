@@ -74,7 +74,7 @@
   position: fixed;
   background: white;
   width: 60%;
-  height: auto;
+  max-height: 80vh;
 
   overflow: auto;
   top: 50%;
