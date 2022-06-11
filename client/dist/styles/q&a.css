@@ -50,10 +50,10 @@
   z-index: 0;
 }
 
-#answers {
+/* #answers {
   overflow: auto;
   max-height: 50vh;
-}
+} */
 
 #answers #load {
   padding-top: 10px;

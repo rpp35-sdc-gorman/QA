@@ -45,7 +45,8 @@ var AddAnswer = (props) => {
         if (file.type === 'image/jpeg' || file.type === 'image/png') {
           let filename = `${props.nextAnswerId}-${file.name}`;
           let url = `https://1isgmttqfc.execute-api.us-east-1.amazonaws.com/FECdev/fec-images-bucket/${filename}`;
-          photoUrlSet.add(`https://fec-images-bucket.s3.amazonaws.com/${filename}`)
+          // photoUrlSet.add(`https://fec-images-bucket.s3.amazonaws.com/${filename}`)
+          photoUrlSet.add(`https://ik.imagekit.io/hjgl70u0q/${filename}`)
           photoPromises.push(
             axios({
               method: 'PUT',
@@ -95,6 +96,7 @@ var AddAnswer = (props) => {
         <img
           id={'displayImage'}
           src={displayImage}
+          loading='lazy'
         />
       </Modal>
       <form onSubmit={handleSubmit} id="modal-form">
@@ -129,8 +131,9 @@ var AddAnswer = (props) => {
               <img
                 id='newImage'
                 key={i}
-                src={photo}
+                src={`${photo}?tr=w-0.5`}
                 onClick={(event) => toggleImage(event)}
+                loading='lazy'
               />
             ))}
           </div>
