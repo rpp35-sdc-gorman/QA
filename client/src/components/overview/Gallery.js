@@ -57,6 +57,7 @@ const Gallery = (props) => {
                       onClick={(e) => jumpTo(index, e)}
                       className={currentImage === index ? 'Gallery_selected Gallery_mini' : 'Gallery_mini' }
                       src={photo.thumbnail_url}
+                      loading='lazy'
                     />
             output.push(e)
           }
@@ -68,6 +69,7 @@ const Gallery = (props) => {
           key={'12938'}
           className={'Gallery_selected Gallery_mini'}
           src={'https://www.texassampling.com/wp-content/uploads/2020/05/placeholder-product-image.jpg'}
+          loading='lazy'
         />
         return [item]
       }

@@ -118,6 +118,7 @@
   display: inline-block;
 }
 .reviewTile {
+  padding-bottom: 7px;
   border-bottom: 4px solid black;
 }
 
@@ -153,7 +154,7 @@
 }
 
 .vh100 {
-  height: 90vh;
+  max-height: 90vh;
 }
 
 .hover-gray:hover {

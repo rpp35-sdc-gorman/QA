@@ -4,7 +4,7 @@ import { Star, CircleXFill } from 'akar-icons';
 
 var ProductCards = (props) => (
   <div className="card">
-    <img className="card_visual" src={props.thumbnail} onClick={props.redirect}/>
+    <img className="card_visual" src={props.thumbnail} onClick={props.redirect} loading='lazy'/>
     {props.list === 'related' ? (
       <Star
         color="white"

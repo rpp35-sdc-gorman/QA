@@ -39,8 +39,7 @@ var Answers = (props) => {
     return (
       <div key={answer.answer_id} className={(i < end) ? "panel active": "panel"}>
         <div id="answer">
-          <p id="answer_label">A: </p>
-          <p id="answer_body">{answer.body}</p>
+          <p id="answer_body"><span id="answer_label">A: </span>{answer.body}</p>
         </div>
         <AnswerImages photos={answer.photos} toggleImage={(img) => toggleImage(img)}/>
         <AnswerVotingReporting
@@ -57,7 +56,10 @@ var Answers = (props) => {
   return (
     <div id="answers" >
       <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
-        <img src={displayImage}/>
+        <img 
+          src={displayImage}
+          loading='lazy'
+        />
       </Modal>
       {props.allAnswers.length > 0 ? page : <div>No answers yet</div>}
       {toggle}

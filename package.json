@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --coverage",
     "start": "nodemon server/server.js",
-    "react-dev": "webpack --mode development --watch",
+    "react-dev": "webpack --mode production --watch",
     "deploy": "webpack --mode production && node server/server.js"
   },
   "repository": {
@@ -26,6 +26,7 @@
     "axios-mock-adapter": "^1.20.0",
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-static-gzip": "^2.1.7",
     "lodash": "^4.17.21",

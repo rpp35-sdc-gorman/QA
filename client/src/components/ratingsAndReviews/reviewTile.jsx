@@ -40,6 +40,7 @@ const ReviewTile = (props) => {
               onClick={() => setShowImage({ ...showImage, [i]: !showImage[i] })}
               key={url}
               src={url}
+              loading='lazy'
             ></img>
           </>
         ))}

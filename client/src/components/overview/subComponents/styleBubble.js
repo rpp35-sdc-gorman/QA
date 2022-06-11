@@ -8,7 +8,7 @@ export default function Bubble (props) {
 
   return(
       <button className="bubble" aria-label="bubble" onClick={(e) => props.handleStyleChange(props.entity.style_id, e)}>
-        <img src={props.image || placeholder} />
+        <img src={props.image || placeholder} loading='lazy'/>
       </button>
   )
 }

@@ -3,13 +3,14 @@ import { createRoot } from 'react-dom/client';
 import axios from 'axios';
 
 // import Overview from './components/overview/Overview';
-import Coupler from './components/container/Coupler';
-import QAMain from './components/Questions_Answers/QAMain.jsx';
-import RatingsAndReviews from './components/ratingsAndReviews/ratingsAndReviews.jsx';
-import Banner from './components/Banner.jsx';
+const Coupler = React.lazy(() => import('./components/container/Coupler'));
+const QAMain = React.lazy(() => import('./components/Questions_Answers/QAMain.jsx'));
+const RatingsAndReviews = React.lazy(() => import('./components/ratingsAndReviews/ratingsAndReviews.jsx'));
+const Banner = React.lazy(() => import('./components/Banner.jsx'));
 // import RIC from './components/RIC_Component/RIC.jsx';
 
 import ClickTracker from './components/common/ClickTracker.jsx';
+import Ratings from './components/ratingsAndReviews/ratings.jsx';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -24,10 +25,14 @@ class App extends React.Component {
     const QA = ClickTracker(QAMain, 'Question & Answer');
     return (
       <div>
-        <Banner />
-        <Coupler />
-        <QA />
-        <RatingsAndReviews />
+        <React.Suspense fallback={<div style={{padding: '0vw 10vw'}}>Loading...</div>}>
+          <section>
+            <Banner />
+            <Coupler />
+            <QA />
+            <RatingsAndReviews />
+          </section>
+        </React.Suspense>
       </div>
     );
   }
