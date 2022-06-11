@@ -3,7 +3,7 @@ import { unmountComponentAtNode } from "react-dom";
 import { createRoot } from 'react-dom/client';
 import { act } from "react-dom/test-utils";
 import exampleProducts from './ricTestData.js';
-import moreExampleProducts from './moreTestData.js';
+import moreExampleProducts from './ricMainTestData.js';
 
 import YourOutfits from '../YourOutfits.jsx';
 
@@ -32,11 +32,13 @@ class LocalStorageMock {
 global.localStorage = new LocalStorageMock;
 
 global.IS_REACT_ACT_ENVIRONMENT = true;
-let currentProduct = moreExampleProducts.products.data[0];
+let currentProduct = moreExampleProducts.props.currentProduct;
 let anotherCurrentProduct = exampleProducts.products.data[0];
 describe('Your Outfits Test', () => {
   let container = null;
   let clickTracker = jest.fn();
+  let redirect = jest.fn();
+  let addProduct = jest.fn();
   beforeEach(async () => {
     // setup a DOM element as a render target
     container = document.createElement("div");
@@ -51,14 +53,28 @@ describe('Your Outfits Test', () => {
 
   it('should have a card to add the current product', async() => {
     await act(() => {
-      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker}/>);
+      createRoot(container).render(
+      <YourOutfits currentProduct={currentProduct}
+        clickTracker={clickTracker}
+        redirect={redirect}
+        added={moreExampleProducts.props.added}
+        addProduct={addProduct}
+        />
+      );
     });
     expect(container.querySelector('div.card.addition')).not.toBe(null);
   });
 
   it('should have added the current product to your outfit list', async() => {
     await act(() => {
-      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker}/>);
+      createRoot(container).render(
+      <YourOutfits currentProduct={currentProduct}
+        clickTracker={clickTracker}
+        redirect={redirect}
+        added={moreExampleProducts.props.added}
+        addProduct={addProduct}
+        />
+      );
     });
     await act(async () => {
       await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
@@ -75,7 +91,14 @@ describe('Your Outfits Test', () => {
 
   it('should should not add the current product if it has already been added', async() => {
     await act(() => {
-      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker}/>);
+      createRoot(container).render(
+      <YourOutfits currentProduct={currentProduct}
+        clickTracker={clickTracker}
+        redirect={redirect}
+        added={moreExampleProducts.props.added}
+        addProduct={addProduct}
+        />
+      );
     });
     await act(async () => {
       await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
@@ -88,7 +111,14 @@ describe('Your Outfits Test', () => {
 
   it('should be able to remove an existing outfit', async() => {
     await act(() => {
-      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker} />);
+      createRoot(container).render(
+      <YourOutfits currentProduct={currentProduct}
+        clickTracker={clickTracker}
+        redirect={redirect}
+        added={moreExampleProducts.props.added}
+        addProduct={addProduct}
+        />
+      );
     });
     await act(async () => {
       await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
@@ -103,7 +133,14 @@ describe('Your Outfits Test', () => {
     anotherCurrentProduct.list = 'outfit';
     global.localStorage.setItem('Outfit', JSON.stringify([anotherCurrentProduct]));
     await act(() => {
-      createRoot(container).render(<YourOutfits currentProduct={currentProduct} clickTracker={clickTracker} />);
+      createRoot(container).render(
+      <YourOutfits currentProduct={currentProduct}
+        clickTracker={clickTracker}
+        redirect={redirect}
+        added={moreExampleProducts.props.added}
+        addProduct={addProduct}
+        />
+      );
     });
     await act(async () => {
       await container.querySelector('div.card.addition').dispatchEvent(new MouseEvent('click', { bubbles: true }))
