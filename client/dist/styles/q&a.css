@@ -1,0 +1,249 @@
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: 0.4s;
+  padding:0 18px;
+  min-width: 70%;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  transition: max-height 0.4s ease-out;
+}
+
+.panel.active {
+  display: block;
+  max-height: 25vh;
+}
+
+#QAMain {
+  padding: 0 10vw;
+}
+
+#QAMain h3 {
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+#QABody {
+  max-height: 80vh;
+  overflow: auto;
+}
+
+#singleQA {
+  margin-bottom: 1em;
+  border: 1px solid gray;
+  z-index: 0;
+}
+
+/* #answers {
+  overflow: auto;
+  max-height: 50vh;
+} */
+
+#answers #load {
+  padding-top: 10px;
+  font-size: 0.75em;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+#answer {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+}
+
+#answer_label {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1%;
+  padding-right: 5px;
+}
+
+p#answer_body {
+  font-size: 0.8em;
+  margin-top: 1.5%;
+  word-break: break-all;
+  white-space: normal;
+}
+
+#answer_details {
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+  color: grey;
+}
+
+#answerImages {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+#answerImages img {
+  padding-right: 1em;
+  max-height: 10vh;
+  max-width: 10vh;
+}
+
+.rightBorder {
+  border-right: 1px solid gray;
+  padding-right: 1em;
+}
+
+.leftBorder {
+  border-left: 1px solid gray;
+  padding-left: 1em;
+}
+
+.seller {
+  color: black;
+  font-size: 1.1em;
+  font-weight: 900;
+}
+
+#question {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  width: 100%;
+}
+
+#question_details {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  flex: 1;
+  font-size: 0.8em;
+  background-color: #eee;
+  color: #444;
+}
+
+#question_details:hover {
+  background-color: #ccc;
+}
+
+.underline {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.modalAnswers, .modalQuestions {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+form#modal-form {
+  position: relative;
+  padding: 32px;
+  background-color: white;
+
+  display: flex;
+  width: 60%;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+form#modal-form * {
+  font-size: 0.8em;
+  width: 80%;
+}
+
+form#modal-form button {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  width: 20px;
+  border: none;
+  background-color: white;
+}
+
+form#modal-form button:hover {
+  background-color: #ccc;
+}
+
+form#modal-form > * > *{
+  width: 100%;
+}
+
+form#modal-form * p {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-size: 0.7em;
+  color: black;
+}
+
+form#modal-form label div {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-size: 0.7em;
+  color: rgb(222,62,62)
+}
+
+form#modal-form > * textarea {
+  height: 100px;
+}
+
+#QAsearch {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+#QAsearch input {
+  height: 3em;
+  width: 100vw;
+}
+
+#QAsearch i {
+  position: absolute;
+  right: 1em;
+}
+
+#questionButtons {
+  display: flex;
+  flex-direction: row;
+}
+
+#questionToggle, #addQuestionButton {
+  border: solid 1px black;
+  padding: 1em;
+  max-width: 25vw;
+  background:#eee;
+  font-size: 0.9em;
+}
+
+#addQuestionButton {
+  margin-left: 1em;
+}
+
+#questionToggle:hover, #addQuestionButton:hover {
+  background:#ccc
+}
