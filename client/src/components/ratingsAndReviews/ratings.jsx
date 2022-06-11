@@ -45,12 +45,13 @@ class Ratings extends React.Component {
   }
 
   render() {
-    const total = this.state.meta.ratings
-      ? Object.values(this.state.meta.ratings).reduce(
-          (a, b) => parseInt(a) + parseInt(b),
-          '0'
-        )
-      : 100;
+    const total =
+      this.state.meta.ratings && Object.values(this.state.meta.ratings).length
+        ? Object.values(this.state.meta.ratings).reduce(
+            (a, b) => parseInt(a) + parseInt(b),
+            '0'
+          )
+        : 100;
     const recommended = this.state.meta.recommended
       ? ((100 * Number(this.state.meta.recommended.true)) / total).toFixed(1)
       : 0;

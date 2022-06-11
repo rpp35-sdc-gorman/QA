@@ -133,20 +133,22 @@ class Reviews extends React.Component {
       summary,
       photos,
     } = this.state;
-
+    const data = {
+      product_id: Number(this.props.id),
+      characteristics,
+      body,
+      email,
+      name,
+      rating,
+      recommend,
+      photos: Array.from(photos),
+      summary,
+    };
+    console.log(data);
+    console.log(this.state.meta.characteristics);
     if (canSubmit && missing.length === 0) {
       axios
-        .post('/rating_review/' + this.props.id, {
-          product_id: this.props.id,
-          characteristics,
-          body,
-          email,
-          name,
-          rating,
-          recommend,
-          photos: Array.from(photos),
-          summary,
-        })
+        .post('/rating_review/' + this.props.id, data)
         .then(({ data }) => {
           this.setState({ showNewReviewModal: false });
         })
