@@ -13,7 +13,7 @@ Includes standard retail features such as style selection, related item browsing
 - Add your own reviews, questions and answers with a built-in compressed image upload option
 - Upvote or report reviews, questions and answers.
 - Entire app is optimized through text compression, lazy loading and minification.
-- >70% test coverage
+- &gt;70% test coverage
 
 ## Usage
 gifs go here
