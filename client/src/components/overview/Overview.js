@@ -16,10 +16,9 @@ class Overview extends React.Component {
       // styles: null,
       // rating: null,
       // info: null,
-      currentStyle: null,
-      force: 0,
+      // currentStyle: null,
     };
-    this.handleStyleChange = this.handleStyleChange.bind(this);
+    // this.handleStyleChange = this.handleStyleChange.bind(this);
   }
 
   // getData(endpoint) {
@@ -39,49 +38,50 @@ class Overview extends React.Component {
   //   })
   // }
 
-  // // fetch one Id statically for now
-  componentDidMount() {
-    // this.getData(this.testId);
-    this.getDefault(this.props.styles);
-  }
+  // // // fetch one Id statically for now
+  // componentDidMount() {
+  //   // this.getData(this.testId);
+  //   this.props.getDefault(this.props.styles);
+  // }
 
 
-  componentDidUpdate(prevProps, PrevState) {
-    if (prevProps.styles !== this.props.styles) {
-      // set current Prodct to be the first product in the list
-      this.setState({ currentProduct: this.getDefault(this.props.styles) });
-    }
-  }
+  // componentDidUpdate(prevProps, PrevState) {
+  //   if (prevProps.styles !== this.props.styles) {
+  //     // set current Prodct to be the first product in the list
+  //     this.handleStyleChange( this.getDefault(this.props.styles) );
+  //   }
+  // }
 
-  getDefault(data) {
-    const key = 'default?';
-    let set = false
-    if(Array.isArray(data) && data.length > 0){
-      // data provided is an array and has at least one thing in it
-      Array.from(data).forEach((item) => {
-        if (item[key]) {
-          this.setState({ currentStyle: item });
-          set = true
-        }
-      });
-    }
-    if (Array.isArray(data) && data.length > 0 && set === false) {
-      // data provided is an array but a default value was not found to be true
-      // just set the default to be the first value in the array
-      this.setState({currentStyle: data[0]})
-    }
-  }
+  // getDefault(data) {
+  //   const key = 'default?';
+  //   let set = false
+  //   if(Array.isArray(data) && data.length > 0){
+  //     // data provided is an array and has at least one thing in it
+  //     Array.from(data).forEach((item) => {
+  //       if (item[key]) {
+  //         console.log(item[key])
+  //         this.setState({ currentStyle: item });
+  //         set = true
+  //       }
+  //     });
+  //   }
+  //   if (Array.isArray(data) && data.length > 0 && set === false) {
+  //     // data provided is an array but a default value was not found to be true
+  //     // just set the default to be the first value in the array
+  //     this.setState({currentStyle: data[0]})
+  //   }
+  // }
 
-  handleStyleChange(id, e) {
-    this.props.clickTracker(e)
-    // use this style id to set the current style to one that matches that id
-    // should be in the current set of styles
-    this.props.styles.forEach((item) => {
-      if (item.style_id === id) {
-        this.setState({ currentStyle: item });
-      }
-    });
-  }
+  // handleStyleChange(id, e) {
+  //   this.props.clickTracker(e)
+  //   // use this style id to set the current style to one that matches that id
+  //   // should be in the current set of styles
+  //   this.props.styles.forEach((item) => {
+  //     if (item.style_id === id) {
+  //       this.setState({ currentStyle: item });
+  //     }
+  //   });
+  // }
 
   render() {
     return (
@@ -90,13 +90,21 @@ class Overview extends React.Component {
           styles={this.props.styles}
           info={this.props.info}
           rating={this.props.rating}
-          currentStyle={this.state.currentStyle}
-          handleStyleChange={this.handleStyleChange}
+          currentStyle={this.props.currentStyle}
+          handleStyleChange={this.props.handleStyleChange}
           ClickTracker={this.props.clickTracker}
           addOutfit={this.props.addOutfit}
           isAdded={this.props.isAdded}
           isLoading={this.props.loading}
           didError={this.props.didError}
+          galleryPosition={this.props.galleryPosition}
+          miniGalleryPosition={this.props.miniGalleryPosition}
+          jumpTo={this.props.jumpTo}
+          handleMiniChange={this.props.handleMiniChange}
+          handlePhotoChange={this.props.handlePhotoChange}
+          handleFullscreen={this.props.handleFullscreen}
+          isFullscreen={this.props.isFullscreen}
+          overviewRating={this.props.overviewRating}
         />
         <ProductDescription info={this.props.info} />
       </section>

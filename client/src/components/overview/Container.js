@@ -33,6 +33,14 @@ const Container = (props) => {
                 ClickTracker={props.ClickTracker}
                 addOutfit={props.addOutfit}
                 isAdded={props.isAdded}
+                galleryPosition={props.galleryPosition}
+                miniGalleryPosition={props.miniGalleryPosition}
+                jumpTo={props.jumpTo}
+                handleMiniChange={props.handleMiniChange}
+                handlePhotoChange={props.handlePhotoChange}
+                handleFullscreen={props.handleFullscreen}
+                isFullscreen={props.isFullscreen}
+                overviewRating={props.overviewRating}
               />
             </section>
             :
