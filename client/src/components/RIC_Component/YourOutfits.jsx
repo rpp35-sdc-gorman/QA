@@ -41,8 +41,7 @@ class YourOutfits extends React.Component {
   addCurrentProduct() {
     if (!this.checkExistingOutfit(this.props.currentProduct.id)) {
       this.setState({
-        yourOutfits: [...this.state.yourOutfits, this.props.currentProduct],
-        added: true
+        yourOutfits: [...this.state.yourOutfits, this.props.currentProduct]
       }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
     }
   }
@@ -74,9 +73,7 @@ class YourOutfits extends React.Component {
       }
     }
     this.setState({
-      yourOutfits: updatedOutfits,
-      removed: id,
-      added: false
+      yourOutfits: updatedOutfits
     }, () => {
       localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits));
    });
