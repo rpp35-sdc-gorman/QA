@@ -42,3 +42,38 @@
 img, button, select {
   cursor: pointer;
 }
+
+#banner {
+  position: relative;
+  display: flex;
+  padding: 1vh 0;
+  margin: 1vh 10vw;
+  justify-content: space-between;
+  align-items: center;
+  background-color: darkslategray;
+}
+
+#banner img {
+  margin-left: 1vw;
+  max-width: 10vh;
+  max-height: 10vh;
+}
+
+#fakeSearch {
+  position: relative;
+  margin-right: 1vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+#fakeSearch input {
+  height: 2em;
+  width: 30vw;
+}
+
+#fakeSearch i {
+  position: absolute;
+  right: 1em;
+}

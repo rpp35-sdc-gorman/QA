@@ -7,10 +7,12 @@ class YourOutfits extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      yourOutfits: []
+      yourOutfits: [],
+      removed: null,
+      added: null
     }
-
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
   componentDidMount() {
@@ -18,21 +20,30 @@ class YourOutfits extends React.Component {
     this.setState({ yourOutfits });
   }
 
-  componentDidUpdate() {
-    if (this.props.added) {
+  componentDidUpdate(prevProps, prevState) {
+    // console.log(prevState.yourOutfits, this.state.yourOutfits);
+    if (this.props.added === false
+      && (prevState.yourOutfits.length !== this.state.yourOutfits.length)) {
+      this.removeOutfit(this.props.currentProduct.id);
+    }
+    if (this.props.added && (this.state.yourOutfits.length === 0 || (prevState.yourOutfits.length !== this.state.yourOutfits.length))) {
       this.addCurrentProduct();
+    } else {
+      return;
     }
   }
 
   handleAdd(event) {
     this.props.clickTracker(event);
+    this.props.addProduct();
     this.addCurrentProduct();
   }
 
   addCurrentProduct() {
     if (!this.checkExistingOutfit(this.props.currentProduct.id)) {
       this.setState({
-        yourOutfits: [...this.state.yourOutfits, this.props.currentProduct]
+        yourOutfits: [...this.state.yourOutfits, this.props.currentProduct],
+        added: true
       }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
     }
   }
@@ -46,8 +57,16 @@ class YourOutfits extends React.Component {
     return false;
   }
 
-  removeOutfit(event) {
+  handleRemove(event) {
+    this.props.clickTracker(event);
     let id = Number(event.currentTarget.id);
+    this.removeOutfit(id);
+    if (id === this.props.currentProduct.id) {
+      this.props.addProduct();
+    }
+  }
+
+  removeOutfit(id) {
     let currentOutfits = this.state.yourOutfits;
     let updatedOutfits = [];
     for (var i = 0; i < currentOutfits.length; i++) {
@@ -56,19 +75,23 @@ class YourOutfits extends React.Component {
       }
     }
     this.setState({
-      yourOutfits: updatedOutfits
-    }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
-    this.props.clickTracker(event);
+      yourOutfits: updatedOutfits,
+      removed: id,
+      added: false
+    }, () => {
+      localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits));
+   });
   }
 
   render() {
+    let addOrRemove = this.checkExistingOutfit(this.props.currentProduct.id) ? '- REMOVE FROM OUTFITS' : '+ ADD TO OUTFIT';
     return (
       <div id='yourOutfits'>
         <Carousel clickTracker={this.props.clickTracker}>
           <CarouselItem>
             <div className="card addition" onClick={(event) => {this.handleAdd(event)}}>
               <div className="card_visual" style={{backgroundColor: 'white'}}></div>
-              <div className="card_category" style={{fontSize: 'large'}}>+ ADD TO OUTFIT</div>
+              <div className="card_category" style={{fontSize: 'large'}}>{addOrRemove}</div>
               <div className="card_name"></div>
               <div className="card_price"></div>
               <div className="card_rating"></div>
@@ -85,7 +108,7 @@ class YourOutfits extends React.Component {
                   thumbnail={product.thumbnail}
                   id={product.id}
                   list={product.list}
-                  remove={this.removeOutfit.bind(this)}
+                  remove={this.handleRemove}
                   redirect={this.props.redirect}
                   />
               </CarouselItem>
