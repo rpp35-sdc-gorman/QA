@@ -5,6 +5,7 @@ import Overview from '../overview/Overview';
 import RIC from '../RIC_Component/RIC.jsx';
 
 import ClickTracker from '../common/ClickTracker.jsx';
+import {getAverageRating} from '../common/averageRating'
 
 class Coupler extends React.Component {
   constructor(props) {
@@ -18,9 +19,21 @@ class Coupler extends React.Component {
       currentRelatedProduct: null,
       relatedProducts: null,
       overviewLoading: true,
-      overviewDidError: false
+      overviewDidError: false,
+      overviewGalleryPosition: 0,
+      overviewMiniGalleryPosition: 0,
+      overviewGalleryIsFullscreen: false,
+      overviewCurrentStyle: null,
+      overviewRating: null
     };
     this.addProduct = this.addProduct.bind(this);
+    this.handlePhotoChange = this.handlePhotoChange.bind(this);
+    this.handleMiniChange = this.handleMiniChange.bind(this);
+    this.jumpTo = this.jumpTo.bind(this);
+    this.handleFullscreen = this.handleFullscreen.bind(this);
+    this.handleStyleChange = this.handleStyleChange.bind(this);
+    this.getDefault = this.getDefault.bind(this);
+    this.getRating = this.getRating.bind(this);
   }
 
   // from overview
@@ -98,7 +111,16 @@ class Coupler extends React.Component {
   async componentDidMount(){
     await this.getData(this.state.productId)
     await this.getRelatedItems(this.state.productId);
+    this.getRating();
+  }
 
+  componentDidUpdate(prevProps, PrevState){
+    if(PrevState.styles !== this.state.styles){
+      this.getDefault(this.state.styles)
+    }
+    if(PrevState.rating !== this.state.rating){
+      // this.getRating();
+    }
   }
 
   addProduct() {
@@ -106,6 +128,91 @@ class Coupler extends React.Component {
     localStorage.setItem('Add Product', opposite);
     this.setState({ addProduct: opposite })
   }
+
+
+  //-------- OverView State handlers ----------
+
+  // main gallery state handler
+  handlePhotoChange = (operator, length) => {
+    if(operator === '+'){
+      if(this.state.overviewGalleryPosition < length - 1){
+        this.setState({overviewGalleryPosition: this.state.overviewGalleryPosition + 1})
+      } else {
+        // wrap to start
+        this.setState({overviewMiniGalleryPosition: 0})
+      }
+    } else if(operator === '-'){
+      if(this.state.overviewGalleryPosition > 0){
+        this.setState({overviewGalleryPosition: this.state.overviewGalleryPosition - 1})
+      } else {
+        // wrap to end
+        this.setState({overviewMiniGalleryPosition: length - 1})
+      }
+    }
+  }
+
+  //  mini Gallery State Handler
+  handleMiniChange = (operator, length) => {
+    if(operator === '-' && this.state.overviewMiniGalleryPosition > 0){
+      this.setState({ overviewMiniGalleryPosition: this.state.overviewMiniGalleryPosition - 1 })
+    } else if ( operator === '+' && this.state.overviewMiniGalleryPosition < length - 5 ) {
+      this.setState({ overviewMiniGalleryPosition: this.state.overviewMiniGalleryPosition + 1 })
+    }
+  }
+
+  // mini gallery click event
+  jumpTo = (index) => {
+    this.setState({overviewGalleryPosition: index})
+  }
+
+  // gallery fullscreen handler
+  handleFullscreen = () => {
+    this.setState({overviewGalleryIsFullscreen: !this.state.overviewGalleryIsFullscreen})
+  }
+
+  // style selctor state handler
+  handleStyleChange(id) {
+    // use this style id to set the current style to one that matches that id
+    // should be in the current set of styles
+    this.state.styles.forEach((item) => {
+      if (item.style_id === id) {
+        this.setState({ overviewCurrentStyle: item });
+      }
+    });
+  }
+
+  // get the default style
+  getDefault(data) {
+    const key = 'default?';
+    let set = false
+    if(Array.isArray(data) && data.length > 0){
+      // data provided is an array and has at least one thing in it
+      Array.from(data).forEach((item) => {
+        if (item[key]) {
+          this.setState({ overviewCurrentStyle: item });
+          set = true
+        }
+      });
+    }
+    if (Array.isArray(data) && data.length > 0 && set === false) {
+      // data provided is an array but a default value was not found to be true
+      // just set the default to be the first value in the array
+      this.setState({ overviewCurrentStyle: data[0]})
+    }
+  }
+
+  // figure out product rating
+  getRating = () => {
+    axios.get(`/rating_review/${this.state.productId}/rating`)
+      .then(data => {
+        const rating = getAverageRating(data.data)
+        this.setState({'overviewRating': rating})
+      })
+      .catch(err => {
+        console.error('Problem getting rating', err)
+      })
+  }
+
 
   render() {
     const RI = ClickTracker(RIC, 'Related Items');
@@ -121,6 +228,17 @@ class Coupler extends React.Component {
           isAdded={this.state.addProduct}
           isLoading={this.state.overviewLoading}
           didError={this.state.overviewDidError}
+          galleryPosition={this.state.overviewGalleryPosition}
+          miniGalleryPosition={this.state.overviewMiniGalleryPosition}
+          jumpTo={this.jumpTo}
+          handleMiniChange={this.handleMiniChange}
+          handlePhotoChange={this.handlePhotoChange}
+          handleFullscreen={this.handleFullscreen}
+          isFullscreen={this.state.overviewGalleryIsFullscreen}
+          currentStyle={this.state.overviewCurrentStyle}
+          handleStyleChange={this.handleStyleChange}
+          getDefault={this.getDefault}
+          overviewRating={this.state.overviewRating}
         />
         <RI
           added={this.state.addProduct}

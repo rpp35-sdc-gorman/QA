@@ -19,15 +19,14 @@ class StyleSelector extends React.Component{
     this.state = {
       // currentStyle: null
       bubbles: '',
-      isFullscreen: false,
-      rating: null
+      // isFullscreen: false,
+      // rating: null
     }
-    this.handleFullscreen = this.handleFullscreen.bind(this)
   }
 
   componentDidMount(){
     this.setState({bubbles: this.createBubbles()})
-    this.getRating();
+    // this.getRating();
   }
 
   createBubbles () {
@@ -44,10 +43,10 @@ class StyleSelector extends React.Component{
     }
   }
 
-  handleFullscreen(e){
-    this.props.ClickTracker(e);
-    this.setState({'isFullscreen': !this.state.isFullscreen})
-  }
+  // handleFullscreen(e){
+  //   this.props.ClickTracker(e);
+  //   this.setState({'isFullscreen': !this.state.isFullscreen})
+  // }
 
   formatPrice (original, sale) {
     if (sale) {
@@ -70,32 +69,37 @@ class StyleSelector extends React.Component{
     }
   }
 
-  getRating () {
-    axios.get(`/rating_review/${this.props.info.id}/rating`)
-      .then(data => {
-        const rating = getAverageRating(data.data)
-        this.setState({'rating': rating})
-      })
-      .catch(err => {
-        console.error('Problem getting rating', err)
-      })
-  }
+  // getRating () {
+  //   axios.get(`/rating_review/${this.props.info.id}/rating`)
+  //     .then(data => {
+  //       const rating = getAverageRating(data.data)
+  //       this.setState({'rating': rating})
+  //     })
+  //     .catch(err => {
+  //       console.error('Problem getting rating', err)
+  //     })
+  // }
 
   render(){
-    if(!this.state.isFullscreen){
+    if(!this.props.isFullscreen){
       return(
         <article className="flexRow">
           <Gallery
             images={this.props.currentStyle.photos}
-            handleFullscreen={this.handleFullscreen}
-            isFullscreen={this.state.isFullscreen}
+            handleFullscreen={this.props.handleFullscreen}
+            isFullscreen={this.props.isFullscreen}
             ClickTracker={this.props.ClickTracker}
+            galleryPosition={this.props.galleryPosition}
+            miniGalleryPosition={this.props.miniGalleryPosition}
+            jumpTo={this.props.jumpTo}
+            handleMiniChange={this.props.handleMiniChange}
+            handlePhotoChange={this.props.handlePhotoChange}
           />
           <section className="Style_Selector">
             <article className="info">
               <div className='flexRow overview-rating'>
-                {this.state.rating ?
-                  <Stars filled={this.state.rating} />
+                {this.props.overviewRating ?
+                  <Stars filled={this.props.overviewRating} />
                   :
                   <Stars filled={3} />
                 }
@@ -127,9 +131,14 @@ class StyleSelector extends React.Component{
         <article className="flexRow">
           <Gallery
             images={this.props.currentStyle.photos}
-            handleFullscreen={this.handleFullscreen}
-            isFullscreen={this.state.isFullscreen}
+            handleFullscreen={this.props.handleFullscreen}
+            isFullscreen={this.props.isFullscreen}
             ClickTracker={this.props.ClickTracker}
+            galleryPosition={this.props.galleryPosition}
+            miniGalleryPosition={this.props.miniGalleryPosition}
+            jumpTo={this.props.jumpTo}
+            handleMiniChange={this.props.handleMiniChange}
+            handlePhotoChange={this.props.handlePhotoChange}
           />
         </article>
       )
