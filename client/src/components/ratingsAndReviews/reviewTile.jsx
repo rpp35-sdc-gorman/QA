@@ -33,9 +33,10 @@ const ReviewTile = (props) => {
               }}
               show={showImage[i]}
             >
-              <img key={url} src={url}></img>
+              <img alt="review image expanded modal" key={url} src={url}></img>
             </Modal>
             <img
+              alt="review image thumbnail"
               id="thumbnail"
               onClick={() => setShowImage({ ...showImage, [i]: !showImage[i] })}
               key={url}

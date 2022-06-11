@@ -53,6 +53,7 @@ const Gallery = (props) => {
           if(index >= currentMiniImage && index <= cutoff){
             // const id = keyId()
             const e = <img
+                      alt="mini gallery"
                       key={index}
                       onClick={(e) => jumpTo(index, e)}
                       className={currentImage === index ? 'Gallery_selected Gallery_mini' : 'Gallery_mini' }
@@ -66,6 +67,7 @@ const Gallery = (props) => {
       } else {
         // fallback element
         const item = <img
+          alt = 'fallback'
           key={'12938'}
           className={'Gallery_selected Gallery_mini'}
           src={'https://www.texassampling.com/wp-content/uploads/2020/05/placeholder-product-image.jpg'}
