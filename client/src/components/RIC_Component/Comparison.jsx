@@ -51,7 +51,7 @@ class Comparison extends React.Component {
     const related = this.props.related;
     return ((main !== undefined && related !== undefined) ?
       <div id='comparison'>
-        <h3 style={{padding: '2em'}}>Comparing</h3>
+        <h4 style={{padding: '0.5em'}}>Comparing</h4>
         <table className='center'>
           <thead>
             <tr>

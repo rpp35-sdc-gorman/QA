@@ -84,7 +84,7 @@ class YourOutfits extends React.Component {
   }
 
   render() {
-    let addOrRemove = this.checkExistingOutfit(this.props.currentProduct.id) ? '- REMOVE FROM OUTFITS' : '+ ADD TO OUTFIT';
+    let addOrRemove = this.checkExistingOutfit(this.props.currentProduct.id) ? '- REMOVE OUTFIT' : '+ ADD TO OUTFIT';
     return (
       <div id='yourOutfits'>
         <Carousel clickTracker={this.props.clickTracker}>
