@@ -7,6 +7,7 @@ var AnswerImages = (props) => {
         return (
           <div key={photo.id}>
             <img
+              alt='answer image thumbnail'
               src={photo.url.includes('imagekit') ? `${photo.url}?tr=w-0.5`:photo.url}
               onClick={(event) => props.toggleImage(event)}
               loading='lazy'

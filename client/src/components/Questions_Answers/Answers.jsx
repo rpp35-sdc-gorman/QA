@@ -56,7 +56,8 @@ var Answers = (props) => {
   return (
     <div id="answers" >
       <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
-        <img 
+        <img
+          alt="answer image expanded modal"
           src={displayImage}
           loading='lazy'
         />
