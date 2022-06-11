@@ -17,7 +17,7 @@ Includes standard retail features such as style selection, related item browsing
 
 ## Usage
 gifs go here
-![FEC_Demo_2x](https://user-images.githubusercontent.com/66839046/173203841-b5abb306-b8ec-48d7-801c-b69ebdcc979f.gif)
+![FEC_Demo](https://user-images.githubusercontent.com/66839046/173204109-b94c3a11-55f0-45eb-87d1-6114f0a99753.gif)
 
 
 ## Technologies
