@@ -17,7 +17,6 @@ class RIC extends React.Component {
       force: 1
     }
 
-    // this.currentProductId = window.location.href.split('/').pop();
   }
 
   componentDidMount() {
@@ -32,43 +31,6 @@ class RIC extends React.Component {
       this.setState({force: this.state.force + 1})
     }
   }
-
-  // getRelatedItems() {
-  //   axios.get(`/related_items/ric/${this.currentProductId}`)
-  //   .then(response => {
-  //     return response.data
-  //   })
-  //   .then(allProducts => {
-  //     let currentProduct = allProducts.slice(0, 1);
-  //     let relatedProducts = allProducts.slice(1, allProducts.length);
-  //     return [this.setDefaultStyle(currentProduct, 'outfit')[0], this.setDefaultStyle(relatedProducts, 'related')];
-  //   })
-  //   .then(allProducts => {
-  //     this.setState({
-  //       currentProduct: allProducts[0],
-  //       relatedProducts: allProducts[1]
-  //     });
-  //   })
-  //   .catch(err => { console.error('Something broke'); });
-  // }
-
-  // setDefaultStyle(products, list) {
-  //   products.forEach(product => {
-  //     product.styles.forEach(style => {
-  //       if (style['default?']) {
-  //         product.thumbnail = style.photos[0].thumbnail_url;
-  //         product.sale_price = style.sale_price;
-  //         product.list = list;
-  //       }
-  //     })
-  //     if (product.thumbnail === null || product.thumbnail === undefined) {
-  //       product.thumbnail = product.styles[0].photos[0].thumbnail_url;
-  //       product.sale_price = product.styles[0].sale_price;
-  //       product.list = list;
-  //     }
-  //   })
-  //   return products;
-  // }
 
   compare(event) {
     this.props.clickTracker(event);
