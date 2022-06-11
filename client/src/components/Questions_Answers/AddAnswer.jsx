@@ -94,6 +94,7 @@ var AddAnswer = (props) => {
     <div className="modalAnswers">
       <Modal handleClose={(event) => toggleImage(event)} show={showImage}>
         <img
+          alt='new answer image expanded modal'
           id={'displayImage'}
           src={displayImage}
           loading='lazy'
@@ -129,6 +130,7 @@ var AddAnswer = (props) => {
           <div id="answerImages">
             {Array.from(photos).map((photo, i) => (
               <img
+                alt='new answer image thumbnail'
                 id='newImage'
                 key={i}
                 src={`${photo}?tr=w-0.5`}

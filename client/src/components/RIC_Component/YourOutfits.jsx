@@ -21,7 +21,6 @@ class YourOutfits extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log(prevState.yourOutfits, this.state.yourOutfits);
     if (this.props.added === false
       && (prevState.yourOutfits.length !== this.state.yourOutfits.length)) {
       this.removeOutfit(this.props.currentProduct.id);
@@ -42,8 +41,7 @@ class YourOutfits extends React.Component {
   addCurrentProduct() {
     if (!this.checkExistingOutfit(this.props.currentProduct.id)) {
       this.setState({
-        yourOutfits: [...this.state.yourOutfits, this.props.currentProduct],
-        added: true
+        yourOutfits: [...this.state.yourOutfits, this.props.currentProduct]
       }, () => { localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits)) });
     }
   }
@@ -75,16 +73,14 @@ class YourOutfits extends React.Component {
       }
     }
     this.setState({
-      yourOutfits: updatedOutfits,
-      removed: id,
-      added: false
+      yourOutfits: updatedOutfits
     }, () => {
       localStorage.setItem('Outfit', JSON.stringify(this.state.yourOutfits));
    });
   }
 
   render() {
-    let addOrRemove = this.checkExistingOutfit(this.props.currentProduct.id) ? '- REMOVE FROM OUTFITS' : '+ ADD TO OUTFIT';
+    let addOrRemove = this.checkExistingOutfit(this.props.currentProduct.id) ? '- REMOVE OUTFIT' : '+ ADD TO OUTFIT';
     return (
       <div id='yourOutfits'>
         <Carousel clickTracker={this.props.clickTracker}>

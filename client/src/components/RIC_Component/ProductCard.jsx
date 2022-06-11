@@ -1,10 +1,11 @@
 import React from 'react';
 import Stars from '../common/stars.jsx';
 import { Star, CircleXFill } from 'akar-icons';
+let fallback = 'https://www.texassampling.com/wp-content/uploads/2020/05/placeholder-product-image.jpg';
 
 var ProductCards = (props) => (
   <div className="card">
-    <img className="card_visual" src={props.thumbnail} onClick={props.redirect} loading='lazy'/>
+    <img alt="product image" className="card_visual" src={props.thumbnail || fallback} onClick={props.redirect} loading='lazy'/>
     {props.list === 'related' ? (
       <Star
         color="white"
