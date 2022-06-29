@@ -7,6 +7,7 @@ const { ratingRouter } = require('./routes/ratingsAndReviews');
 const { relatedRouter } = require('./routes/relatedItemsAndComparisons');
 const sendRequest = require('./lib/sendRequest');
 const bodyParser = require('body-parser');
+const db = require('../QA_db/QA_tables');
 
 const app = express();
 const port = 3000;
