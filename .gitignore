@@ -7,5 +7,6 @@ bundle.js.gz
 bundle.js.LICENSE.txt.gz
 coverage
 *.csv
+*.md
 *bundle*
 .env
