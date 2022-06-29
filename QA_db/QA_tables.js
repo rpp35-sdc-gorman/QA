@@ -134,7 +134,24 @@ Answers_Photos.init({
 
 sequelize.sync();
 
-const shapeQA = async (product_id) => {
+const sendRequest = (s, method = 'GET', content = {}) => {
+  if (method === 'GET') {
+    const check = s.split('?');
+    const querys = {}; //the queries we get from s
+    if (check[0] === 'qa/questions') {
+       const subS = check[1];
+       const arr = subS.split('&');
+       for (let a of arr) {
+         let keyVal = a.split('=');
+         querys[keyVal[0]] = keyVal[1]; // both are strings, not number
+       }
+       const results = shapeQA(querys.product_id, (querys.count - 1) * querys.page, querys.count * querys.page); //start, end for result.results
+       return results;
+    }
+  }
+}
+
+const shapeQA = (product_id, start, end) => {
   let result = {
     product_id,
     results: [],
@@ -145,35 +162,55 @@ const shapeQA = async (product_id) => {
       reported: 0,
     }
   })
-  .then((questions) => {return Promise.allSettled(questions.map((question) => {
-    question = question.dataValues;
-    question.answers = [];
-    Answers.findAll({
-      where: {
-        question_id: question.id,
-        reported: 0,
-      }})
-      .then((answers) => (answers.map((answer) => (
-          answer = answer.dataValues
-          //question.answers.push(answer);
+  .then((questions) => {
+    let datas = []; //array of promises
+    questions.forEach((question) => {
+      question = question.dataValues;
+      let data = {};
+      data.question_id = question.id;
+      data.question_body = question.body;
+      data.question_date = '' + new Date(parseInt(question.date_written));
+      data.asker_name = question.asker_name;
+      data.question_helpfulness = question.helpful;
+      data.reported = question.reported === 0 ? false : true;
+      data.answers = {};
+      //push in array of promises, then we can use promise.all to wait for them all to settled
+      datas.push(Answers.findAll({
+        where: {
+          question_id: question.id,
+          reported: 0,
+        }})
+        .then((answers) => (answers.map((answer) => {
+          //only included non reported in modifyAnswer, reshape the answer to be consistent with the given database API
+          if (answer.dataValues.reported === 0) {
+            answer = answer.dataValues;
+            let modifyAnswer = {
+              id: answer.id,
+              body: answer.body,
+              date: '' + new Date(parseInt(answer.date_written)),
+              answerer_name: answer.answerer_name,
+              helpfulness: answer.helpful,
+              photo: [], //user question_id and answer id to get photo url
+            }
+            return modifyAnswer;
+          }
+        })
         ))
-      ))
-      .then((answers) => question.answers = answers)
-      // .then((question) => {result.results.push(question); return Promise.allSettled(result.results)})
-      // .then(results => console.log(results))
-      // .then((question) => result.results.push(question))
-      //.then(() => { console.log(question)})
-      //await console.log(result.results)
-  }))
-})
-  .then((questions) => console.log('questions',questions))
- // .then(() => console.log(result.results))
-  // .then(() => {
-  //   //result.results = questions;
-  //   console.log(result.results)
-  // })
+        .then((modifyAnswers) => (modifyAnswers.map((modifyAnswer) => (
+          data.answers[modifyAnswer.id] = modifyAnswer
+        ))))
+        .then(() => data)
+        .catch(err => console.log(err)))
+   })
+    return Promise.allSettled(datas);
+  })
+  .then(() => {
+    result.results = result.results.slice(start, end);
+    return result;
+    //console.log('questions',questions[1].value.answers)
+  })
 };
 
-shapeQA(3);
+//shapeQA(3);
 
-module.export = {sequelize, Questions, Answers, Answers_Photos};
+module.exports = {sequelize, Questions, Answers, Answers_Photos, sendRequest};
