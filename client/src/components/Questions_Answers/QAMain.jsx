@@ -28,10 +28,12 @@ class QAMain extends React.Component {
     // get initial QA list from server;
     axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1} })
       .then(results => {
-        let questionsWithAnswers = [];
-        for (let i = 0; i < results.data.length; i++) {
-          questionsWithAnswers.push(results.data[i].value);
-        }
+        let questionsWithAnswers = results.data;
+        //console.log('componentdidmount', results.data);
+        // for (let i = 0; i < results.data.length; i++) {
+        //   questionsWithAnswers.push(results.data[i].value);
+        // }
+        // console.log(questionsWithAnswers)
         let hasMoreQuestions = true;
         if (questionsWithAnswers.length < 2) {
           hasMoreQuestions = false;
@@ -48,10 +50,7 @@ class QAMain extends React.Component {
     let product_id = window.location.href.split('/').pop() || '';
     axios.get(`/question_answer/${product_id}`, { params: {count: 100, page_num: 1}})
       .then(results => {
-        let questionsWithAnswers = [];
-        for (let i = 0; i < results.data.length; i++) {
-          questionsWithAnswers.push(results.data[i].value);
-        }
+        let questionsWithAnswers = results.data;
         let hasMoreQuestions = true;
         if (questionsWithAnswers.length < 2) {
           hasMoreQuestions = false;
